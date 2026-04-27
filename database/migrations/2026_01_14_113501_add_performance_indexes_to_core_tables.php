@@ -13,13 +13,13 @@ return new class extends Migration
     {
         // Users table - core queries
         Schema::table('users', function (Blueprint $table) {
-            $table->index(['role', 'is_active'], 'users_role_active_index');
-            $table->index(['category_id', 'is_active'], 'users_category_active_index');
-            $table->index(['location_id', 'is_active'], 'users_location_active_index');
-            $table->index(['slug'], 'users_slug_index');
+            if (Schema::hasColumn('users', 'role')) $table->index(['role', 'is_active'], 'users_role_active_index');
+            if (Schema::hasColumn('users', 'category_id')) $table->index(['category_id', 'is_active'], 'users_category_active_index');
+            if (Schema::hasColumn('users', 'location_id')) $table->index(['location_id', 'is_active'], 'users_location_active_index');
+            if (Schema::hasColumn('users', 'slug')) $table->index(['slug'], 'users_slug_index');
             $table->index(['created_at'], 'users_created_at_index');
-            $table->index(['verified_at'], 'users_verified_at_index');
-            $table->index(['is_featured', 'is_active'], 'users_featured_active_index');
+            if (Schema::hasColumn('users', 'verified_at')) $table->index(['verified_at'], 'users_verified_at_index');
+            if (Schema::hasColumn('users', 'is_featured')) $table->index(['is_featured', 'is_active'], 'users_featured_active_index');
         });
 
         // Services table
@@ -31,8 +31,8 @@ return new class extends Migration
 
         // Reviews table
         Schema::table('reviews', function (Blueprint $table) {
-            $table->index(['craftsman_id', 'is_approved'], 'reviews_craftsman_approved_index');
-            $table->index(['client_id', 'created_at'], 'reviews_client_recent_index');
+            if (Schema::hasColumn('reviews', 'craftsman_id')) $table->index(['craftsman_id', 'is_approved'], 'reviews_craftsman_approved_index');
+            if (Schema::hasColumn('reviews', 'client_id')) $table->index(['client_id', 'created_at'], 'reviews_client_recent_index');
             $table->index(['rating', 'is_approved'], 'reviews_rating_approved_index');
             $table->index(['is_approved', 'created_at'], 'reviews_approved_recent_index');
         });
@@ -46,12 +46,14 @@ return new class extends Migration
         });
 
         // Quote requests table
-        Schema::table('quote_requests', function (Blueprint $table) {
-            $table->index(['craftsman_id', 'status'], 'quote_requests_craftsman_status_index');
-            $table->index(['client_id', 'status'], 'quote_requests_client_status_index');
-            $table->index(['status', 'created_at'], 'quote_requests_status_recent_index');
-            $table->index(['urgency', 'status'], 'quote_requests_urgency_status_index');
-        });
+        if (Schema::hasTable('quote_requests')) {
+            Schema::table('quote_requests', function (Blueprint $table) {
+                if (Schema::hasColumn('quote_requests', 'craftsman_id')) $table->index(['craftsman_id', 'status'], 'quote_requests_craftsman_status_index');
+                if (Schema::hasColumn('quote_requests', 'client_id')) $table->index(['client_id', 'status'], 'quote_requests_client_status_index');
+                $table->index(['status', 'created_at'], 'quote_requests_status_recent_index');
+                if (Schema::hasColumn('quote_requests', 'urgency')) $table->index(['urgency', 'status'], 'quote_requests_urgency_status_index');
+            });
+        }
 
         // Quotes table
         Schema::table('quotes', function (Blueprint $table) {
@@ -99,8 +101,8 @@ return new class extends Migration
 
         // Profile views table
         Schema::table('profile_views', function (Blueprint $table) {
-            $table->index(['craftsman_id', 'created_at'], 'profile_views_craftsman_recent_index');
-            $table->index(['viewer_id', 'created_at'], 'profile_views_viewer_recent_index');
+            if (Schema::hasColumn('profile_views', 'craftsman_id')) $table->index(['craftsman_id', 'created_at'], 'profile_views_craftsman_recent_index');
+            if (Schema::hasColumn('profile_views', 'viewer_id')) $table->index(['viewer_id', 'created_at'], 'profile_views_viewer_recent_index');
         });
 
         // Notifications table
