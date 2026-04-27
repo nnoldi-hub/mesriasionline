@@ -142,9 +142,9 @@ return new class extends Migration
         // Referrals table
         if (Schema::hasTable('referrals')) {
             Schema::table('referrals', function (Blueprint $table) {
-                $this->addIndex($table, 'referrals', ['referrer_id', 'created_at'], 'referrals_referrer_recent_index');
-                $this->addIndex($table, 'referrals', ['referred_id', 'created_at'], 'referrals_referred_recent_index');
-                $this->addIndex($table, 'referrals', ['status', 'created_at'], 'referrals_status_recent_index');
+                if (Schema::hasColumn('referrals', 'affiliate_id')) $this->addIndex($table, 'referrals', ['affiliate_id', 'created_at'], 'referrals_referrer_recent_index');
+                if (Schema::hasColumn('referrals', 'referred_user_id')) $this->addIndex($table, 'referrals', ['referred_user_id', 'created_at'], 'referrals_referred_recent_index');
+                if (Schema::hasColumn('referrals', 'status')) $this->addIndex($table, 'referrals', ['status', 'created_at'], 'referrals_status_recent_index');
             });
         }
     }
