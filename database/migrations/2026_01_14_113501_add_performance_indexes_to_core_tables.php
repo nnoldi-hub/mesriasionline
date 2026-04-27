@@ -85,25 +85,29 @@ return new class extends Migration
 
         // Conversations table
         Schema::table('conversations', function (Blueprint $table) {
-            $this->addIndex($table, 'conversations', ['user1_id', 'updated_at'], 'conversations_user1_recent_index');
-            $this->addIndex($table, 'conversations', ['user2_id', 'updated_at'], 'conversations_user2_recent_index');
+            if (Schema::hasColumn('conversations', 'user1_id')) $this->addIndex($table, 'conversations', ['user1_id', 'updated_at'], 'conversations_user1_recent_index');
+            if (Schema::hasColumn('conversations', 'user2_id')) $this->addIndex($table, 'conversations', ['user2_id', 'updated_at'], 'conversations_user2_recent_index');
             if (Schema::hasColumn('conversations', 'is_archived')) $this->addIndex($table, 'conversations', ['is_archived', 'updated_at'], 'conversations_archived_recent_index');
         });
 
         // Articles table
-        Schema::table('articles', function (Blueprint $table) {
-            $this->addIndex($table, 'articles', ['is_published', 'published_at'], 'articles_published_date_index');
-            $this->addIndex($table, 'articles', ['category_id', 'is_published'], 'articles_category_published_index');
-            $this->addIndex($table, 'articles', ['slug'], 'articles_slug_index');
-            if (Schema::hasColumn('articles', 'views')) $this->addIndex($table, 'articles', ['views', 'is_published'], 'articles_views_published_index');
-        });
+        if (Schema::hasTable('articles')) {
+            Schema::table('articles', function (Blueprint $table) {
+                if (Schema::hasColumn('articles', 'is_published')) $this->addIndex($table, 'articles', ['is_published', 'published_at'], 'articles_published_date_index');
+                if (Schema::hasColumn('articles', 'category_id')) $this->addIndex($table, 'articles', ['category_id', 'is_published'], 'articles_category_published_index');
+                if (Schema::hasColumn('articles', 'slug')) $this->addIndex($table, 'articles', ['slug'], 'articles_slug_index');
+                if (Schema::hasColumn('articles', 'views')) $this->addIndex($table, 'articles', ['views', 'is_published'], 'articles_views_published_index');
+            });
+        }
 
         // Article questions table
-        Schema::table('article_questions', function (Blueprint $table) {
-            $this->addIndex($table, 'article_questions', ['user_id', 'created_at'], 'questions_user_recent_index');
-            $this->addIndex($table, 'article_questions', ['status', 'created_at'], 'questions_status_recent_index');
-            if (Schema::hasColumn('article_questions', 'is_featured')) $this->addIndex($table, 'article_questions', ['is_featured', 'created_at'], 'questions_featured_recent_index');
-        });
+        if (Schema::hasTable('article_questions')) {
+            Schema::table('article_questions', function (Blueprint $table) {
+                if (Schema::hasColumn('article_questions', 'user_id')) $this->addIndex($table, 'article_questions', ['user_id', 'created_at'], 'questions_user_recent_index');
+                if (Schema::hasColumn('article_questions', 'status')) $this->addIndex($table, 'article_questions', ['status', 'created_at'], 'questions_status_recent_index');
+                if (Schema::hasColumn('article_questions', 'is_featured')) $this->addIndex($table, 'article_questions', ['is_featured', 'created_at'], 'questions_featured_recent_index');
+            });
+        }
 
         // Gallery table - skip if not exists
         if (Schema::hasTable('gallery')) {
@@ -120,10 +124,14 @@ return new class extends Migration
         });
 
         // Notifications table
-        Schema::table('notifications', function (Blueprint $table) {
-            $this->addIndex($table, 'notifications', ['notifiable_id', 'notifiable_type', 'read_at'], 'notifications_user_read_index');
-            $this->addIndex($table, 'notifications', ['notifiable_id', 'notifiable_type', 'created_at'], 'notifications_user_recent_index');
-        });
+        if (Schema::hasTable('notifications')) {
+            Schema::table('notifications', function (Blueprint $table) {
+                if (Schema::hasColumn('notifications', 'notifiable_id')) {
+                    $this->addIndex($table, 'notifications', ['notifiable_id', 'notifiable_type', 'read_at'], 'notifications_user_read_index');
+                    $this->addIndex($table, 'notifications', ['notifiable_id', 'notifiable_type', 'created_at'], 'notifications_user_recent_index');
+                }
+            });
+        }
 
         // Referrals table
         if (Schema::hasTable('referrals')) {
