@@ -1,4 +1,4 @@
-﻿/**
+**
  * Omul Potrivit Service Worker
  * Handles push notifications, offline caching, and PWA functionality
  */

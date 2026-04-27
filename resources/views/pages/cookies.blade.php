@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+extends('layouts.app')
 
 @section('title', 'Politica Cookies - Omul Potrivit')
 @section('description', 'Află ce sunt cookies, cum le folosim pe Omul Potrivit și cum poți gestiona preferințele tale.')
@@ -18,6 +18,6 @@
     <h2 class="text-xl font-semibold mt-6 mb-2">Cum poți gestiona cookies?</h2>
     <p class="mb-4">Poți șterge sau bloca cookies din setările browserului tău. Totuși, blocarea cookies esențiale poate afecta funcționarea corectă a platformei.</p>
     <h2 class="text-xl font-semibold mt-6 mb-2">Mai multe informații</h2>
-    <p>Pentru detalii suplimentare, consultă <a href="{{ route('privacy') }}" class="underline text-primary-600">Politica de confidențialitate</a> sau contactează-ne la <a href="mailto:contact@omulpotrivit.ro" class="underline text-primary-600">contact@omulpotrivit.ro</a>.</p>
+    <p>Pentru detalii suplimentare, consultă <a href="{{ route('privacy') }}" class="underline text-primary-600">Politica de confidențialitate</a> sau contactează-ne la <a href="mailto:contact@meseriasionline.ro" class="underline text-primary-600">contact@meseriasionline.ro</a>.</p>
 </div>
 @endsection

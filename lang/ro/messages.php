@@ -1,4 +1,4 @@
-<?php
+?php
 
 return [
     // General
@@ -15,7 +15,7 @@ return [
     'contact' => 'Contact',
     'blog' => 'Blog',
     'login' => 'Autentificare',
-    'register' => 'Înregistrare',
+    'register' => 'ï¿½nregistrare',
     'logout' => 'Deconectare',
     'dashboard' => 'Panou de control',
     'profile' => 'Profil',
@@ -30,8 +30,8 @@ return [
     'remember_me' => '?ine-ma minte',
     'forgot_password' => 'Ai uitat parola?',
     'reset_password' => 'Reseteaza parola',
-    'register_as_client' => 'Înregistreaza-te ca client',
-    'register_as_craftsman' => 'Înregistreaza-te ca meseria?',
+    'register_as_client' => 'ï¿½nregistreaza-te ca client',
+    'register_as_craftsman' => 'ï¿½nregistreaza-te ca meseria?',
     
     // Search
     'search_placeholder' => 'Ce serviciu cau?i?',
@@ -66,7 +66,7 @@ return [
     'send_message' => 'Trimite mesaj',
     'call_now' => 'Suna acum',
     'write_review' => 'Scrie o recenzie',
-    'save_favorite' => 'Salveaza în favorite',
+    'save_favorite' => 'Salveaza ï¿½n favorite',
     'share_profile' => 'Distribuie profilul',
     
     // Reviews
@@ -94,7 +94,7 @@ return [
     // Favorites
     'favorites' => 'Favorite',
     'my_favorites' => 'Meseria?ii mei favori?i',
-    'no_favorites' => 'Nu ai niciun meseria? salvat în favorite',
+    'no_favorites' => 'Nu ai niciun meseria? salvat ï¿½n favorite',
     'added_to_favorites' => 'Adaugat la favorite',
     'removed_from_favorites' => 'Eliminat din favorite',
     
@@ -114,25 +114,25 @@ return [
     'edit' => 'Editeaza',
     'delete' => '?terge',
     'confirm' => 'Confirma',
-    'back' => 'Înapoi',
+    'back' => 'ï¿½napoi',
     'next' => 'Urmatorul',
     'previous' => 'Anterior',
-    'close' => 'Închide',
+    'close' => 'ï¿½nchide',
     'view_all' => 'Vezi toate',
-    'load_more' => 'Încarca mai multe',
-    'refresh' => 'Reîmprospateaza',
+    'load_more' => 'ï¿½ncarca mai multe',
+    'refresh' => 'Reï¿½mprospateaza',
     
     // Status
     'success' => 'Succes',
     'error' => 'Eroare',
     'warning' => 'Aten?ie',
     'info' => 'Informa?ie',
-    'loading' => 'Se încarca...',
+    'loading' => 'Se ï¿½ncarca...',
     'processing' => 'Se proceseaza...',
     
     // Errors
     'error_occurred' => 'A aparut o eroare',
-    'try_again' => 'Încearca din nou',
+    'try_again' => 'ï¿½ncearca din nou',
     'page_not_found' => 'Pagina nu a fost gasita',
     'access_denied' => 'Acces interzis',
     'session_expired' => 'Sesiunea a expirat',
@@ -142,6 +142,6 @@ return [
     'privacy_policy' => 'Politica de confiden?ialitate',
     'cookies' => 'Politica de cookies',
     'help' => 'Ajutor',
-    'faq' => 'Întrebari frecvente',
+    'faq' => 'ï¿½ntrebari frecvente',
     'all_rights_reserved' => 'Toate drepturile rezervate',
 ];

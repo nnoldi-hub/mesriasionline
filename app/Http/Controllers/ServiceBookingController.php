@@ -1,4 +1,4 @@
-﻿<?php
+?php
 
 namespace App\Http\Controllers;
 
@@ -41,7 +41,7 @@ class ServiceBookingController extends Controller
             "Email: {$appointment->client_email}\n" .
             "Detalii: {$appointment->message}",
             function($message) {
-                $message->to(config('mail.from.address', 'contact@omulpotrivit.ro'));
+                $message->to(config('mail.from.address', 'contact@meseriasionline.ro'));
                 $message->subject('Solicitare nouă mentenanță/întreținere Omul Potrivit');
             }
         );
@@ -99,7 +99,7 @@ class ServiceBookingController extends Controller
             "Data: {$appointment->appointment_date} {$appointment->appointment_time}\n" .
             "Detalii: {$appointment->message}",
             function($message) {
-                $message->to(config('mail.from.address', 'contact@omulpotrivit.ro'));
+                $message->to(config('mail.from.address', 'contact@meseriasionline.ro'));
                 $message->subject('Rezervare nouă serviciu Omul Potrivit');
             }
         );

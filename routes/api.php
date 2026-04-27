@@ -1,4 +1,4 @@
-﻿<?php
+?php
 
 use App\Http\Controllers\Api\CraftsmenApiController;
 use App\Http\Controllers\Api\CategoriesApiController;

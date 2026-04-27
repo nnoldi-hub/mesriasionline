@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+extends('layouts.app')
 
 @section('title', 'Solicitare mentenanță / întreținere imobil - Omul Potrivit')
 @section('description', 'Trimite o solicitare pentru servicii de mentenanță sau întreținere imobil. Omul Potrivit te contactează cu o ofertă personalizată.')

@@ -1,4 +1,4 @@
-﻿/**
+**
  * Dark Mode Manager
  * Handles dark mode toggle with localStorage persistence
  */

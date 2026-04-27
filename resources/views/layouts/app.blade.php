@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="ro" class="">
 <head>
     <meta charset="UTF-8">
@@ -236,7 +236,7 @@
                 <div>
                     <h4 class="font-semibold mb-4">Contact Omul Potrivit</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
-                        <li>Email: contact@omulpotrivit.ro</li>
+                        <li>Email: contact@meseriasionline.ro</li>
                         <li>Telefon: +40 123 456 789</li>
                         <li>Program: L-V, 9:00 - 18:00</li>
                     </ul>

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+extends('layouts.app')
 
 @section('title', 'Devino Meseriaș — Primești clienți reali în București')
 

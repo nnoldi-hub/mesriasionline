@@ -1,4 +1,4 @@
-﻿<?php
+?php
 
 namespace App\Services;
 
@@ -24,7 +24,7 @@ class SeoService
     protected string $siteName = 'Omul Potrivit';
     protected string $defaultDescription = 'Omul Potrivit - Reparații, întreținere, siguranță — totul pentru casa ta. Meseriașul potrivit, direct la tine.';
     protected string $defaultImage = '/images/og-default.jpg';
-    protected string $twitterHandle = '@omulpotrivit';
+    protected string $twitterHandle = '@meseriasionline';
     protected string $locale = 'ro_RO';
 
     /**
