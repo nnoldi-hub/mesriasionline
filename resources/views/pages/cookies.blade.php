@@ -1,4 +1,4 @@
-extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', 'Politica Cookies - Omul Potrivit')
 @section('description', 'Află ce sunt cookies, cum le folosim pe Omul Potrivit și cum poți gestiona preferințele tale.')
