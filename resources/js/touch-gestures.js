@@ -1,4 +1,4 @@
-**
+/**
  * Touch Gestures Manager
  * Implements swipe gestures, pull-to-refresh, and touch-friendly interactions
  */
