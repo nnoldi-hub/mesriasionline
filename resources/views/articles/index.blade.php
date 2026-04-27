@@ -4,11 +4,11 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-br from-primary-600 to-primary-700 text-white py-12">
+<section class="py-12" style="background-color: #ECF0F1;">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4">Articole și Sfaturi</h1>
-            <p class="text-lg text-white/90">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-4" style="font-family:'Rubik',sans-serif; color:#2980B9;">Articole și Sfaturi</h1>
+            <p class="text-lg" style="color:#2C3E50;">
                 Descoperă articole utile, interviuri cu meșteri experimentați și ghiduri practice 
                 pentru proiectele tale de acasă.
             </p>
@@ -21,16 +21,16 @@
         <!-- Main Content -->
         <div class="flex-1">
             <!-- Filters -->
-            <div class="bg-white rounded-lg shadow-sm p-4 mb-6">
+            <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
                 <form method="GET" action="{{ route('articole') }}" class="flex flex-wrap gap-4">
                     <div class="flex-1 min-w-[200px]">
                         <input type="text" name="search" value="{{ request('search') }}"
                                placeholder="Caută articole..."
-                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                               class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary-500 focus:border-transparent">
                     </div>
                     <div class="w-40">
                         <select name="type" onchange="this.form.submit()"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-secondary-500 focus:border-transparent">
                             <option value="">Toate tipurile</option>
                             <option value="article" {{ request('type') == 'article' ? 'selected' : '' }}>Articole</option>
                             <option value="interview" {{ request('type') == 'interview' ? 'selected' : '' }}>Interviuri</option>
@@ -38,7 +38,7 @@
                             <option value="news" {{ request('type') == 'news' ? 'selected' : '' }}>Știri</option>
                         </select>
                     </div>
-                    <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+                    <button type="submit" class="px-4 py-2 text-white font-semibold rounded-xl hover:opacity-90 transition" style="background-color:#C0392B;">
                         Caută
                     </button>
                 </form>
@@ -48,7 +48,7 @@
             @if($articles->count() > 0)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @foreach($articles as $article)
-                        <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow group">
+                        <article class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow group">
                             <a href="{{ route('articole.show', $article->slug) }}" class="block">
                                 @if($article->featured_image)
                                     <div class="aspect-video overflow-hidden">
@@ -78,7 +78,7 @@
                                 </div>
                                 
                                 <a href="{{ route('articole.show', $article->slug) }}" class="block">
-                                    <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                    <h2 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-secondary-600 transition-colors line-clamp-2">
                                         {{ $article->title }}
                                     </h2>
                                 </a>
@@ -99,7 +99,7 @@
                                         @endif
                                     </div>
                                     <a href="{{ route('articole.show', $article->slug) }}" 
-                                       class="text-primary-600 text-sm font-medium hover:underline">
+                                       class="text-sm font-medium hover:underline" style="color:#C0392B;">
                                         Citește →
                                     </a>
                                 </div>
@@ -146,7 +146,7 @@
                                     </div>
                                 @endif
                                 <div>
-                                    <h4 class="text-sm font-medium text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                                    <h4 class="text-sm font-medium text-gray-900 group-hover:text-secondary-600 transition-colors line-clamp-2">
                                         {{ $interview->title }}
                                     </h4>
                                     @if($interview->featuredCraftsman)
@@ -166,7 +166,7 @@
                     <div class="flex flex-wrap gap-2">
                         @foreach($allTags as $tag)
                             <a href="{{ route('articole', ['tag' => $tag]) }}"
-                               class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-primary-600 hover:text-white transition-colors">
+                               class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:text-white transition-colors" onmouseover="this.style.backgroundColor='#C0392B'" onmouseout="this.style.backgroundColor='#f3f4f6'">
                                 {{ $tag }}
                             </a>
                         @endforeach
@@ -175,13 +175,13 @@
             @endif
 
             <!-- Q&A CTA -->
-            <div class="bg-gradient-to-br from-primary to-primary/80 rounded-lg shadow-sm p-6 text-white">
-                <h3 class="text-lg font-semibold mb-2">Ai o întrebare?</h3>
+            <div class="rounded-2xl shadow-sm p-6 text-white" style="background-color:#2980B9;">
+                <h3 class="text-lg font-bold mb-2" style="font-family:'Rubik',sans-serif;">Ai o întrebare?</h3>
                 <p class="text-sm opacity-90 mb-4">
                     Pune o întrebare și primește sfaturi de la experți.
                 </p>
                 <a href="{{ route('intrebari.pune') }}" 
-                   class="inline-block w-full text-center px-4 py-2 bg-white text-primary-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                   class="inline-block w-full text-center px-4 py-2 bg-white font-semibold rounded-xl hover:bg-gray-100 transition-colors" style="color:#C0392B;">
                     Pune o întrebare
                 </a>
             </div>

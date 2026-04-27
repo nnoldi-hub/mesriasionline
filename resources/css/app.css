@@ -6,70 +6,77 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    /* Fonturi românești & prietenoase */
+    --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    
-    /* Schema Verde Natural & Bej Cald */
-    --color-primary-50: #f0fdf4;
-    --color-primary-100: #dcfce7;
-    --color-primary-200: #bbf7d0;
-    --color-primary-300: #86efac;
-    --color-primary-400: #4ade80;
-    --color-primary-500: #065F46; /* Verde închis principal */
-    --color-primary-600: #065F46;
-    --color-primary-700: #064e38;
-    --color-primary-800: #053d2c;
-    --color-primary-900: #042d20;
-    
-    --color-secondary-50: #f0fdf9;
-    --color-secondary-100: #ccfbef;
-    --color-secondary-200: #a7f3d0; /* Verde salvie */
-    --color-secondary-300: #6ee7b7;
-    --color-secondary-400: #34d399;
-    --color-secondary-500: #10b981; /* Verde mentă - succes */
-    --color-secondary-600: #059669;
-    --color-secondary-700: #047857;
-    --color-secondary-800: #065f46;
-    --color-secondary-900: #064e3b;
-    
-    --color-accent-50: #f7fee7;
-    --color-accent-100: #ecfccb;
-    --color-accent-200: #d9f99d;
-    --color-accent-300: #bef264;
-    --color-accent-400: #a3e635;
-    --color-accent-500: #84cc16; /* Verde lime - accent */
-    --color-accent-600: #65a30d;
-    --color-accent-700: #4d7c0f;
-    --color-accent-800: #3f6212;
-    --color-accent-900: #365314;
-    
-    --color-beige-50: #fafaf8;
-    --color-beige-100: #f5f5dc; /* Bej deschis - fundal */
-    --color-beige-200: #eeeed5;
-    --color-beige-300: #e6e6c8;
-    --color-beige-400: #deded0;
-    --color-beige-500: #c9c9b0;
-    --color-beige-600: #a8a88f;
-    --color-beige-700: #87876e;
-    --color-beige-800: #66664d;
-    --color-beige-900: #45452c;
-    
-    --color-success-50: #d1fae5;
-    --color-success-100: #a7f3d0;
-    --color-success-200: #6ee7b7;
-    --color-success-300: #34d399;
-    --color-success-400: #10b981; /* Verde mentă */
-    --color-success-500: #059669;
-    --color-success-600: #047857;
-    --color-success-700: #065f46;
-    --color-success-800: #064e3b;
-    --color-success-900: #022c22;
-    
-    --color-error-50: #fef2f2;
+    --font-display: 'Rubik', ui-sans-serif, system-ui, sans-serif;
+
+    /* ─── Primary: Roșu închis (#C0392B) – accent, butoane, CTA ─── */
+    --color-primary-50:  #fdf3f2;
+    --color-primary-100: #fbe4e2;
+    --color-primary-200: #f6c3bf;
+    --color-primary-300: #ee958f;
+    --color-primary-400: #e4605a;
+    --color-primary-500: #C0392B; /* Roșu principal */
+    --color-primary-600: #C0392B;
+    --color-primary-700: #a03024;
+    --color-primary-800: #82261d;
+    --color-primary-900: #681e17;
+
+    /* ─── Secondary: Albastru (#2980B9) – încredere, titluri, iconițe ─── */
+    --color-secondary-50:  #eef6fc;
+    --color-secondary-100: #d6eaf8;
+    --color-secondary-200: #aed6f1;
+    --color-secondary-300: #7fb3d3;
+    --color-secondary-400: #5499c9;
+    --color-secondary-500: #2980B9; /* Albastru principal */
+    --color-secondary-600: #2980B9;
+    --color-secondary-700: #1f6ea0;
+    --color-secondary-800: #185b86;
+    --color-secondary-900: #12496d;
+
+    /* ─── Accent: Galben cald (#F1C40F) – badge-uri, evidențieri ─── */
+    --color-accent-50:  #fefce8;
+    --color-accent-100: #fef9c3;
+    --color-accent-200: #fef08a;
+    --color-accent-300: #fde047;
+    --color-accent-400: #F1C40F; /* Galben cald */
+    --color-accent-500: #F1C40F;
+    --color-accent-600: #ca9f0c;
+    --color-accent-700: #a37c09;
+    --color-accent-800: #856207;
+    --color-accent-900: #6a4e06;
+
+    /* ─── Background: Gri deschis (#ECF0F1) ─── */
+    --color-beige-50:  #fdfdfd;
+    --color-beige-100: #ECF0F1; /* Fundal principal */
+    --color-beige-200: #dde4e6;
+    --color-beige-300: #c8d3d6;
+    --color-beige-400: #b0bec5;
+    --color-beige-500: #90a4ae;
+    --color-beige-600: #78909c;
+    --color-beige-700: #607d8b;
+    --color-beige-800: #546e7a;
+    --color-beige-900: #455a64;
+
+    /* ─── Success: Verde (#27AE60) – status Verificat, confirmări ─── */
+    --color-success-50:  #eafaf1;
+    --color-success-100: #d5f5e3;
+    --color-success-200: #a9dfbf;
+    --color-success-300: #76c893;
+    --color-success-400: #4db677;
+    --color-success-500: #27AE60; /* Verde verificat */
+    --color-success-600: #27AE60;
+    --color-success-700: #1f8f4f;
+    --color-success-800: #186f3e;
+    --color-success-900: #10502d;
+
+    /* ─── Error: Roșu coral ─── */
+    --color-error-50:  #fef2f2;
     --color-error-100: #fee2e2;
     --color-error-200: #fecaca;
     --color-error-300: #fca5a5;
-    --color-error-400: #f87171; /* Roșu coral */
+    --color-error-400: #f87171;
     --color-error-500: #ef4444;
     --color-error-600: #dc2626;
     --color-error-700: #b91c1c;
@@ -187,7 +194,7 @@
 .dark textarea:focus,
 .dark select:focus {
     border-color: var(--color-primary-500) !important;
-    box-shadow: 0 0 0 3px rgba(6, 95, 70, 0.3) !important;
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.3) !important;
 }
 
 /* Dark mode footer */

@@ -6,7 +6,7 @@
 <div class="bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Back Button -->
-        <a href="{{ route('home') }}" class="inline-flex items-center text-gray-600 hover:text-primary-600 mb-6">
+        <a href="{{ route('home') }}" class="inline-flex items-center text-gray-600 hover:text-secondary-600 mb-6">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
@@ -17,14 +17,14 @@
             <!-- Main Content -->
             <div class="lg:col-span-2">
                 <!-- Profile Header -->
-                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
                     <div class="flex items-start justify-between">
                         <div class="flex items-start flex-1">
-                            <div class="w-24 h-24 bg-secondary-200 rounded-full flex items-center justify-center text-4xl font-bold text-primary-600">
+                            <div class="w-24 h-24 bg-secondary-200 rounded-full flex items-center justify-center text-4xl font-bold text-secondary-700">
                                 {{ strtoupper(substr($craftsman->name, 0, 1)) }}
                             </div>
                             <div class="ml-6 flex-1">
-                                <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ $craftsman->name }}</h1>
+                                <h1 class="text-3xl font-extrabold text-gray-900 mb-2" style="font-family:'Rubik',sans-serif;">{{ $craftsman->name }}</h1>
                                 <p class="text-xl text-gray-600 mb-1">{{ $craftsman->category->name ?? 'Meseriaș' }}</p>
                                 @if($craftsman->isPro())
                                     <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 mb-2">⭐ Pro</span>
@@ -154,25 +154,25 @@
 
                 <!-- Description -->
                 @if($craftsman->description)
-                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                        <h2 class="text-2xl font-bold mb-4">Despre</h2>
+                    <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+                        <h2 class="text-2xl font-extrabold mb-4" style="font-family:'Rubik',sans-serif; color:#2980B9;">Despre</h2>
                         <p class="text-gray-700 leading-relaxed">{{ $craftsman->description }}</p>
                     </div>
                 @endif
 
                 <!-- Services -->
                 @if($craftsman->services->count() > 0)
-                    <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-                        <h2 class="text-2xl font-bold mb-4">Servicii Oferite</h2>
+                    <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+                        <h2 class="text-2xl font-extrabold mb-4" style="font-family:'Rubik',sans-serif; color:#2980B9;">Servicii Oferite</h2>
                         <div class="space-y-4">
                             @foreach($craftsman->services as $service)
                                 <div class="border border-gray-200 rounded-lg p-4 hover:border-orange-300 transition">
                                     <div class="flex justify-between items-start mb-2">
                                         <h3 class="font-semibold text-lg">{{ $service->name }}</h3>
                                         @if($service->price)
-                                            <span class="text-primary-600 font-bold text-lg">{{ number_format($service->price, 0) }} RON</span>
+                                            <span class="font-bold text-lg" style="color:#C0392B;">{{ number_format($service->price, 0) }} RON</span>
                                         @elseif($service->min_price && $service->max_price)
-                                            <span class="text-primary-600 font-bold text-lg">{{ number_format($service->min_price, 0) }} - {{ number_format($service->max_price, 0) }} RON</span>
+                                            <span class="font-bold text-lg" style="color:#C0392B;">{{ number_format($service->min_price, 0) }} - {{ number_format($service->max_price, 0) }} RON</span>
                                         @endif
                                     </div>
                                     <p class="text-gray-600 text-sm mb-2">{{ $service->description }}</p>
@@ -190,7 +190,7 @@
                                         @endif
                                     </div>
                                     @if($service->category && in_array($service->category->name, ['Intretinere imobile', 'Mentenanta']))
-                                        <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition" onclick="window.location.href='{{ route('service.book', ['service' => $service->id]) }}'">Rezervă</button>
+                                        <button class="px-4 py-2 text-white rounded-xl hover:opacity-90 transition" style="background-color:#C0392B;" onclick="window.location.href='{{ route('service.book', ['service' => $service->id]) }}'">Rezervă</button>
                                     @endif
                                 </div>
                             @endforeach
@@ -200,8 +200,8 @@
 
                 <!-- Gallery -->
                 @if($craftsman->gallery && $craftsman->gallery->count() > 0)
-                    <div class="bg-white rounded-lg shadow-md p-6 mb-6" x-data="{ activeTab: 'all' }">
-                        <h2 class="text-2xl font-bold mb-4">Galerie Lucrări</h2>
+                    <div class="bg-white rounded-2xl shadow-md p-6 mb-6" x-data="{ activeTab: 'all' }">
+                        <h2 class="text-2xl font-extrabold mb-4" style="font-family:'Rubik',sans-serif; color:#2980B9;">Galerie Lucrări</h2>
                         
                         @php
                             $galleryByCategory = $craftsman->gallery->groupBy('category');
@@ -213,20 +213,23 @@
                         @if($galleryByCategory->count() > 0 || $uncategorized->count() > 0)
                             <div class="flex flex-wrap gap-2 mb-4">
                                 <button @click="activeTab = 'all'" 
-                                        :class="activeTab === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                        :class="activeTab === 'all' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                        :style="activeTab === 'all' ? 'background-color:#2980B9;' : ''"
                                         class="px-3 py-1.5 rounded-full text-sm font-medium transition">
                                     Toate ({{ $craftsman->gallery->count() }})
                                 </button>
                                 @foreach($galleryByCategory as $catKey => $catImages)
                                     <button @click="activeTab = '{{ $catKey }}'" 
-                                            :class="activeTab === '{{ $catKey }}' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                            :class="activeTab === '{{ $catKey }}' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                            :style="activeTab === '{{ $catKey }}' ? 'background-color:#2980B9;' : ''"
                                             class="px-3 py-1.5 rounded-full text-sm font-medium transition">
                                         {{ \App\Models\Gallery::CATEGORIES[$catKey] ?? $catKey }} ({{ $catImages->count() }})
                                     </button>
                                 @endforeach
                                 @if($uncategorized->count() > 0)
                                     <button @click="activeTab = 'other'" 
-                                            :class="activeTab === 'other' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                            :class="activeTab === 'other' ? 'text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                                            :style="activeTab === 'other' ? 'background-color:#2980B9;' : ''"
                                             class="px-3 py-1.5 rounded-full text-sm font-medium transition">
                                         Altele ({{ $uncategorized->count() }})
                                     </button>
@@ -246,7 +249,7 @@
                                          alt="{{ $image->caption ?: 'Lucrare' }}" 
                                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                     @if($image->category)
-                                        <span class="absolute top-2 left-2 bg-primary-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                        <span class="absolute top-2 left-2 text-white text-xs font-bold px-2 py-1 rounded" style="background-color:#2980B9;">
                                             {{ $image->category_label }}
                                         </span>
                                     @endif
@@ -268,8 +271,8 @@
 
                 <!-- Reviews -->
                 @if($craftsman->reviews->count() > 0)
-                    <div class="bg-white rounded-lg shadow-md p-6">
-                        <h2 class="text-2xl font-bold mb-4">Recenzii ({{ $craftsman->reviews_count }})</h2>
+                    <div class="bg-white rounded-2xl shadow-md p-6">
+                        <h2 class="text-2xl font-extrabold mb-4" style="font-family:'Rubik',sans-serif; color:#2980B9;">Recenzii ({{ $craftsman->reviews_count }})</h2>
                         <div class="space-y-6">
                             @foreach($craftsman->reviews as $review)
                                 <div class="border-b border-gray-200 pb-6 last:border-b-0 last:pb-0">
@@ -304,11 +307,11 @@
             <!-- Sidebar -->
             <div class="lg:col-span-1">
                 <!-- Contact Card -->
-                <div class="bg-white rounded-lg shadow-md p-6 sticky top-24">
-                    <h3 class="text-xl font-bold mb-4">Contactează-l pe {{ $craftsman->name }}</h3>
+                <div class="bg-white rounded-2xl shadow-md p-6 sticky top-24">
+                    <h3 class="text-xl font-bold mb-4" style="font-family:'Rubik',sans-serif;">Contactează-l pe {{ $craftsman->name }}</h3>
                     
                     @if($craftsman->phone)
-                        <a href="tel:{{ $craftsman->phone }}" class="block w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-lg transition text-center mb-3">
+                        <a href="tel:{{ $craftsman->phone }}" class="block w-full text-white font-semibold px-6 py-3 rounded-xl transition text-center mb-3 hover:opacity-90" style="background-color:#C0392B;">
                             <svg class="w-5 h-5 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
                             </svg>
@@ -316,7 +319,7 @@
                         </a>
                     @endif
                     
-                    <button class="block w-full bg-white hover:bg-gray-50 text-primary-600 font-semibold px-6 py-3 rounded-lg transition border-2 border-orange-600 text-center">
+                    <button class="block w-full bg-white hover:bg-gray-50 font-semibold px-6 py-3 rounded-xl transition border-2 text-center" style="color:#2980B9; border-color:#2980B9;">
                         Trimite Mesaj
                     </button>
 

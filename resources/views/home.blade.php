@@ -4,22 +4,21 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-linear-to-br from-primary-600 to-primary-700 text-white py-20">
+<section style="background-color: #ECF0F1;" class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">
-                Omul Potrivit — Meseriașul potrivit, direct la tine.
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight" style="font-family: 'Rubik', sans-serif; color: #2980B9;">
+                Găsește meseriașul potrivit<br>în câteva minute
             </h1>
-            <p class="text-xl mb-8 text-secondary-100">
-                Ai o problemă? <span class="font-bold text-primary-300">Omul Potrivit</span> o rezolvă.<br>
-                Reparații, întreținere, siguranță — totul pentru casa ta.
+            <p class="text-xl mb-8" style="color: #2C3E50;">
+                Electricieni, instalatori, zugravi și alți profesioniști verificați.
             </p>
             
             <!-- Search Form -->
-            <form action="{{ route('home') }}" method="GET" class="bg-white rounded-lg shadow-lg p-4" id="searchForm">
+            <form action="{{ route('home') }}" method="GET" class="bg-white rounded-2xl shadow-xl p-5" id="searchForm">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <select name="category_id" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent text-gray-900">
+                        <select name="category_id" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-gray-900">
                             <option value="">Toate categoriile</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -29,7 +28,7 @@
                         </select>
                     </div>
                     <div>
-                        <select name="location_id" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent text-gray-900">
+                        <select name="location_id" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-gray-900">
                             <option value="">Toate locațiile</option>
                             @foreach($locations as $location)
                                 <option value="{{ $location->id }}" {{ request('location_id') == $location->id ? 'selected' : '' }}>
@@ -39,11 +38,11 @@
                         </select>
                     </div>
                     <div>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Caută meseriaș..." class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent text-gray-900">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Caută meseriaṣ..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-gray-900">
                     </div>
                     <div>
-                        <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-lg transition">
-                            Caută
+                        <button type="submit" class="w-full text-white font-bold px-6 py-3 rounded-xl transition hover:opacity-90 shadow" style="background-color: #C0392B;">
+                            🔍 Caută
                         </button>
                     </div>
                 </div>
@@ -171,26 +170,26 @@
 
 <!-- Stats Bar -->
 @if(isset($totalCraftsmen) && $totalCraftsmen > 0)
-<section class="bg-primary-800 text-white py-4">
+<section class="py-5 text-white" style="background-color: #2980B9;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-wrap justify-center items-center gap-6 md:gap-12 text-center">
             <div>
-                <span class="text-2xl md:text-3xl font-bold">{{ number_format($totalCraftsmen) }}</span>
-                <span class="text-sm text-primary-200 block">Meseriași</span>
+                <span class="text-2xl md:text-3xl font-extrabold" style="font-family:'Rubik',sans-serif;">{{ number_format($totalCraftsmen) }}</span>
+                <span class="text-sm block opacity-80">Meseriași</span>
             </div>
-            <div class="hidden md:block h-8 w-px bg-primary-600"></div>
+            <div class="hidden md:block h-8 w-px opacity-30" style="background:#fff"></div>
             <div>
-                <span class="text-2xl md:text-3xl font-bold">{{ number_format($totalReviews ?? 0) }}</span>
-                <span class="text-sm text-primary-200 block">Recenzii</span>
+                <span class="text-2xl md:text-3xl font-extrabold" style="font-family:'Rubik',sans-serif;">{{ number_format($totalReviews ?? 0) }}</span>
+                <span class="text-sm block opacity-80">Recenzii</span>
             </div>
-            <div class="hidden md:block h-8 w-px bg-primary-600"></div>
+            <div class="hidden md:block h-8 w-px opacity-30" style="background:#fff"></div>
             <div>
-                <span class="text-2xl md:text-3xl font-bold">{{ number_format($avgRating ?? 0, 1) }}</span>
-                <span class="text-sm text-primary-200 block">Rating mediu</span>
+                <span class="text-2xl md:text-3xl font-extrabold" style="font-family:'Rubik',sans-serif;">{{ number_format($avgRating ?? 0, 1) }}</span>
+                <span class="text-sm block opacity-80">Rating mediu</span>
             </div>
             @if(isset($userLat) && $userLat)
-            <div class="hidden md:block h-8 w-px bg-primary-600"></div>
-            <div class="flex items-center text-primary-200">
+            <div class="hidden md:block h-8 w-px opacity-30" style="background:#fff"></div>
+            <div class="flex items-center opacity-80">
                 <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                 </svg>
@@ -205,13 +204,15 @@
 <!-- Categories Section -->
 <section id="categories" class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12">Categorii Populare</h2>
+        <h2 class="text-3xl font-extrabold text-center mb-3" style="font-family:'Rubik',sans-serif; color:#2980B9;">Categorii Populare</h2>
+        <p class="text-center mb-10" style="color:#2C3E50;">Alege tipul de serviciu de care ai nevoie</p>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
             @foreach($categories->take(8) as $category)
                 @if(in_array($category->slug, ['intretinere-imobile', 'mentenanta']))
-                    <a href="{{ route('service.book', ['category' => $category->slug]) }}" class="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:bg-secondary-100 hover:shadow-md transition group">
+                    <a href="{{ route('service.book', ['category' => $category->slug]) }}" class="flex flex-col items-center p-5 bg-gray-50 rounded-2xl border border-gray-100 hover:shadow-lg transition group" style="transition: all 0.2s;" onmouseover="this.style.backgroundColor='#F1C40F';this.querySelectorAll('svg')[0].style.color='#fff';" onmouseout="this.style.backgroundColor='#f9fafb';this.querySelectorAll('svg')[0].style.color='#2980B9';">
                 @else
-                    <a href="{{ route('home', ['category_id' => $category->id]) }}" class="flex flex-col items-center p-6 bg-gray-50 rounded-lg hover:bg-secondary-100 hover:shadow-md transition group">
+                    <a href="{{ route('home', ['category_id' => $category->id]) }}" class="flex flex-col items-center p-5 bg-gray-50 rounded-2xl border border-gray-100 hover:shadow-lg transition group" style="transition: all 0.2s;" onmouseover="this.style.backgroundColor='#F1C40F';this.querySelectorAll('svg')[0].style.color='#fff';" onmouseout="this.style.backgroundColor='#f9fafb';this.querySelectorAll('svg')[0].style.color='#2980B9';">
+                @endif
                 @endif
                     <div class="w-16 h-16 bg-secondary-200 rounded-full flex items-center justify-center mb-3 group-hover:bg-secondary-300 transition">
                         @php
@@ -227,7 +228,7 @@
                             ];
                             $iconPath = $icons[$category->name] ?? '<path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z"/>';
                         @endphp
-                        <svg class="w-8 h-8 text-primary-600" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-8 h-8" style="color:#2980B9;" fill="currentColor" viewBox="0 0 24 24">
                             {!! $iconPath !!}
                         </svg>
                     </div>
@@ -239,25 +240,25 @@
 </section>
 
 <!-- Craftsmen Listing -->
-<section class="py-16 bg-gray-50">
+<section class="py-16" style="background-color: #ECF0F1;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
-                <h2 class="text-3xl font-bold">
+                <h2 class="text-3xl font-extrabold" style="font-family:'Rubik',sans-serif; color:#2C3E50;">
                     @if(request()->hasAny(['category_id', 'location_id', 'search', 'min_rating', 'verified', 'featured', 'has_gallery']))
                         Rezultate căutare
                     @else
                         Meseriași Recomandați
                     @endif
                 </h2>
-                <p class="text-gray-600 mt-1" id="results-count">{{ $craftsmen->total() }} meseriași găsiți</p>
+                <p class="mt-1" style="color:#7f8c8d;" id="results-count">{{ $craftsmen->total() }} meseriași găsiți</p>
             </div>
             
             <!-- View Toggle & Sort -->
             <div class="flex items-center gap-4">
                 <!-- View Toggle (List/Map) -->
                 <div class="flex items-center bg-white rounded-lg border border-gray-300 p-1">
-                    <button type="button" id="view-list" class="px-3 py-1.5 rounded text-sm font-medium bg-primary-600 text-white transition" title="Vedere listă">
+                    <button type="button" id="view-list" class="px-3 py-1.5 rounded text-sm font-medium text-white transition" style="background-color:#C0392B;" title="Vedere listă">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
                         </svg>
@@ -280,7 +281,7 @@
                 <!-- Quick sort (mobile friendly) -->
                 <div class="flex items-center gap-2">
                     <span class="text-sm text-gray-600">Sortare:</span>
-                    <select id="quickSort" class="px-3 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-600 focus:border-transparent text-gray-900 text-sm">
+                    <select id="quickSort" class="px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-gray-900 text-sm">
                         <option value="recommended" {{ request('sort', 'recommended') == 'recommended' ? 'selected' : '' }}>Recomandate</option>
                         <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Rating</option>
                         <option value="reviews" {{ request('sort') == 'reviews' ? 'selected' : '' }}>Recenzii</option>
@@ -361,7 +362,7 @@
             
             <div id="craftsmen-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($craftsmen as $craftsman)
-                    <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden relative craftsman-card"
+                    <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition overflow-hidden relative craftsman-card"
                          data-id="{{ $craftsman->id }}"
                          data-slug="{{ $craftsman->slug }}"
                          data-name="{{ $craftsman->name }}"
@@ -396,7 +397,7 @@
                                 </span>
                             @endif
                             @if($craftsman->is_verified)
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium" style="background-color:#e8f8ef; color:#27AE60;">
                                     <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                     </svg>
@@ -438,7 +439,7 @@
                         <div class="p-6">
                             <div class="flex items-start justify-between mb-4">
                                 <div class="flex items-center">
-                                    <div class="w-16 h-16 bg-secondary-200 rounded-full flex items-center justify-center text-2xl font-bold text-primary-600">
+                                    <div class="w-16 h-16 bg-secondary-200 rounded-full flex items-center justify-center text-2xl font-bold text-secondary-700">
                                         {{ strtoupper(substr($craftsman->name, 0, 1)) }}
                                     </div>
                                     <div class="ml-4">
@@ -520,7 +521,7 @@
                                 @endif
                             </div>
 
-                            <a href="{{ route('craftsman.show', $craftsman->slug) }}" class="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-lg transition">
+                            <a href="{{ route('craftsman.show', $craftsman->slug) }}" class="block w-full text-center bg-primary-600 hover:bg-primary-700 text-white font-semibold px-6 py-3 rounded-xl transition">
                                 Vezi Profil
                             </a>
                         </div>
@@ -549,34 +550,35 @@
 <!-- Features Section -->
 <section class="py-16 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-center mb-12">De Ce Să Ne Alegi?</h2>
+        <h2 class="text-3xl font-extrabold text-center mb-3" style="font-family:'Rubik',sans-serif; color:#2980B9;">De Ce Să Ne Alegi?</h2>
+        <p class="text-center mb-12" style="color:#2C3E50;">Platforma ta de încredere pentru servicii profesionale</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-secondary-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+            <div class="text-center p-6 rounded-2xl border border-gray-100 hover:shadow-lg transition">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color:#e8f8ef;">
+                    <svg class="w-8 h-8" style="color:#27AE60;" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Meseriași Verificați</h3>
+                <h3 class="text-xl font-bold mb-2" style="font-family:'Rubik',sans-serif; color:#2C3E50;">Meseriași Verificați</h3>
                 <p class="text-gray-600">Toți meseriașii sunt verificați și au recenzii reale de la clienți.</p>
             </div>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-secondary-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+            <div class="text-center p-6 rounded-2xl border border-gray-100 hover:shadow-lg transition">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color:#eaf4fb;">
+                    <svg class="w-8 h-8" style="color:#2980B9;" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/>
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Prețuri Transparente</h3>
+                <h3 class="text-xl font-bold mb-2" style="font-family:'Rubik',sans-serif; color:#2C3E50;">Prețuri Transparente</h3>
                 <p class="text-gray-600">Fără taxe ascunse. Vezi prețurile înainte de a face programare.</p>
             </div>
-            <div class="text-center">
-                <div class="w-16 h-16 bg-secondary-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+            <div class="text-center p-6 rounded-2xl border border-gray-100 hover:shadow-lg transition">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style="background-color:#fef9e7;">
+                    <svg class="w-8 h-8" style="color:#F1C40F;" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Rapid și Ușor</h3>
+                <h3 class="text-xl font-bold mb-2" style="font-family:'Rubik',sans-serif; color:#2C3E50;">Rapid și Ușor</h3>
                 <p class="text-gray-600">Găsește și contactează meseriașul potrivit în câteva minute.</p>
             </div>
         </div>

@@ -8,7 +8,7 @@
     
     {{-- PWA Manifest --}}
     <link rel="manifest" href="{{ asset('manifest.json') }}">
-    <meta name="theme-color" content="#065F46">
+    <meta name="theme-color" content="#C0392B">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Omul Potrivit">
@@ -55,9 +55,13 @@
                 src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google.maps_api_key') }}&libraries=places&language=ro&region=RO"></script>
     @endif
     
+    {{-- Google Fonts: Rubik (titluri) + Nunito (texte) --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-beige-100">
+<body class="min-h-screen bg-beige-100" style="font-family: 'Nunito', sans-serif;">
         <!-- Cookies Banner -->
         <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-gray-900 text-white py-4 px-6 flex items-center justify-between z-50" style="display:none;">
             <div>
@@ -78,7 +82,7 @@
         });
     </script>
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="bg-white shadow-md sticky top-0 z-50 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
@@ -107,12 +111,12 @@
                 </div>
                 
                 <nav class="hidden md:flex space-x-8">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-primary-600 transition">Acasa</a>
-                    <a href="{{ route('home') }}#categories" class="text-gray-700 hover:text-primary-600 transition">Categorii</a>
-                    <a href="{{ route('articole') }}" class="text-gray-700 hover:text-primary-600 transition">Articole</a>
-                    <a href="{{ route('intrebari') }}" class="text-gray-700 hover:text-primary-600 transition">Întrebări</a>
-                    <a href="{{ route('about') }}" class="text-gray-700 hover:text-primary-600 transition">Despre</a>
-                    <a href="{{ route('contact') }}" class="text-gray-700 hover:text-primary-600 transition">Contact</a>
+                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-secondary-600 font-medium transition">Acasă</a>
+                    <a href="{{ route('home') }}#categories" class="text-gray-700 hover:text-secondary-600 font-medium transition">Categorii</a>
+                    <a href="{{ route('articole') }}" class="text-gray-700 hover:text-secondary-600 font-medium transition">Articole</a>
+                    <a href="{{ route('intrebari') }}" class="text-gray-700 hover:text-secondary-600 font-medium transition">Întrebări</a>
+                    <a href="{{ route('about') }}" class="text-gray-700 hover:text-secondary-600 font-medium transition">Despre</a>
+                    <a href="{{ route('contact') }}" class="text-gray-700 hover:text-secondary-600 font-medium transition">Contact</a>
                 </nav>
 
                 <div class="flex items-center space-x-4">
@@ -181,14 +185,14 @@
                             </button>
                         </form>
                     @else
-                        <a href="{{ route('register.client.form') }}" class="text-gray-700 hover:text-primary-600 transition font-medium">
+                        <a href="{{ route('register.client.form') }}" class="text-gray-700 hover:text-secondary-600 transition font-medium">
                             Creează Cont
                         </a>
-                        <a href="{{ route('register') }}" class="text-gray-700 hover:text-primary-600 transition font-medium">
+                        <a href="{{ route('register') }}" class="text-secondary-600 hover:text-secondary-700 transition font-semibold">
                             Devino Meserias
                         </a>
-                        <a href="{{ route('login') }}" class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition shadow-md">
-                            Intra in cont
+                        <a href="{{ route('login') }}" class="bg-primary-600 text-white px-5 py-2 rounded-xl hover:bg-primary-700 transition shadow-md font-semibold">
+                            Intră în cont
                         </a>
                     @endauth
                 </div>
@@ -202,31 +206,40 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer class="mt-20" style="background-color: #2C3E50; color: #fff;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Omul Potrivit</h3>
-                    <p class="text-gray-400 text-sm">
+                    <h3 class="text-xl font-bold mb-4" style="font-family: 'Rubik', sans-serif;">Omul Potrivit</h3>
+                    <p class="text-sm leading-relaxed" style="color: #b0bec5;">
                         Reparații, întreținere, siguranță — totul pentru casa ta.<br>
-                        <span class="font-semibold text-primary-400">Meseriașul potrivit, direct la tine.</span>
+                        <span class="font-semibold" style="color: #F1C40F;">Meseriașul potrivit, direct la tine.</span>
                     </p>
+                    <!-- Social icons -->
+                    <div class="flex items-center gap-3 mt-4">
+                        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center transition hover:opacity-80" style="background-color: #3b5998;" title="Facebook">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full flex items-center justify-center transition hover:opacity-80" style="background-color: #e1306c;" title="Instagram">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke-width="2"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" stroke-width="2"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke-width="2" stroke-linecap="round"/></svg>
+                        </a>
+                    </div>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Servicii Omul Potrivit</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="{{ route('home', ['category_id' => 1]) }}" class="hover:text-white transition">Electricieni</a></li>
-                        <li><a href="{{ route('home', ['category_id' => 2]) }}" class="hover:text-white transition">Instalatori</a></li>
-                        <li><a href="{{ route('home', ['category_id' => 3]) }}" class="hover:text-white transition">Tâmplari</a></li>
-                        <li><a href="{{ route('home', ['category_id' => 4]) }}" class="hover:text-white transition">Zugravi</a></li>
-                        <li><a href="{{ route('service.request') }}" class="hover:text-white transition">Intretinere imobile</a></li>
-                        <li><a href="{{ route('service.request') }}" class="hover:text-white transition">Mentenanta</a></li>
+                    <h4 class="font-bold mb-5 text-base" style="font-family: 'Rubik', sans-serif; color: #ECF0F1;">Servicii</h4>
+                    <ul class="space-y-3 text-sm" style="color: #b0bec5;">
+                        <li><a href="{{ route('home', ['category_id' => 1]) }}" class="hover:text-white transition">⚡ Electricieni</a></li>
+                        <li><a href="{{ route('home', ['category_id' => 2]) }}" class="hover:text-white transition">🔧 Instalatori</a></li>
+                        <li><a href="{{ route('home', ['category_id' => 3]) }}" class="hover:text-white transition">🪚 Tâmplari</a></li>
+                        <li><a href="{{ route('home', ['category_id' => 4]) }}" class="hover:text-white transition">🖌️ Zugravi</a></li>
+                        <li><a href="{{ route('service.request') }}" class="hover:text-white transition">🏠 Întreținere imobile</a></li>
+                        <li><a href="{{ route('service.request') }}" class="hover:text-white transition">🔨 Mentenanță</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Despre Omul Potrivit</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="{{ route('about') }}" class="hover:text-white transition">Despre noi</a></li>
+                    <h4 class="font-bold mb-5 text-base" style="font-family: 'Rubik', sans-serif; color: #ECF0F1;">Despre noi</h4>
+                    <ul class="space-y-3 text-sm" style="color: #b0bec5;">
+                        <li><a href="{{ route('about') }}" class="hover:text-white transition">Despre Omul Potrivit</a></li>
                         <li><a href="{{ route('contact') }}" class="hover:text-white transition">Contact</a></li>
                         <li><a href="{{ route('terms') }}" class="hover:text-white transition">Termeni și condiții</a></li>
                         <li><a href="{{ route('privacy') }}" class="hover:text-white transition">Politică de confidențialitate</a></li>
@@ -234,15 +247,24 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Contact Omul Potrivit</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li>Email: contact@meseriasionline.ro</li>
-                        <li>Telefon: +40 123 456 789</li>
-                        <li>Program: L-V, 9:00 - 18:00</li>
+                    <h4 class="font-bold mb-5 text-base" style="font-family: 'Rubik', sans-serif; color: #ECF0F1;">Contact</h4>
+                    <ul class="space-y-3 text-sm" style="color: #b0bec5;">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            contact@meseriasionline.ro
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            +40 123 456 789
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            L-V, 9:00 – 18:00
+                        </li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+            <div class="mt-12 pt-8 text-center text-sm" style="border-top: 1px solid #3d5166; color: #78909c;">
                 <p>&copy; {{ date('Y') }} Omul Potrivit. Toate drepturile rezervate.</p>
             </div>
         </div>
