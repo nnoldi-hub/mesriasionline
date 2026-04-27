@@ -77,11 +77,6 @@
                 </p>
             </div>
 
-            <div class="text-center text-sm text-gray-600 bg-gray-50 p-4 rounded-lg">
-                <p class="font-semibold mb-2">Conturi demo:</p>
-                <p>Admin: <span class="font-mono text-primary-600">admin@dariabeauty.ro</span></p>
-                <p>Parolă: <span class="font-mono text-primary-600">password</span></p>
-            </div>
         </form>
     </div>
 </div>
