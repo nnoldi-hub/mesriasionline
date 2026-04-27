@@ -79,8 +79,8 @@ return new class extends Migration
         // Messages table
         Schema::table('messages', function (Blueprint $table) {
             $this->addIndex($table, 'messages', ['conversation_id', 'created_at'], 'messages_conversation_recent_index');
-            $this->addIndex($table, 'messages', ['sender_id', 'created_at'], 'messages_sender_recent_index');
-            $this->addIndex($table, 'messages', ['is_read', 'created_at'], 'messages_unread_recent_index');
+            if (Schema::hasColumn('messages', 'sender_id')) $this->addIndex($table, 'messages', ['sender_id', 'created_at'], 'messages_sender_recent_index');
+            if (Schema::hasColumn('messages', 'is_read')) $this->addIndex($table, 'messages', ['is_read', 'created_at'], 'messages_unread_recent_index');
         });
 
         // Conversations table
