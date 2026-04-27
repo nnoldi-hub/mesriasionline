@@ -53,9 +53,9 @@ return new class extends Migration
 
         // Appointments table
         Schema::table('appointments', function (Blueprint $table) {
-            $this->addIndex($table, 'appointments', ['specialist_id', 'status'], 'appointments_specialist_status_index');
-            $this->addIndex($table, 'appointments', ['client_id', 'status'], 'appointments_client_status_index');
-            $this->addIndex($table, 'appointments', ['appointment_date', 'status'], 'appointments_date_status_index');
+            if (Schema::hasColumn('appointments', 'specialist_id')) $this->addIndex($table, 'appointments', ['specialist_id', 'status'], 'appointments_specialist_status_index');
+            if (Schema::hasColumn('appointments', 'client_id')) $this->addIndex($table, 'appointments', ['client_id', 'status'], 'appointments_client_status_index');
+            if (Schema::hasColumn('appointments', 'appointment_date')) $this->addIndex($table, 'appointments', ['appointment_date', 'status'], 'appointments_date_status_index');
             $this->addIndex($table, 'appointments', ['status', 'created_at'], 'appointments_status_recent_index');
         });
 
