@@ -1,12 +1,12 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
-@section('title', 'Program Afiliere - Fixacasa')
+@section('title', 'Program Afiliere - Omul Potrivit')
 
 @section('content')
 <div class="max-w-4xl mx-auto py-12 px-4">
     <div class="text-center mb-12">
-        <h1 class="text-3xl font-bold text-gray-900 mb-4">Programul de Afiliere Fixacasa</h1>
-        <p class="text-lg text-gray-600">Câștigă bani recomandând Fixacasa prietenilor și cunoscuților tăi.</p>
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Programul de Afiliere Omul Potrivit</h1>
+        <p class="text-lg text-gray-600">Câștigă bani recomandând Omul Potrivit prietenilor și cunoscuților tăi.</p>
     </div>
 
     @if(session('success'))
@@ -91,7 +91,7 @@
                     <input type="checkbox" name="terms_accepted" value="1" required class="mt-1 mr-3 rounded text-primary-600">
                     <span class="text-sm text-gray-600">
                         Accept <a href="{{ route('terms') }}" target="_blank" class="text-primary-600 hover:underline">termenii și condițiile</a> 
-                        programului de afiliere Fixacasa.
+                        programului de afiliere Omul Potrivit.
                     </span>
                 </label>
                 @error('terms_accepted')

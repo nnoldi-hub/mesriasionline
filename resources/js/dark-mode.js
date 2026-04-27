@@ -1,10 +1,10 @@
-/**
+﻿/**
  * Dark Mode Manager
  * Handles dark mode toggle with localStorage persistence
  */
 class DarkModeManager {
     constructor() {
-        this.STORAGE_KEY = 'fixacasa_dark_mode';
+        this.STORAGE_KEY = 'omulpotrivit_dark_mode';
         this.init();
     }
 

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Găsește meseriași profesioniști verificați')
 
@@ -8,10 +8,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto">
             <h1 class="text-4xl md:text-5xl font-bold mb-6">
-                Fixacasa — Meseriașul potrivit, direct la tine.
+                Omul Potrivit — Meseriașul potrivit, direct la tine.
             </h1>
             <p class="text-xl mb-8 text-secondary-100">
-                Ai o problemă? <span class="font-bold text-primary-300">Fixacasa</span> o rezolvă.<br>
+                Ai o problemă? <span class="font-bold text-primary-300">Omul Potrivit</span> o rezolvă.<br>
                 Reparații, întreținere, siguranță — totul pentru casa ta.
             </p>
             

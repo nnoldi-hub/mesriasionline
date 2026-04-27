@@ -1,6 +1,6 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
-@section('title', 'Dashboard Afiliere - Fixacasa')
+@section('title', 'Dashboard Afiliere - Omul Potrivit')
 
 @section('content')
 <div class="max-w-7xl mx-auto py-8 px-4">

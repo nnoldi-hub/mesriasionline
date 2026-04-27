@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
         <aside class="w-64 bg-gray-900 text-white shrink-0 hidden md:flex md:flex-col">
             <div class="p-6 shrink-0">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('images/logo-white.png') }}" alt="Fixacasa PRO" class="h-10" onerror="this.src='{{ asset('images/logo.png') }}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
+                    <img src="{{ asset('images/logo-white.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.src='{{ asset('images/logo.png') }}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
                     <div class="hidden items-center space-x-2">
                         <svg class="w-8 h-8 text-primary-500" viewBox="0 0 100 100" fill="currentColor">
                             <path d="M50 5 L15 35 L15 55 L25 55 L25 40 L50 20 L75 40 L75 55 L85 55 L85 35 Z"/>
@@ -21,7 +21,7 @@
                             <rect x="47" y="75" width="6" height="20"/>
                             <rect x="42" y="85" width="16" height="4" rx="2"/>
                         </svg>
-                        <span class="text-xl font-bold text-white">Fixacasa</span>
+                        <span class="text-xl font-bold text-white">Omul Potrivit</span>
                     </div>
                 </a>
             </div>

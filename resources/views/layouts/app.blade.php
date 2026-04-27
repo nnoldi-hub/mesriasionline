@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ro" class="">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#065F46">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Fixacasa">
+    <meta name="apple-mobile-web-app-title" content="Omul Potrivit">
     
     {{-- WebPush VAPID Key --}}
     @if(config('webpush.vapid.public_key'))
@@ -24,7 +24,7 @@
     {{-- Dark Mode Script (prevent flash) --}}
     <script>
         (function() {
-            const saved = localStorage.getItem('fixacasa_dark_mode');
+            const saved = localStorage.getItem('omulpotrivit_dark_mode');
             if (saved === 'true' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
             }
@@ -61,18 +61,18 @@
         <!-- Cookies Banner -->
         <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-gray-900 text-white py-4 px-6 flex items-center justify-between z-50" style="display:none;">
             <div>
-                Folosim cookies pentru a îmbunătăți experiența pe Fixacasa. Prin continuarea navigării, ești de acord cu <a href="{{ route('privacy') }}" class="underline text-primary-300">politica de confidențialitate</a>.
+                Folosim cookies pentru a îmbunătăți experiența pe Omul Potrivit. Prin continuarea navigării, ești de acord cu <a href="{{ route('privacy') }}" class="underline text-primary-300">politica de confidențialitate</a>.
             </div>
             <button id="accept-cookies" class="bg-primary-600 text-white px-4 py-2 rounded-lg ml-4 hover:bg-primary-700 transition">Accept</button>
         </div>
     <script>
         // Simple cookie consent logic
         document.addEventListener('DOMContentLoaded', function() {
-            if (!localStorage.getItem('fixacasa_cookies_accepted')) {
+            if (!localStorage.getItem('omulpotrivit_cookies_accepted')) {
                 document.getElementById('cookie-banner').style.display = 'flex';
             }
             document.getElementById('accept-cookies').onclick = function() {
-                localStorage.setItem('fixacasa_cookies_accepted', 'yes');
+                localStorage.setItem('omulpotrivit_cookies_accepted', 'yes');
                 document.getElementById('cookie-banner').style.display = 'none';
             };
         });
@@ -83,7 +83,7 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('images/logo.png') }}" alt="Fixacasa PRO" class="h-10" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <img src="{{ asset('images/logo.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                         <div class="hidden items-center space-x-2">
                             <svg class="w-8 h-8 text-primary-600" viewBox="0 0 100 100" fill="currentColor">
                                 <path d="M50 5 L15 35 L15 55 L25 55 L25 40 L50 20 L75 40 L75 55 L85 55 L85 35 Z"/>
@@ -92,7 +92,7 @@
                                 <rect x="47" y="75" width="6" height="20"/>
                                 <rect x="42" y="85" width="16" height="4" rx="2"/>
                             </svg>
-                            <span class="text-xl font-bold text-primary-700">Fixacasa</span>
+                            <span class="text-xl font-bold text-primary-700">Omul Potrivit</span>
                         </div>
                     </a>
                     
@@ -206,14 +206,14 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Fixacasa</h3>
+                    <h3 class="text-lg font-bold mb-4">Omul Potrivit</h3>
                     <p class="text-gray-400 text-sm">
                         Reparații, întreținere, siguranță — totul pentru casa ta.<br>
                         <span class="font-semibold text-primary-400">Meseriașul potrivit, direct la tine.</span>
                     </p>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Servicii Fixacasa</h4>
+                    <h4 class="font-semibold mb-4">Servicii Omul Potrivit</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="{{ route('home', ['category_id' => 1]) }}" class="hover:text-white transition">Electricieni</a></li>
                         <li><a href="{{ route('home', ['category_id' => 2]) }}" class="hover:text-white transition">Instalatori</a></li>
@@ -224,7 +224,7 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Despre Fixacasa</h4>
+                    <h4 class="font-semibold mb-4">Despre Omul Potrivit</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="{{ route('about') }}" class="hover:text-white transition">Despre noi</a></li>
                         <li><a href="{{ route('contact') }}" class="hover:text-white transition">Contact</a></li>
@@ -234,16 +234,16 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-semibold mb-4">Contact Fixacasa</h4>
+                    <h4 class="font-semibold mb-4">Contact Omul Potrivit</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
-                        <li>Email: contact@fixacasa.ro</li>
+                        <li>Email: contact@omulpotrivit.ro</li>
                         <li>Telefon: +40 123 456 789</li>
                         <li>Program: L-V, 9:00 - 18:00</li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-                <p>&copy; {{ date('Y') }} Fixacasa. Toate drepturile rezervate.</p>
+                <p>&copy; {{ date('Y') }} Omul Potrivit. Toate drepturile rezervate.</p>
             </div>
         </div>
     </footer>

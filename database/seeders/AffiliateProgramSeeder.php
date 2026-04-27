@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace Database\Seeders;
 
@@ -16,7 +16,7 @@ class AffiliateProgramSeeder extends Seeder
             ['slug' => 'default'],
             [
                 'name' => 'Program Standard',
-                'description' => 'Programul standard de afiliere Fixacasa. Câștigă comision pentru fiecare utilizator care se înregistrează prin link-ul tău.',
+                'description' => 'Programul standard de afiliere Omul Potrivit. Câștigă comision pentru fiecare utilizator care se înregistrează prin link-ul tău.',
                 'commission_type' => 'percentage',
                 'commission_value' => 10.00, // 10%
                 'min_payout' => 100.00, // Minimum 100 lei

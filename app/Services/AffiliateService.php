@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Services;
 
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 
 class AffiliateService
 {
-    protected string $cookieName = 'fixacasa_ref';
+    protected string $cookieName = 'omulpotrivit_ref';
     protected int $defaultCookieDays = 30;
 
     /**

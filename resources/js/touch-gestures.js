@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Touch Gestures Manager
  * Implements swipe gestures, pull-to-refresh, and touch-friendly interactions
  */
@@ -517,7 +517,7 @@ class TouchGesturesManager {
             <div class="mobile-menu-panel">
                 <div class="p-4 border-b dark:border-gray-700">
                     <div class="flex items-center justify-between">
-                        <span class="text-xl font-bold text-primary-600">Fixacasa</span>
+                        <span class="text-xl font-bold text-primary-600">Omul Potrivit</span>
                         <button id="close-mobile-menu" class="p-2 text-gray-500 hover:text-gray-700">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>

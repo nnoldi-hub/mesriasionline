@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 
 return [
     // General
-    'app_name' => 'Fixacasa',
+    'app_name' => 'Omul Potrivit',
     'tagline' => 'Find the right craftsman',
     'welcome' => 'Welcome',
     'language_changed' => 'Language changed successfully.',

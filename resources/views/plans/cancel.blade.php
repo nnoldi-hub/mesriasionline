@@ -1,6 +1,6 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
-@section('title', 'Plată anulată — Fixacasa')
+@section('title', 'Plată anulată — Omul Potrivit')
 
 @section('content')
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center py-12 px-4">

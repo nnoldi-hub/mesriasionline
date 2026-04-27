@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Services;
 
@@ -21,10 +21,10 @@ class SeoService
     protected ?string $modifiedTime = null;
     protected array $breadcrumbs = [];
 
-    protected string $siteName = 'Fixacasa';
-    protected string $defaultDescription = 'Fixacasa - Reparații, întreținere, siguranță — totul pentru casa ta. Meseriașul potrivit, direct la tine.';
+    protected string $siteName = 'Omul Potrivit';
+    protected string $defaultDescription = 'Omul Potrivit - Reparații, întreținere, siguranță — totul pentru casa ta. Meseriașul potrivit, direct la tine.';
     protected string $defaultImage = '/images/og-default.jpg';
-    protected string $twitterHandle = '@fixacasa';
+    protected string $twitterHandle = '@omulpotrivit';
     protected string $locale = 'ro_RO';
 
     /**
@@ -287,7 +287,7 @@ class SeoService
         if ($craftsman->location) {
             $keywords[] = $craftsman->location->name;
         }
-        $keywords = array_merge($keywords, ['meseriaș', 'servicii', 'reparații', 'Fixacasa']);
+        $keywords = array_merge($keywords, ['meseriaș', 'servicii', 'reparații', 'Omul Potrivit']);
         $this->setKeywords($keywords);
 
         return $this;
@@ -318,14 +318,14 @@ class SeoService
         }
 
         if ($article->author) {
-            $this->setAuthor($article->author->name ?? 'Fixacasa');
+            $this->setAuthor($article->author->name ?? 'Omul Potrivit');
         }
 
         $keywords = ['articol', 'sfaturi', 'ghid'];
         if ($article->category) {
             $keywords[] = $article->category;
         }
-        $keywords[] = 'Fixacasa';
+        $keywords[] = 'Omul Potrivit';
         $this->setKeywords($keywords);
 
         return $this;
@@ -343,11 +343,11 @@ class SeoService
             $title .= " în {$location->name}";
             $description .= " în {$location->name}";
         }
-        $description .= ". Verifică recenzii, portofolii și solicită oferte gratuit pe Fixacasa.";
+        $description .= ". Verifică recenzii, portofolii și solicită oferte gratuit pe Omul Potrivit.";
 
         $this->setTitle($title)
              ->setDescription($description)
-             ->setKeywords([$category->name, 'meseriași', 'servicii', $location?->name ?? 'România', 'Fixacasa'])
+             ->setKeywords([$category->name, 'meseriași', 'servicii', $location?->name ?? 'România', 'Omul Potrivit'])
              ->addBreadcrumb('Acasă', route('home'))
              ->addBreadcrumb('Categorii', route('home') . '#categories')
              ->addBreadcrumb($category->name);
@@ -377,7 +377,7 @@ class SeoService
         $this->setTitle($title)
              ->setDescription($description)
              ->setOgType('product')
-             ->setKeywords([$service->name, 'serviciu', 'meseriaș', 'Fixacasa']);
+             ->setKeywords([$service->name, 'serviciu', 'meseriaș', 'Omul Potrivit']);
 
         return $this;
     }
@@ -393,7 +393,7 @@ class SeoService
              ->addBreadcrumb('Întrebări', route('intrebari'))
              ->addBreadcrumb(Str::limit($question->title ?? $question->question, 50));
 
-        $this->setKeywords(['întrebare', 'răspuns', 'ajutor', 'sfat', 'Fixacasa']);
+        $this->setKeywords(['întrebare', 'răspuns', 'ajutor', 'sfat', 'Omul Potrivit']);
 
         return $this;
     }
@@ -405,7 +405,7 @@ class SeoService
     {
         $this->setTitle($title)
              ->setDescription($description)
-             ->setKeywords(array_merge($keywords, ['Fixacasa', 'meseriași']));
+             ->setKeywords(array_merge($keywords, ['Omul Potrivit', 'meseriași']));
 
         return $this;
     }

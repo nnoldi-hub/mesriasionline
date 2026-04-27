@@ -1,9 +1,9 @@
-/**
- * Fixacasa Service Worker
+﻿/**
+ * Omul Potrivit Service Worker
  * Handles push notifications, offline caching, and PWA functionality
  */
 
-const CACHE_NAME = 'fixacasa-v1';
+const CACHE_NAME = 'omulpotrivit-v1';
 const OFFLINE_URL = '/offline.html';
 
 // Assets to cache for offline use
@@ -162,13 +162,13 @@ self.addEventListener('push', function(event) {
         };
     }
 
-    var title = data.title || 'Fixacasa';
+    var title = data.title || 'Omul Potrivit';
     var options = {
         body: data.body || 'Ai o notificare nouă',
         icon: data.icon || '/images/logo.png',
         badge: data.badge || '/images/badge-72x72.png',
         image: data.image || null,
-        tag: data.tag || 'fixacasa-notification',
+        tag: data.tag || 'omulpotrivit-notification',
         renotify: data.renotify || false,
         requireInteraction: data.requireInteraction || false,
         vibrate: [200, 100, 200],

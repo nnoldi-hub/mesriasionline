@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -48,9 +48,9 @@ class LandingController extends Controller
         $serviceTemplates = $this->getServiceTemplates($category->slug);
 
         $meta = [
-            'title'       => $category->meta_title ?: "{$category->name} — Găsește Profesioniști Verificați | Fixacasa",
+            'title'       => $category->meta_title ?: "{$category->name} — Găsește Profesioniști Verificați | Omul Potrivit",
             'description' => $category->meta_description ?: "Găsește {$category->name} profesioniști în zona ta. Recenzii reale, prețuri transparente. Solicită ofertă gratuită.",
-            'keywords'    => $category->meta_keywords ?: strtolower("{$category->name}, meseriasi, fixacasa, romania"),
+            'keywords'    => $category->meta_keywords ?: strtolower("{$category->name}, meseriasi, Omul Potrivit, romania"),
             'canonical'   => route('landing.category', $categorySlug),
         ];
 
@@ -88,9 +88,9 @@ class LandingController extends Controller
 
         $cityName = $location->city;
         $meta = [
-            'title'       => "{$category->name} {$cityName} — Profesioniști Verificați | Fixacasa",
+            'title'       => "{$category->name} {$cityName} — Profesioniști Verificați | Omul Potrivit",
             'description' => "Găsește {$category->name} de încredere în {$cityName}. {$craftsmen->count()} specialiști verificați cu recenzii reale. Solicită ofertă gratuită.",
-            'keywords'    => strtolower("{$category->name} {$cityName}, meseriasi {$cityName}, fixacasa"),
+            'keywords'    => strtolower("{$category->name} {$cityName}, meseriasi {$cityName}, Omul Potrivit"),
             'canonical'   => route('landing.category-city', [$categorySlug, $locationSlug]),
         ];
 
@@ -124,11 +124,11 @@ class LandingController extends Controller
         return [
             [
                 'question' => "Cât costă un {$cat}?",
-                'answer'   => "Prețurile variază în funcție de complexitatea lucrării. Pe Fixacasa poți solicita oferte gratuite de la mai mulți {$cat}i și să compari.",
+                'answer'   => "Prețurile variază în funcție de complexitatea lucrării. Pe Omul Potrivit poți solicita oferte gratuite de la mai mulți {$cat}i și să compari.",
             ],
             [
                 'question' => "Cum găsesc un {$cat} bun{$cityStr}?",
-                'answer'   => "Caută pe Fixacasa{$cityStr}, filtrează după recenzii și verificare, citește părerile altor clienți și solicită ofertă gratuită.",
+                'answer'   => "Caută pe Omul Potrivit{$cityStr}, filtrează după recenzii și verificare, citește părerile altor clienți și solicită ofertă gratuită.",
             ],
             [
                 'question' => "Meseriașii sunt verificați?",

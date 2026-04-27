@@ -1,13 +1,13 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
-@section('title', 'Solicitare mentenanță / întreținere imobil - Fixacasa')
-@section('description', 'Trimite o solicitare pentru servicii de mentenanță sau întreținere imobil. Fixacasa te contactează cu o ofertă personalizată.')
+@section('title', 'Solicitare mentenanță / întreținere imobil - Omul Potrivit')
+@section('description', 'Trimite o solicitare pentru servicii de mentenanță sau întreținere imobil. Omul Potrivit te contactează cu o ofertă personalizată.')
 
 @section('content')
 <div class="max-w-lg mx-auto bg-white rounded-lg shadow p-8 mt-8">
     <h1 class="text-2xl font-bold mb-6">Solicitare mentenanță / întreținere imobil</h1>
     <div class="mb-4 p-3 bg-primary-50 border-l-4 border-primary-400 text-primary-900 rounded">
-        Completează formularul de mai jos și echipa Fixacasa te va contacta cu o ofertă personalizată pentru imobilul tău.
+        Completează formularul de mai jos și echipa Omul Potrivit te va contacta cu o ofertă personalizată pentru imobilul tău.
     </div>
     <form method="POST" action="{{ route('service.request.submit') }}">
         @csrf

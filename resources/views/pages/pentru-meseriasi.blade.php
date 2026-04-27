@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Devino Meseriaș — Primești clienți reali în București')
 
@@ -76,7 +76,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
             @foreach([
                 ['Gheorghe M.', 'Electrician, București', '"Am primit primul client în prima zi după ce mi-am creat profilul. Platforma e simplă și funcționează."'],
-                ['Mihai T.', 'Instalator, Ilfov', '"Nu mai pierd timp cu anunțuri pe OLX. Clienții vin direct la mine prin Fixacasa."'],
+                ['Mihai T.', 'Instalator, Ilfov', '"Nu mai pierd timp cu anunțuri pe OLX. Clienții vin direct la mine prin Omul Potrivit."'],
                 ['Florin D.', 'Zugrav, Sector 3', '"Mi-am completat profilul în 5 minute și acum am 3-4 solicitări pe săptămână."'],
             ] as [$name, $spec, $quote])
             <div class="bg-gray-50 rounded-xl p-5">

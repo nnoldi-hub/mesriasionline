@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -41,13 +41,13 @@ class ServiceBookingController extends Controller
             "Email: {$appointment->client_email}\n" .
             "Detalii: {$appointment->message}",
             function($message) {
-                $message->to(config('mail.from.address', 'contact@fixacasa.ro'));
-                $message->subject('Solicitare nouă mentenanță/întreținere Fixacasa');
+                $message->to(config('mail.from.address', 'contact@omulpotrivit.ro'));
+                $message->subject('Solicitare nouă mentenanță/întreținere Omul Potrivit');
             }
         );
         
         return redirect()->route('home')
-            ->with('success', 'Solicitarea ta a fost trimisă! Echipa Fixacasa te va contacta pentru ofertă personalizată.');
+            ->with('success', 'Solicitarea ta a fost trimisă! Echipa Omul Potrivit te va contacta pentru ofertă personalizată.');
     }
 
     // Show booking form for a service
@@ -99,12 +99,12 @@ class ServiceBookingController extends Controller
             "Data: {$appointment->appointment_date} {$appointment->appointment_time}\n" .
             "Detalii: {$appointment->message}",
             function($message) {
-                $message->to(config('mail.from.address', 'contact@fixacasa.ro'));
-                $message->subject('Rezervare nouă serviciu Fixacasa');
+                $message->to(config('mail.from.address', 'contact@omulpotrivit.ro'));
+                $message->subject('Rezervare nouă serviciu Omul Potrivit');
             }
         );
         
         return redirect()->route('home')
-            ->with('success', 'Solicitarea ta a fost trimisă către echipa Fixacasa! Un administrator te va contacta pentru soluția potrivită.');
+            ->with('success', 'Solicitarea ta a fost trimisă către echipa Omul Potrivit! Un administrator te va contacta pentru soluția potrivită.');
     }
 }

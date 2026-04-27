@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Services;
 
@@ -18,7 +18,7 @@ class TwoFactorAuthService
     public function __construct()
     {
         $this->google2fa = new Google2FA();
-        $this->appName = config('app.name', 'Fixacasa');
+        $this->appName = config('app.name', 'Omul Potrivit');
     }
 
     /**

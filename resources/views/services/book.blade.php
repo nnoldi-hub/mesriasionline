@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Rezervă serviciu - ' . $service->name)
 
@@ -6,7 +6,7 @@
 <div class="max-w-lg mx-auto bg-white rounded-lg shadow p-8 mt-8">
     <h1 class="text-2xl font-bold mb-6">Solicitare serviciu: {{ $service->name }}</h1>
     <div class="mb-4 p-3 bg-primary-50 border-l-4 border-primary-400 text-primary-900 rounded">
-        Completează formularul și echipa Fixacasa va prelua solicitarea ta. Un administrator te va contacta pentru a te ajuta cu soluția potrivită. Nu se face rezervare directă la un meseriaș.
+        Completează formularul și echipa Omul Potrivit va prelua solicitarea ta. Un administrator te va contacta pentru a te ajuta cu soluția potrivită. Nu se face rezervare directă la un meseriaș.
     </div>
     <form method="POST" action="{{ route('service.book.submit', ['service' => $service->id]) }}">
         @csrf

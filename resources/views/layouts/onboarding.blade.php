@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ro" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Înregistrare Meseriaș') — Fixacasa</title>
+    <title>@yield('title', 'Înregistrare Meseriaș') — Omul Potrivit</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -14,7 +14,7 @@
     {{-- Logo --}}
     <div class="text-center mb-6">
         <a href="{{ route('home') }}" class="inline-flex items-center space-x-2">
-            <span class="text-2xl font-extrabold text-primary-600">Fixacasa</span>
+            <span class="text-2xl font-extrabold text-primary-600">Omul Potrivit</span>
         </a>
         <p class="mt-1 text-sm text-gray-500">Platforma meseriașilor de încredere</p>
     </div>

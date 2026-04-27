@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use App\Http\Controllers\Api\CraftsmenApiController;
 use App\Http\Controllers\Api\CategoriesApiController;
@@ -133,7 +133,7 @@ Route::prefix('v1')->group(function () {
 // API info
 Route::get('/', function () {
     return response()->json([
-        'name' => 'Fixacasa API',
+        'name' => 'Omul Potrivit API',
         'version' => '1.0',
         'documentation' => url('/api/docs'),
         'endpoints' => [

@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 
 return [
     // General
-    'app_name' => 'Fixacasa',
+    'app_name' => 'Omul Potrivit',
     'tagline' => 'Találja meg a megfelelő mesterembert',
     'welcome' => 'Üdvözöljük',
     'language_changed' => 'A nyelv sikeresen megváltozott.',

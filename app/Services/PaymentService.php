@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Services;
 
@@ -38,7 +38,7 @@ class PaymentService
                     'currency'     => 'ron',
                     'unit_amount'  => (int) ($plan->price_monthly * 100), // Stripe folosește bani (cenți)
                     'product_data' => [
-                        'name'        => "Fixacasa — Plan {$plan->name}",
+                        'name'        => "Omul Potrivit — Plan {$plan->name}",
                         'description' => $plan->description,
                     ],
                 ],

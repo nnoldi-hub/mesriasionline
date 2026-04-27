@@ -1,6 +1,6 @@
-/**
+﻿/**
  * Push Notifications Manager
- * Fixacasa - Platforma Meseriași
+ * Omul Potrivit - Platforma Meseriași
  */
 
 class PushNotificationManager {

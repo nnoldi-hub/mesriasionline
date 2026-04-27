@@ -1,6 +1,6 @@
-{
-    "name": "Fixacasa - Meseriași Profesioniști",
-    "short_name": "Fixacasa",
+﻿{
+    "name": "Omul Potrivit - Meseriași Profesioniști",
+    "short_name": "Omul Potrivit",
     "description": "Găsește meseriași profesioniști pentru orice lucrare de reparații, întreținere sau amenajări.",
     "start_url": "/",
     "display": "standalone",
@@ -90,7 +90,7 @@
             "sizes": "1280x720",
             "type": "image/png",
             "form_factor": "wide",
-            "label": "Pagina principală Fixacasa"
+            "label": "Pagina principală Omul Potrivit"
         },
         {
             "src": "/images/screenshots/home-narrow.png",
@@ -104,7 +104,7 @@
     "prefer_related_applications": false,
     "protocol_handlers": [
         {
-            "protocol": "web+fixacasa",
+            "protocol": "web+omulpotrivit",
             "url": "/handle-protocol?url=%s"
         }
     ],
