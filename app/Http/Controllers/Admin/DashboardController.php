@@ -268,7 +268,7 @@ class DashboardController extends Controller
             ->findOrFail($id);
 
         $categories = Category::where('is_active', true)->orderBy('name')->get();
-        $locations = \App\Models\Location::where('is_active', true)->orderBy('name')->get();
+        $locations = \App\Models\Location::where('is_active', true)->orderBy('city')->get();
 
         return view('admin.craftsmen.edit', compact('craftsman', 'categories', 'locations'));
     }

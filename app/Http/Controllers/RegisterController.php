@@ -17,7 +17,7 @@ class RegisterController extends Controller
     public function showRegisterForm()
     {
         $categories = Category::orderBy('name')->get();
-        $locations = Location::orderBy('name')->get();
+        $locations = Location::orderBy('city')->get();
         
         return view('auth.register', compact('categories', 'locations'));
     }

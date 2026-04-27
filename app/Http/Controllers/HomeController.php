@@ -17,7 +17,7 @@ class HomeController extends Controller
         });
 
         $locations = Cache::remember('locations_active', 1800, function () {
-            return Location::where('is_active', true)->orderBy('name')->get();
+            return Location::where('is_active', true)->orderBy('city')->get();
         });
 
         // Get user coordinates if provided

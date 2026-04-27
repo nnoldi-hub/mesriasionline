@@ -97,7 +97,7 @@ class OnboardingController extends Controller
         $step = max(1, min(4, $step));
 
         $data = match ($step) {
-            1 => ['categories' => Category::orderBy('name')->get(), 'locations' => Location::orderBy('name')->get()],
+            1 => ['categories' => Category::orderBy('name')->get(), 'locations' => Location::orderBy('city')->get()],
             2 => [],
             3 => [],
             4 => [],

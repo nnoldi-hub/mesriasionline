@@ -17,7 +17,7 @@ class AddressController extends Controller
 
     public function create()
     {
-        $locations = Location::orderBy('name')->get();
+        $locations = Location::orderBy('city')->get();
         return view('client.addresses.create', compact('locations'));
     }
 
@@ -64,7 +64,7 @@ class AddressController extends Controller
             abort(403);
         }
         
-        $locations = Location::orderBy('name')->get();
+        $locations = Location::orderBy('city')->get();
         return view('client.addresses.edit', compact('address', 'locations'));
     }
 

@@ -15,7 +15,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $locations = Location::orderBy('name')->get();
+        $locations = Location::orderBy('city')->get();
         $categories = Category::orderBy('name')->get();
         
         $craftsmen = null;
