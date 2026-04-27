@@ -119,8 +119,14 @@ return new class extends Migration
 
         // Profile views table
         Schema::table('profile_views', function (Blueprint $table) {
-            if (Schema::hasColumn('profile_views', 'craftsman_id')) $this->addIndex($table, 'profile_views', ['craftsman_id', 'created_at'], 'profile_views_craftsman_recent_index');
-            if (Schema::hasColumn('profile_views', 'viewer_id')) $this->addIndex($table, 'profile_views', ['viewer_id', 'created_at'], 'profile_views_viewer_recent_index');
+            if (Schema::hasColumn('profile_views', 'craftsman_id')) {
+                $col = Schema::hasColumn('profile_views', 'created_at') ? 'created_at' : 'viewed_at';
+                $this->addIndex($table, 'profile_views', ['craftsman_id', $col], 'profile_views_craftsman_recent_index');
+            }
+            if (Schema::hasColumn('profile_views', 'viewer_id')) {
+                $col = Schema::hasColumn('profile_views', 'created_at') ? 'created_at' : 'viewed_at';
+                $this->addIndex($table, 'profile_views', ['viewer_id', $col], 'profile_views_viewer_recent_index');
+            }
         });
 
         // Notifications table
