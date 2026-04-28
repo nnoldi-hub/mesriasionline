@@ -179,7 +179,10 @@ class CraftsmenApiController extends Controller
             $query->selectRaw("users.*, {$haversine} AS distance")
                   ->whereNotNull('latitude')
                   ->whereNotNull('longitude')
-                  ->whereRaw("{$haversine} <= ?", [$searchRadius]);
+                  // Within user's chosen search radius
+                  ->whereRaw("{$haversine} <= ?", [$searchRadius])
+                  // AND craftsman covers the user's location (respects craftsman's own service radius)
+                  ->whereRaw("(service_radius_km IS NULL OR {$haversine} <= service_radius_km)");
         }
 
         // ===== COUNTS AND AVERAGES =====

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class QuoteController extends Controller
 {
     /**
-     * Display quote requests received by the craftsman.
+     * Display quote requests received by the craftsman + nearby open requests.
      */
     public function index(Request $request)
     {
@@ -38,8 +38,33 @@ class QuoteController extends Controller
         $quoteRequests->each(function ($request) use ($craftsman) {
             $request->my_quote = $request->quotes->where('craftsman_id', $craftsman->id)->first();
         });
+
+        // ── Cereri deschise din zona meseriașului ──
+        $nearbyRequests = collect();
+        if ($craftsman->latitude && $craftsman->longitude && $craftsman->service_radius_km) {
+            $lat = (float) $craftsman->latitude;
+            $lng = (float) $craftsman->longitude;
+            $radius = (int) $craftsman->service_radius_km;
+
+            $haversine = "(6371 * acos(cos(radians({$lat})) * cos(radians(client_lat)) * cos(radians(client_lng) - radians({$lng})) + sin(radians({$lat})) * sin(radians(client_lat))))";
+
+            $nearbyRequests = QuoteRequest::whereNull('craftsman_id')
+                ->where('status', 'pending')
+                ->whereNotNull('client_lat')
+                ->whereNotNull('client_lng')
+                ->whereRaw("{$haversine} <= ?", [$radius])
+                ->where(function ($q) {
+                    $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
+                })
+                ->selectRaw("quote_requests.*, {$haversine} AS distance")
+                ->with(['client', 'service'])
+                ->orderBy('distance')
+                ->orderBy('created_at', 'desc')
+                ->limit(10)
+                ->get();
+        }
         
-        return view('craftsman.quotes.index', compact('quoteRequests'));
+        return view('craftsman.quotes.index', compact('quoteRequests', 'nearbyRequests'));
     }
 
     /**

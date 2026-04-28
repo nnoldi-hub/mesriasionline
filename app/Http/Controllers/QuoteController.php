@@ -64,12 +64,14 @@ class QuoteController extends Controller
         $user = Auth::user();
         
         $validated = $request->validate([
-            'craftsman_id' => 'required|exists:users,id',
+            'craftsman_id' => 'nullable|exists:users,id',
             'service_id' => 'nullable|exists:services,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:5000',
             'g-recaptcha-response' => 'required|captcha',
             'location' => 'nullable|string|max:255',
+            'client_lat' => 'nullable|numeric|between:-90,90',
+            'client_lng' => 'nullable|numeric|between:-180,180',
             'preferred_date' => 'nullable|date|after:today',
             'preferred_time' => 'nullable|in:morning,afternoon,evening',
             'budget_min' => 'nullable|numeric|min:0',
@@ -96,11 +98,13 @@ class QuoteController extends Controller
         
         $quoteRequest = QuoteRequest::create([
             'client_id' => $user->id,
-            'craftsman_id' => $validated['craftsman_id'],
+            'craftsman_id' => $validated['craftsman_id'] ?? null,
             'service_id' => $validated['service_id'] ?? null,
             'title' => $validated['title'],
             'description' => $validated['description'],
             'location' => $validated['location'] ?? null,
+            'client_lat' => $validated['client_lat'] ?? null,
+            'client_lng' => $validated['client_lng'] ?? null,
             'preferred_date' => $validated['preferred_date'] ?? null,
             'preferred_time' => $validated['preferred_time'] ?? null,
             'budget_min' => $validated['budget_min'] ?? null,
@@ -110,9 +114,27 @@ class QuoteController extends Controller
             'expires_at' => $expiresAt,
         ]);
         
-        // Notify craftsman
-        $craftsman = User::find($validated['craftsman_id']);
-        $craftsman->notify(new NewQuoteRequestNotification($quoteRequest));
+        // Notify: specific craftsman OR all craftsmen who cover this location
+        if (!empty($validated['craftsman_id'])) {
+            $craftsman = User::find($validated['craftsman_id']);
+            $craftsman->notify(new NewQuoteRequestNotification($quoteRequest));
+        } elseif (!empty($validated['client_lat']) && !empty($validated['client_lng'])) {
+            $lat = (float) $validated['client_lat'];
+            $lng = (float) $validated['client_lng'];
+            $haversine = "(6371 * acos(cos(radians({$lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({$lng})) + sin(radians({$lat})) * sin(radians(latitude))))";
+
+            $nearbyCraftsmen = User::where('role', 'specialist')
+                ->where('is_active', true)
+                ->whereNotNull('latitude')
+                ->whereNotNull('longitude')
+                ->whereNotNull('service_radius_km')
+                ->whereRaw("{$haversine} <= service_radius_km")
+                ->get();
+
+            foreach ($nearbyCraftsmen as $craftsman) {
+                $craftsman->notify(new NewQuoteRequestNotification($quoteRequest));
+            }
+        }
         
         return redirect()->route('quotes.show', $quoteRequest)
             ->with('success', 'Cererea de ofertă a fost trimisă cu succes!');

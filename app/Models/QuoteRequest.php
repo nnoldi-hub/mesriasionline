@@ -13,6 +13,8 @@ class QuoteRequest extends Model
         'title',
         'description',
         'location',
+        'client_lat',
+        'client_lng',
         'preferred_date',
         'preferred_time',
         'images',
@@ -30,6 +32,8 @@ class QuoteRequest extends Model
             'images' => 'array',
             'budget_min' => 'decimal:2',
             'budget_max' => 'decimal:2',
+            'client_lat' => 'decimal:8',
+            'client_lng' => 'decimal:8',
             'expires_at' => 'datetime',
         ];
     }

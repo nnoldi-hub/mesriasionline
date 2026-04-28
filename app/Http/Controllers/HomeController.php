@@ -269,6 +269,8 @@ class HomeController extends Controller
             ->whereNotNull('longitude')
             ->selectRaw("users.*, {$haversine} AS distance")
             ->whereRaw("{$haversine} <= ?", [$radius])
+            // Also respect craftsman's own service radius
+            ->whereRaw("(service_radius_km IS NULL OR {$haversine} <= service_radius_km)")
             ->with(['category', 'location'])
             ->withCount('reviews')
             ->withAvg('reviews', 'rating');

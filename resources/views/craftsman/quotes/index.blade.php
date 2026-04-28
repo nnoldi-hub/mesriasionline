@@ -154,4 +154,93 @@
         {{ $quoteRequests->links() }}
     </div>
 @endif
+
+{{-- ── Cereri deschise din zona ta ── --}}
+@if($nearbyRequests->isNotEmpty())
+    <div class="mt-10">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color:#2980B9">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-lg font-bold text-gray-900">Cereri deschise din zona ta</h2>
+                <p class="text-sm text-gray-500">Clienți din raza ta de {{ auth()->user()->service_radius_km }} km care caută un meseriaș</p>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            @foreach($nearbyRequests as $nearby)
+                <div class="bg-white rounded-xl border-2 p-5 hover:shadow-md transition" style="border-color:#e3f0f8;">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex-1">
+                            <div class="flex items-center flex-wrap gap-2 mb-2">
+                                <h3 class="font-semibold text-gray-900">{{ $nearby->title }}</h3>
+                                <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
+                                    Cerere deschisă
+                                </span>
+                                <span class="px-2 py-0.5 text-xs font-medium rounded-full bg-{{ $nearby->urgency_color }}-100 text-{{ $nearby->urgency_color }}-700">
+                                    {{ $nearby->urgency_label }}
+                                </span>
+                            </div>
+
+                            <p class="text-gray-600 text-sm mb-3">{{ Str::limit($nearby->description, 120) }}</p>
+
+                            <div class="flex flex-wrap gap-3 text-sm text-gray-500">
+                                @if($nearby->location)
+                                    <span class="flex items-center gap-1">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                        {{ $nearby->location }}
+                                    </span>
+                                @endif
+                                <span class="flex items-center gap-1" style="color:#2980B9; font-weight:600;">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                    </svg>
+                                    {{ round($nearby->distance, 1) }} km distanță
+                                </span>
+                                @if($nearby->budget_max)
+                                    <span class="flex items-center gap-1 text-green-600 font-medium">
+                                        Buget: {{ number_format($nearby->budget_max, 0, ',', '.') }} lei
+                                    </span>
+                                @endif
+                                <span class="text-gray-400">{{ $nearby->created_at->diffForHumans() }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex-shrink-0">
+                            <a href="{{ route('craftsman.quotes.show', $nearby) }}"
+                               class="inline-flex items-center gap-1 px-4 py-2 text-white text-sm font-medium rounded-lg transition"
+                               style="background-color:#2980B9;"
+                               onmouseover="this.style.backgroundColor='#1f6ea0'"
+                               onmouseout="this.style.backgroundColor='#2980B9'">
+                                Trimite ofertă
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+@elseif(auth()->user()->latitude && auth()->user()->longitude)
+    <div class="mt-10 p-4 rounded-lg border border-gray-200 text-center text-sm text-gray-500">
+        <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        Momentan nu există cereri deschise în zona ta ({{ auth()->user()->service_radius_km }} km raza ta).
+    </div>
+@else
+    <div class="mt-10 p-4 rounded-lg border border-amber-200 bg-amber-50 text-sm text-amber-700">
+        <strong>Activează localizarea</strong> în 
+        <a href="{{ route('craftsman.profile') }}" class="underline">profilul tău</a> 
+        pentru a vedea cererile deschise din zona ta.
+    </div>
+@endif
 @endsection

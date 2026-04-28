@@ -9,6 +9,9 @@
         @csrf
         @method('PUT')
 
+        <input type="hidden" name="latitude" id="craftsman_lat" value="{{ old('latitude', $craftsman->latitude) }}">
+        <input type="hidden" name="longitude" id="craftsman_lng" value="{{ old('longitude', $craftsman->longitude) }}">
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Nume Complet</label>
@@ -44,6 +47,70 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Rază Servicii (km)</label>
                 <input type="number" name="service_radius_km" value="{{ old('service_radius_km', $craftsman->service_radius_km) }}" min="0"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent">
+                <p class="text-xs text-gray-500 mt-1">Distanța maximă față de locația ta la care ești dispus să te deplasezi</p>
+            </div>
+
+            {{-- GPS Location Section --}}
+            <div class="md:col-span-2">
+                <div class="border border-blue-200 rounded-lg p-4" style="background-color:#eef6fc;">
+                    <div class="flex items-start gap-3 mb-3">
+                        <svg class="w-5 h-5 mt-0.5 flex-shrink-0" style="color:#2980B9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 text-sm">Locația ta GPS</h3>
+                            <p class="text-xs text-gray-600 mt-0.5">
+                                Coordonatele GPS permit sistemului să te recomande automat clienților din zona ta 
+                                și să afișezi raza în care lucrezi.
+                            </p>
+                        </div>
+                    </div>
+
+                    @if($craftsman->latitude && $craftsman->longitude)
+                        <div class="flex items-center gap-2 mb-3 text-sm text-green-700 bg-green-50 px-3 py-2 rounded-lg">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Locație setată: {{ number_format($craftsman->latitude, 5) }}, {{ number_format($craftsman->longitude, 5) }}</span>
+                        </div>
+                    @else
+                        <div class="flex items-center gap-2 mb-3 text-sm text-amber-700 bg-amber-50 px-3 py-2 rounded-lg">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                            <span>Locația GPS nu este setată — nu vei apărea în căutări de proximitate</span>
+                        </div>
+                    @endif
+
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <button type="button" id="detect-location-btn"
+                            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors"
+                            style="background-color:#2980B9;"
+                            onmouseover="this.style.backgroundColor='#1f6ea0'" 
+                            onmouseout="this.style.backgroundColor='#2980B9'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                            <span id="detect-location-text">Detectează locația automat</span>
+                        </button>
+
+                        <span class="text-xs text-gray-500">sau introdu manual:</span>
+
+                        <div class="flex gap-2">
+                            <input type="number" id="manual_lat" step="0.00001" placeholder="Latitudine (ex: 44.43225)"
+                                value="{{ $craftsman->latitude }}"
+                                class="w-44 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+                                oninput="document.getElementById('craftsman_lat').value=this.value">
+                            <input type="number" id="manual_lng" step="0.00001" placeholder="Longitudine (ex: 26.10626)"
+                                value="{{ $craftsman->longitude }}"
+                                class="w-44 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+                                oninput="document.getElementById('craftsman_lng').value=this.value">
+                        </div>
+                    </div>
+
+                    <p id="location-status" class="text-xs text-gray-500 mt-2 hidden"></p>
+                </div>
             </div>
 
             <div class="md:col-span-2">
@@ -80,4 +147,54 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+document.getElementById('detect-location-btn').addEventListener('click', function () {
+    if (!navigator.geolocation) {
+        document.getElementById('location-status').textContent = 'Browserul tău nu suportă geolocalizare.';
+        document.getElementById('location-status').classList.remove('hidden');
+        return;
+    }
+
+    const btn = this;
+    const statusEl = document.getElementById('location-status');
+
+    btn.disabled = true;
+    document.getElementById('detect-location-text').textContent = 'Se detectează...';
+    statusEl.textContent = 'Așteptare permisiune locație...';
+    statusEl.classList.remove('hidden');
+    statusEl.style.color = '#6b7280';
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+            const lat = position.coords.latitude.toFixed(8);
+            const lng = position.coords.longitude.toFixed(8);
+
+            document.getElementById('craftsman_lat').value = lat;
+            document.getElementById('craftsman_lng').value = lng;
+            document.getElementById('manual_lat').value = lat;
+            document.getElementById('manual_lng').value = lng;
+
+            statusEl.textContent = '✓ Locație detectată: ' + lat + ', ' + lng + '. Salvează profilul pentru a confirma.';
+            statusEl.style.color = '#15803d';
+            document.getElementById('detect-location-text').textContent = 'Locație detectată';
+            btn.disabled = false;
+        },
+        function (error) {
+            const msgs = {
+                1: 'Ai blocat accesul la locație. Permite accesul în setările browserului.',
+                2: 'Nu s-a putut determina locația. Introdu coordonatele manual.',
+                3: 'Timeout — încearcă din nou sau introdu coordonatele manual.',
+            };
+            statusEl.textContent = msgs[error.code] || 'Eroare necunoscută.';
+            statusEl.style.color = '#dc2626';
+            document.getElementById('detect-location-text').textContent = 'Detectează locația automat';
+            btn.disabled = false;
+        },
+        { enableHighAccuracy: true, timeout: 15000 }
+    );
+});
+</script>
+@endpush
 @endsection

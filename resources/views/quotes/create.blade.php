@@ -40,6 +40,10 @@
         <form action="{{ route('quotes.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
+            {{-- Hidden GPS fields --}}
+            <input type="hidden" name="client_lat" id="quote_client_lat" value="{{ old('client_lat') }}">
+            <input type="hidden" name="client_lng" id="quote_client_lng" value="{{ old('client_lng') }}">
+
             @if($craftsman)
                 <input type="hidden" name="craftsman_id" value="{{ $craftsman->id }}">
             @else
@@ -171,6 +175,27 @@
                 @enderror
             </div>
 
+            {{-- Locație GPS --}}
+            <div class="mb-4 p-4 rounded-lg border border-gray-200 bg-gray-50">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Locația ta (pentru potrivire cu meseriași din zonă)
+                    </label>
+                    <span id="quote_gps_status" class="text-xs text-gray-400"></span>
+                </div>
+                <button type="button" id="quote_detect_location"
+                        class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg transition"
+                        style="background-color:#2980B9;"
+                        onmouseover="this.style.backgroundColor='#1f6ea0'"
+                        onmouseout="this.style.backgroundColor='#2980B9'">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Detectează locația automat
+                </button>
+                <p class="text-xs text-gray-400 mt-2">Aceasta ajută meseriașii din zona ta să vadă cererea ta deschisă.</p>
+            </div>
+
             {{-- Google reCAPTCHA --}}
             <x-recaptcha />
 
@@ -181,3 +206,41 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.getElementById('quote_detect_location')?.addEventListener('click', function () {
+    const btn = this;
+    const status = document.getElementById('quote_gps_status');
+
+    if (!navigator.geolocation) {
+        status.textContent = 'Browserul nu suportă geolocation.';
+        status.className = 'text-xs text-red-500';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Se detectează...';
+    status.textContent = '';
+
+    navigator.geolocation.getCurrentPosition(
+        function (pos) {
+            document.getElementById('quote_client_lat').value = pos.coords.latitude.toFixed(7);
+            document.getElementById('quote_client_lng').value = pos.coords.longitude.toFixed(7);
+
+            status.textContent = '✓ Locație detectată';
+            status.className = 'text-xs text-green-600 font-medium';
+            btn.textContent = 'Locație detectată';
+            btn.disabled = false;
+        },
+        function (err) {
+            status.textContent = 'Nu s-a putut detecta locația.';
+            status.className = 'text-xs text-red-500';
+            btn.textContent = 'Detectează locația automat';
+            btn.disabled = false;
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+});
+</script>
+@endpush
