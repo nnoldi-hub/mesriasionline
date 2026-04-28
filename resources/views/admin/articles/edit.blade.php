@@ -196,14 +196,16 @@
             <a href="{{ route('admin.articles.index') }}" class="px-6 py-3 text-gray-600 hover:text-gray-800">
                 Anulează
             </a>
-            <form action="{{ route('admin.articles.destroy', $article->id) }}" method="POST" class="ml-auto"
-                  onsubmit="return confirm('Sigur vrei să ștergi acest articol?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="px-6 py-3 text-red-600 hover:text-red-800">
-                    Șterge articolul
-                </button>
-            </form>
+            <div class="ml-auto">
+                <form action="{{ route('admin.articles.destroy', $article->id) }}" method="POST"
+                      onsubmit="return confirm('Sigur vrei să ștergi acest articol?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-6 py-3 text-red-600 hover:text-red-800">
+                        Șterge articolul
+                    </button>
+                </form>
+            </div>
         </div>
     </form>
 </div>
