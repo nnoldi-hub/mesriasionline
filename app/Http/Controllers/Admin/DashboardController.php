@@ -217,7 +217,7 @@ class DashboardController extends Controller
             'min_duration' => $validated['min_duration'] ?? $service->min_duration,
             'max_duration' => $validated['max_duration'] ?? $service->max_duration,
             'is_active' => $request->has('is_active'),
-            'is_mobile' => $request->has('is_mobile'),
+            'is_on_location' => $request->has('is_mobile'),
             'materials_included' => $request->has('materials_included'),
         ]);
 

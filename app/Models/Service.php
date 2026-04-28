@@ -22,7 +22,6 @@ class Service extends Model
         'complexity',
         'category',
         'sub_brand',
-        'is_mobile',
         'is_on_location',
         'is_active',
         'equipment_needed',
@@ -33,7 +32,6 @@ class Service extends Model
 
     protected $casts = [
         'equipment_needed' => 'array',
-        'is_mobile' => 'boolean',
         'is_on_location' => 'boolean',
         'is_active' => 'boolean',
         'materials_included' => 'boolean',
