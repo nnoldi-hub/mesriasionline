@@ -63,11 +63,15 @@
 </head>
 <body class="min-h-screen bg-beige-100" style="font-family: 'Nunito', sans-serif;">
         <!-- Cookies Banner -->
-        <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-gray-900 text-white py-4 px-6 flex items-center justify-between z-50" style="display:none;">
-            <div>
-                Folosim cookies pentru a îmbunătăți experiența pe Omul Potrivit. Prin continuarea navigării, ești de acord cu <a href="{{ route('privacy') }}" class="underline text-primary-300">politica de confidențialitate</a>.
+        <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-gray-900 text-white z-50" style="display:none;">
+            <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <p class="text-sm leading-relaxed">
+                    Folosim cookies pentru a îmbunătăți experiența pe Omul Potrivit. Prin continuarea navigării, ești de acord cu <a href="{{ route('privacy') }}" class="underline text-blue-300">politica de confidențialitate</a>.
+                </p>
+                <button id="accept-cookies" class="w-full sm:w-auto flex-shrink-0 bg-red-600 text-white text-sm font-semibold px-6 py-2.5 rounded-lg hover:bg-red-700 transition text-center">
+                    Am înțeles
+                </button>
             </div>
-            <button id="accept-cookies" class="bg-primary-600 text-white px-4 py-2 rounded-lg ml-4 hover:bg-primary-700 transition">Accept</button>
         </div>
     <script>
         // Simple cookie consent logic
