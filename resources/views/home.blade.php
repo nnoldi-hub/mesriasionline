@@ -213,7 +213,6 @@
                 @else
                     <a href="{{ route('home', ['category_id' => $category->id]) }}" class="flex flex-col items-center p-5 bg-gray-50 rounded-2xl border border-gray-100 hover:shadow-lg transition group" style="transition: all 0.2s;" onmouseover="this.style.backgroundColor='#F1C40F';this.querySelectorAll('svg')[0].style.color='#fff';" onmouseout="this.style.backgroundColor='#f9fafb';this.querySelectorAll('svg')[0].style.color='#2980B9';">
                 @endif
-                @endif
                     <div class="w-16 h-16 bg-secondary-200 rounded-full flex items-center justify-center mb-3 group-hover:bg-secondary-300 transition">
                         @php
                             $icons = [
