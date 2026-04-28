@@ -22,6 +22,12 @@ class EnsureOnboardingComplete
 
         // Dacă onboarding-ul nu e completat, trimite la pasul curent
         if (!$user->onboarding_completed_at) {
+            // Conturile activate de admin (is_active=true) se consideră finalizate
+            if ($user->is_active) {
+                $user->update(['onboarding_completed_at' => now(), 'onboarding_step' => 4]);
+                return $next($request);
+            }
+
             $step = max(1, (int) $user->onboarding_step);
 
             // Evită redirect loop dacă deja e pe o rută de onboarding
