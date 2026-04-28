@@ -88,6 +88,7 @@
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
                         <img src="{{ asset('images/logo.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <span class="ml-2 text-xl font-extrabold hidden sm:inline" style="font-family:'Rubik',sans-serif; color:#C0392B;">Omul Potrivit</span>
                         <div class="hidden items-center space-x-2">
                             <svg class="w-8 h-8 text-primary-600" viewBox="0 0 100 100" fill="currentColor">
                                 <path d="M50 5 L15 35 L15 55 L25 55 L25 40 L50 20 L75 40 L75 55 L85 55 L85 35 Z"/>
