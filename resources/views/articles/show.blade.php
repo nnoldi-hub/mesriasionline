@@ -192,13 +192,13 @@
                 </div>
 
                 <!-- Q&A CTA -->
-                <div class="bg-gradient-to-br from-primary to-primary/80 rounded-lg shadow-sm p-6 text-white">
-                    <h3 class="text-lg font-semibold mb-2">Ai întrebări?</h3>
-                    <p class="text-sm opacity-90 mb-4">
+                <div class="rounded-2xl shadow-sm p-6 text-white" style="background-color:#2980B9;">
+                    <h3 class="text-lg font-semibold mb-2" style="font-family:'Rubik',sans-serif;">Ai întrebări?</h3>
+                    <p class="text-sm mb-4" style="opacity:0.9;">
                         Pune o întrebare legată de acest subiect și primește răspuns de la experți.
                     </p>
                     <a href="{{ route('intrebari.pune') }}" 
-                       class="inline-block w-full text-center px-4 py-2 bg-white text-primary-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                       class="inline-block w-full text-center px-4 py-2 rounded-xl font-medium transition-colors" style="background-color:#fff; color:#C0392B;">
                         Pune o întrebare
                     </a>
                 </div>
