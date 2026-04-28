@@ -47,9 +47,9 @@ class Plan extends Model
         return $this->slug === 'pro';
     }
 
-    public static function free(): self
+    public static function free(): ?self
     {
-        return static::where('slug', 'free')->firstOrFail();
+        return static::where('slug', 'free')->first();
     }
 
     public static function active()
