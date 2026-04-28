@@ -77,6 +77,8 @@ class RegisterController extends Controller
             'profile_photo' => $profilePhotoPath,
             'is_active' => false, // Needs admin approval
             'verified_at' => null,
+            'onboarding_step' => 4,
+            'onboarding_completed_at' => now(),
         ]);
 
         // Attribute registration to affiliate if referral cookie exists

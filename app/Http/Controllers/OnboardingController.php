@@ -90,7 +90,7 @@ class OnboardingController extends Controller
 
         // Nu permite salt înainte
         if ($step > $user->onboarding_step) {
-            return redirect()->route('onboarding.step', ['step' => $user->onboarding_step]);
+            return redirect()->route('onboarding.step', ['step' => max(1, $user->onboarding_step)]);
         }
 
         // Nu permite să meargă înapoi sub pasul curent salvat (dar permite navigare între pași deja făcuți)
