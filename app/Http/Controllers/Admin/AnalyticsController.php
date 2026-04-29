@@ -58,7 +58,7 @@ class AnalyticsController extends Controller
             'total_craftsmen' => User::where('role', 'specialist')->count(),
             'total_clients' => User::where('role', 'client')->count(),
             'active_craftsmen' => User::where('role', 'specialist')
-                ->where('last_login_at', '>=', now()->subDays(30))
+                ->where('is_active', true)
                 ->count(),
             'verified_craftsmen' => User::where('role', 'specialist')
                 ->whereNotNull('email_verified_at')
@@ -188,8 +188,8 @@ class AnalyticsController extends Controller
             ->groupBy('date');
 
         // User activity
-        $activeUsers = User::where('last_login_at', '>=', now()->subDays(7))->count();
-        $inactiveUsers = User::where('last_login_at', '<', now()->subDays(30))->count();
+        $activeUsers = User::where('is_active', true)->count();
+        $inactiveUsers = User::where('is_active', false)->count();
 
         // New vs returning
         $newUsers = User::whereBetween('created_at', [$startDate, $endDate])->count();
