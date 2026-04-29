@@ -63,25 +63,30 @@
 </head>
 <body class="min-h-screen bg-beige-100" style="font-family: 'Nunito', sans-serif;">
         <!-- Cookies Banner -->
-        <div id="cookie-banner" class="fixed bottom-0 left-0 w-full bg-gray-900 text-white z-50" style="display:none;">
-            <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <p class="text-sm leading-relaxed">
-                    Folosim cookies pentru a îmbunătăți experiența pe Omul Potrivit. Prin continuarea navigării, ești de acord cu <a href="{{ route('privacy') }}" class="underline text-blue-300">politica de confidențialitate</a>.
+        <div id="cookie-banner" class="fixed inset-0 z-[9999] flex items-center justify-center px-4" style="display:none!important; background:rgba(0,0,0,0.55);">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm mx-auto p-6 flex flex-col gap-4">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-2xl">🍪</span>
+                    <h3 class="text-base font-bold text-gray-900">Folosim cookie-uri</h3>
+                </div>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    Folosim cookies pentru a îmbunătăți experiența pe <strong>Omul Potrivit</strong>. Prin continuarea navigării, ești de acord cu <a href="{{ route('privacy') }}" class="underline text-blue-600">politica de confidențialitate</a>.
                 </p>
-                <button id="accept-cookies" class="w-full sm:w-auto flex-shrink-0 bg-red-600 text-white text-sm font-semibold px-6 py-2.5 rounded-lg hover:bg-red-700 transition text-center">
-                    Am înțeles
+                <button id="accept-cookies" class="w-full bg-red-600 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-red-700 transition text-center">
+                    Am înțeles &amp; Accept
                 </button>
             </div>
         </div>
     <script>
         // Simple cookie consent logic
         document.addEventListener('DOMContentLoaded', function() {
+            var banner = document.getElementById('cookie-banner');
             if (!localStorage.getItem('omulpotrivit_cookies_accepted')) {
-                document.getElementById('cookie-banner').style.display = 'flex';
+                banner.style.cssText = 'display:flex!important;';
             }
             document.getElementById('accept-cookies').onclick = function() {
                 localStorage.setItem('omulpotrivit_cookies_accepted', 'yes');
-                document.getElementById('cookie-banner').style.display = 'none';
+                banner.style.cssText = 'display:none!important;';
             };
         });
     </script>
