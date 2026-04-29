@@ -48,7 +48,7 @@ return new class extends Migration
             $table->text('message')->nullable(); // mesaj opțional de la meseriaș
             $table->timestamps();
 
-            $table->unique(['public_job_request_id', 'craftsman_id']);
+            $table->unique(['public_job_request_id', 'craftsman_id'], 'pjr_responses_unique');
         });
     }
 
