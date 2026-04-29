@@ -220,6 +220,13 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
     // Subscriptions & Payments management
     Route::get('/subscriptions', [AdminSubscriptionController::class, 'subscriptions'])->name('subscriptions');
     Route::get('/transactions', [AdminSubscriptionController::class, 'transactions'])->name('transactions');
+
+    // Notification Settings
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/settings', [\App\Http\Controllers\Admin\NotificationSettingsController::class, 'index'])->name('settings');
+        Route::put('/settings', [\App\Http\Controllers\Admin\NotificationSettingsController::class, 'update'])->name('settings.update');
+        Route::post('/test-email', [\App\Http\Controllers\Admin\NotificationSettingsController::class, 'testEmail'])->name('test-email');
+    });
 });
 
 // Craftsman routes

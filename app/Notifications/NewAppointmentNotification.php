@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\Appointment;
 use App\Models\EmailTemplate;
 use App\Services\EmailTemplateService;
+use App\Services\NotificationPreferenceService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -31,14 +32,8 @@ class NewAppointmentNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        $channels = ['mail', 'database'];
-        
-        // Adaugă WebPush dacă utilizatorul are subscripții active
-        if ($notifiable->pushSubscriptions()->exists()) {
-            $channels[] = WebPushChannel::class;
-        }
-        
-        return $channels;
+        return app(NotificationPreferenceService::class)
+            ->getChannels($notifiable, 'new_appointment');
     }
 
     /**

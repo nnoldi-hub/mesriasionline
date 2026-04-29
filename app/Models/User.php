@@ -87,6 +87,8 @@ class User extends Authenticatable
         'onboarding_completed_at',
         // Stripe
         'stripe_customer_id',
+        // Notification preferences
+        'notification_preferences',
     ];
 
     /**
@@ -136,6 +138,7 @@ class User extends Authenticatable
             'offers_warranty' => 'boolean',
             'extra_fee_per_km' => 'decimal:2',
             'onboarding_completed_at' => 'datetime',
+            'notification_preferences' => 'array',
         ];
     }
 

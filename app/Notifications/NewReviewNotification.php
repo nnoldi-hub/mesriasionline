@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Review;
 use App\Services\EmailTemplateService;
+use App\Services\NotificationPreferenceService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -30,13 +31,8 @@ class NewReviewNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        $channels = ['mail', 'database'];
-        
-        if ($notifiable->pushSubscriptions()->exists()) {
-            $channels[] = WebPushChannel::class;
-        }
-        
-        return $channels;
+        return app(NotificationPreferenceService::class)
+            ->getChannels($notifiable, 'new_review');
     }
 
     /**
