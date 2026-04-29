@@ -344,8 +344,8 @@
                                 <small class="text-muted">{{ $user->email }}</small>
                             </div>
                             <div class="text-end">
-                                <span class="badge bg-{{ $user->user_type === 'meserias' ? 'success' : 'info' }}">
-                                    {{ $user->user_type === 'meserias' ? 'Meșter' : 'Client' }}
+                                <span class="badge bg-{{ $user->role === 'specialist' ? 'success' : 'info' }}">
+                                    {{ $user->role === 'specialist' ? 'Meșter' : 'Client' }}
                                 </span>
                                 <br>
                                 <small class="text-muted">{{ $user->created_at->diffForHumans() }}</small>
@@ -374,7 +374,7 @@
                                 </span>
                             </div>
                             <small class="text-muted">
-                                pentru {{ $review->meserias->name ?? 'N/A' }} • {{ $review->created_at->diffForHumans() }}
+                                pentru {{ $review->specialist->name ?? 'N/A' }} • {{ $review->created_at->diffForHumans() }}
                             </small>
                         </div>
                         @empty

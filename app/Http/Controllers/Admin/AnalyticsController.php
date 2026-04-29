@@ -55,18 +55,18 @@ class AnalyticsController extends Controller
 
         // User counts
         $userStats = [
-            'total_craftsmen' => User::where('user_type', 'meserias')->count(),
-            'total_clients' => User::where('user_type', 'client')->count(),
-            'active_craftsmen' => User::where('user_type', 'meserias')
+            'total_craftsmen' => User::where('role', 'specialist')->count(),
+            'total_clients' => User::where('role', 'client')->count(),
+            'active_craftsmen' => User::where('role', 'specialist')
                 ->where('last_login_at', '>=', now()->subDays(30))
                 ->count(),
-            'verified_craftsmen' => User::where('user_type', 'meserias')
+            'verified_craftsmen' => User::where('role', 'specialist')
                 ->whereNotNull('email_verified_at')
                 ->count(),
         ];
 
         // Top performers
-        $topCraftsmen = User::where('user_type', 'meserias')
+        $topCraftsmen = User::where('role', 'specialist')
             ->withCount(['reviews'])
             ->withAvg('reviews', 'rating')
             ->orderByDesc('reviews_count')
@@ -81,7 +81,7 @@ class AnalyticsController extends Controller
 
         // Recent activity
         $recentRegistrations = User::latest()->limit(10)->get();
-        $recentReviews = Review::with(['user', 'meserias'])->latest()->limit(10)->get();
+        $recentReviews = Review::with(['user', 'specialist'])->latest()->limit(10)->get();
 
         return view('admin.analytics.index', compact(
             'period',
@@ -180,9 +180,9 @@ class AnalyticsController extends Controller
         // Registration trends
         $registrationTrends = User::whereBetween('created_at', [$startDate, $endDate])
             ->selectRaw('DATE(created_at) as date')
-            ->selectRaw('user_type')
+            ->selectRaw('role')
             ->selectRaw('COUNT(*) as count')
-            ->groupBy('date', 'user_type')
+            ->groupBy('date', 'role')
             ->orderBy('date')
             ->get()
             ->groupBy('date');
