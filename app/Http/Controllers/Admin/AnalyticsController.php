@@ -10,22 +10,27 @@ use App\Models\Review;
 use App\Models\Category;
 use App\Models\PlatformDailyStat;
 use App\Models\ConversionFunnel;
-use App\Services\ConversionTrackingService;
-use App\Services\ReportExportService;
-use App\Exports\PlatformReportExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
 
 class AnalyticsController extends Controller
 {
-    protected ConversionTrackingService $trackingService;
-    protected ReportExportService $reportService;
-
-    public function __construct(ConversionTrackingService $trackingService, ReportExportService $reportService)
+    protected function trackingService()
     {
-        $this->trackingService = $trackingService;
-        $this->reportService = $reportService;
+        try {
+            return app(\App\Services\ConversionTrackingService::class);
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    protected function reportService()
+    {
+        try {
+            return app(\App\Services\ReportExportService::class);
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     /**
@@ -58,13 +63,13 @@ class AnalyticsController extends Controller
         try { $conversionsChart = PlatformDailyStat::getConversionsChartData($startDate, $endDate); }
         catch (\Throwable $e) { $conversionsChart = $emptyChartData; }
 
-        try { $funnelStats = $this->trackingService->getFunnelStats($startDate, $endDate); }
+        try { $ts = $this->trackingService(); $funnelStats = $ts ? $ts->getFunnelStats($startDate, $endDate) : $emptyFunnel; }
         catch (\Throwable $e) { $funnelStats = $emptyFunnel; }
 
-        try { $trafficSources = $this->trackingService->getTrafficSources($startDate, $endDate); }
+        try { $ts = $this->trackingService(); $trafficSources = $ts ? $ts->getTrafficSources($startDate, $endDate) : []; }
         catch (\Throwable $e) { $trafficSources = []; }
 
-        try { $deviceBreakdown = $this->trackingService->getDeviceBreakdown($startDate, $endDate); }
+        try { $ts = $this->trackingService(); $deviceBreakdown = $ts ? $ts->getDeviceBreakdown($startDate, $endDate) : []; }
         catch (\Throwable $e) { $deviceBreakdown = []; }
 
         // User counts
@@ -128,29 +133,35 @@ class AnalyticsController extends Controller
         $startDate = now()->subDays((int)$period);
         $endDate = now();
 
-        $funnelStats = $this->trackingService->getFunnelStats($startDate, $endDate);
+        $emptyFunnel = ['total_sessions' => 0, 'stages' => [], 'conversion_rate' => 0, 'total_value' => 0];
+        try { $ts = $this->trackingService(); $funnelStats = $ts ? $ts->getFunnelStats($startDate, $endDate) : $emptyFunnel; }
+        catch (\Throwable $e) { $funnelStats = $emptyFunnel; }
 
         // Get daily funnel data for chart
-        $dailyFunnels = ConversionFunnel::whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('DATE(created_at) as date')
-            ->selectRaw('COUNT(*) as total')
-            ->selectRaw('SUM(CASE WHEN final_status = "converted" THEN 1 ELSE 0 END) as converted')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
+        try {
+            $dailyFunnels = ConversionFunnel::whereBetween('created_at', [$startDate, $endDate])
+                ->selectRaw('DATE(created_at) as date')
+                ->selectRaw('COUNT(*) as total')
+                ->selectRaw('SUM(CASE WHEN final_status = "converted" THEN 1 ELSE 0 END) as converted')
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+        } catch (\Throwable $e) { $dailyFunnels = collect(); }
 
         // Drop-off analysis
         $dropOffAnalysis = $this->calculateDropOffRates($funnelStats);
 
         // Top converting sources
-        $convertingSources = ConversionFunnel::where('final_status', 'converted')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('source, COUNT(*) as conversions')
-            ->whereNotNull('source')
-            ->groupBy('source')
-            ->orderByDesc('conversions')
-            ->limit(10)
-            ->get();
+        try {
+            $convertingSources = ConversionFunnel::where('final_status', 'converted')
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->selectRaw('source, COUNT(*) as conversions')
+                ->whereNotNull('source')
+                ->groupBy('source')
+                ->orderByDesc('conversions')
+                ->limit(10)
+                ->get();
+        } catch (\Throwable $e) { $convertingSources = collect(); }
 
         return view('admin.analytics.funnel', compact(
             'period',
@@ -170,14 +181,19 @@ class AnalyticsController extends Controller
         $startDate = now()->subDays((int)$period);
         $endDate = now();
 
-        $trafficSources = $this->trackingService->getTrafficSources($startDate, $endDate);
-        $deviceBreakdown = $this->trackingService->getDeviceBreakdown($startDate, $endDate);
-        $topPages = $this->trackingService->getTopConvertingPages($startDate, $endDate);
+        try { $ts = $this->trackingService(); $trafficSources = $ts ? $ts->getTrafficSources($startDate, $endDate) : []; }
+        catch (\Throwable $e) { $trafficSources = []; }
+        try { $ts = $this->trackingService(); $deviceBreakdown = $ts ? $ts->getDeviceBreakdown($startDate, $endDate) : []; }
+        catch (\Throwable $e) { $deviceBreakdown = []; }
+        try { $ts = $this->trackingService(); $topPages = $ts ? $ts->getTopConvertingPages($startDate, $endDate) : []; }
+        catch (\Throwable $e) { $topPages = []; }
 
         // Daily traffic data
-        $dailyTraffic = PlatformDailyStat::whereBetween('date', [$startDate, $endDate])
-            ->orderBy('date')
-            ->get(['date', 'total_visits', 'unique_visitors', 'page_views']);
+        try {
+            $dailyTraffic = PlatformDailyStat::whereBetween('date', [$startDate, $endDate])
+                ->orderBy('date')
+                ->get(['date', 'total_visits', 'unique_visitors', 'page_views']);
+        } catch (\Throwable $e) { $dailyTraffic = collect(); }
 
         return view('admin.analytics.traffic', compact(
             'period',
@@ -218,12 +234,14 @@ class AnalyticsController extends Controller
         $verificationRate = User::whereNotNull('email_verified_at')->count() / max(User::count(), 1) * 100;
 
         // Top locations
-        $topLocations = User::whereNotNull('city')
-            ->selectRaw('city, COUNT(*) as count')
-            ->groupBy('city')
-            ->orderByDesc('count')
-            ->limit(10)
-            ->get();
+        try {
+            $topLocations = User::whereNotNull('city')
+                ->selectRaw('city, COUNT(*) as count')
+                ->groupBy('city')
+                ->orderByDesc('count')
+                ->limit(10)
+                ->get();
+        } catch (\Throwable $e) { $topLocations = collect(); }
 
         return view('admin.analytics.users', compact(
             'period',
@@ -249,7 +267,9 @@ class AnalyticsController extends Controller
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
 
-        $pdf = $this->reportService->generatePlatformReport($startDate, $endDate);
+        $rs = $this->reportService();
+        if (!$rs) { abort(503, 'Export service unavailable'); }
+        $pdf = $rs->generatePlatformReport($startDate, $endDate);
 
         return $pdf->download('raport-platforma-' . $startDate->format('Y-m-d') . '-' . $endDate->format('Y-m-d') . '.pdf');
     }
@@ -269,7 +289,11 @@ class AnalyticsController extends Controller
 
         $filename = 'raport-platforma-' . $startDate->format('Y-m-d') . '-' . $endDate->format('Y-m-d') . '.xlsx';
 
-        return Excel::download(new PlatformReportExport($startDate, $endDate), $filename);
+        try {
+            return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\PlatformReportExport($startDate, $endDate), $filename);
+        } catch (\Throwable $e) {
+            abort(503, 'Export service unavailable');
+        }
     }
 
     /**
