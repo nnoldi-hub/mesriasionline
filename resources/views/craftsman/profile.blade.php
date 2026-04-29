@@ -50,7 +50,21 @@
                 <p class="text-xs text-gray-500 mt-1">Distanța maximă față de locația ta la care ești dispus să te deplasezi</p>
             </div>
 
-            {{-- GPS Location Section --}}
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Oraș / Județ</label>
+                <select name="location_id" id="location_select"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent bg-white">
+                    <option value="">-- Selectează orașul --</option>
+                    @foreach($locations as $loc)
+                        <option value="{{ $loc->id }}"
+                            data-lat="{{ $loc->latitude }}"
+                            data-lng="{{ $loc->longitude }}"
+                            {{ old('location_id', $craftsman->location_id) == $loc->id ? 'selected' : '' }}>
+                            {{ $loc->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
             <div class="md:col-span-2">
                 <div class="border border-blue-200 rounded-lg p-4" style="background-color:#eef6fc;">
                     <div class="flex items-start gap-3 mb-3">
@@ -93,6 +107,18 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                             </svg>
                             <span id="detect-location-text">Detectează locația automat</span>
+                        </button>
+
+                        <button type="button" id="use-city-btn"
+                            class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors"
+                            style="background-color:#16a34a;"
+                            onmouseover="this.style.backgroundColor='#15803d'"
+                            onmouseout="this.style.backgroundColor='#16a34a'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Folosește coordonatele orașului
                         </button>
 
                         <span class="text-xs text-gray-500">sau introdu manual:</span>
@@ -233,6 +259,38 @@ function toggleCompanyFields(checked) {
         fields.classList.add('hidden');
     }
 }
+
+document.getElementById('use-city-btn').addEventListener('click', function () {
+    const select = document.getElementById('location_select');
+    const option = select.options[select.selectedIndex];
+    const statusEl = document.getElementById('location-status');
+
+    if (!option || !option.value) {
+        statusEl.textContent = 'Selectează mai întâi un oraș din dropdown-ul de mai sus.';
+        statusEl.style.color = '#b45309';
+        statusEl.classList.remove('hidden');
+        return;
+    }
+
+    const lat = option.getAttribute('data-lat');
+    const lng = option.getAttribute('data-lng');
+
+    if (!lat || !lng || lat === '' || lng === '') {
+        statusEl.textContent = 'Orașul selectat nu are coordonate GPS salvate.';
+        statusEl.style.color = '#dc2626';
+        statusEl.classList.remove('hidden');
+        return;
+    }
+
+    document.getElementById('craftsman_lat').value = lat;
+    document.getElementById('craftsman_lng').value = lng;
+    document.getElementById('manual_lat').value = parseFloat(lat).toFixed(5);
+    document.getElementById('manual_lng').value = parseFloat(lng).toFixed(5);
+
+    statusEl.textContent = '✓ Coordonate preluate din: ' + option.textContent.trim() + ' (' + parseFloat(lat).toFixed(5) + ', ' + parseFloat(lng).toFixed(5) + '). Salvează profilul pentru a confirma.';
+    statusEl.style.color = '#15803d';
+    statusEl.classList.remove('hidden');
+});
 
 document.getElementById('detect-location-btn').addEventListener('click', function () {
     if (!navigator.geolocation) {

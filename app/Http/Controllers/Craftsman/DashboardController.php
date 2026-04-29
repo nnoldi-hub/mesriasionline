@@ -81,7 +81,8 @@ class DashboardController extends Controller
     public function profile()
     {
         $craftsman = auth()->user();
-        return view('craftsman.profile', compact('craftsman'));
+        $locations = \App\Models\Location::orderBy('name')->get(['id', 'name', 'latitude', 'longitude']);
+        return view('craftsman.profile', compact('craftsman', 'locations'));
     }
 
     public function updateProfile(Request $request, ImageCompressionService $imageService)
@@ -95,6 +96,7 @@ class DashboardController extends Controller
             'experience_years' => 'nullable|integer|min:0',
             'specialization' => 'nullable|string|max:255',
             'service_radius_km' => 'nullable|integer|min:0',
+            'location_id' => 'nullable|exists:locations,id',
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'available_weekends' => 'boolean',
