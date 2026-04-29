@@ -262,35 +262,64 @@ function toggleCompanyFields(checked) {
 
 document.getElementById('use-city-btn').addEventListener('click', function () {
     const select = document.getElementById('location_select');
-    const option = select.options[select.selectedIndex];
     const statusEl = document.getElementById('location-status');
 
-    if (!option || !option.value) {
+    if (!select.value) {
         statusEl.textContent = 'Selectează mai întâi un oraș din dropdown-ul de mai sus.';
         statusEl.style.color = '#b45309';
         statusEl.classList.remove('hidden');
         return;
     }
 
+    const option = select.options[select.selectedIndex];
     const lat = option.getAttribute('data-lat');
     const lng = option.getAttribute('data-lng');
 
-    if (!lat || !lng || lat === '' || lng === '') {
-        statusEl.textContent = 'Orașul selectat nu are coordonate GPS salvate.';
-        statusEl.style.color = '#dc2626';
-        statusEl.classList.remove('hidden');
+    // Dacă avem coordonatele direct în HTML, le folosim
+    if (lat && lng && lat !== 'null' && lng !== 'null' && lat !== '' && lng !== '') {
+        applyCoordinates(parseFloat(lat), parseFloat(lng), option.textContent.trim());
         return;
     }
 
+    // Fallback: le cerem din API
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Se încarcă...';
+
+    fetch('/api/v1/locations/' + select.value)
+        .then(r => r.json())
+        .then(data => {
+            const loc = data.data || data;
+            if (loc.latitude && loc.longitude) {
+                applyCoordinates(parseFloat(loc.latitude), parseFloat(loc.longitude), option.textContent.trim());
+            } else {
+                statusEl.textContent = 'Orașul selectat nu are coordonate GPS salvate în baza de date.';
+                statusEl.style.color = '#dc2626';
+                statusEl.classList.remove('hidden');
+            }
+        })
+        .catch(() => {
+            statusEl.textContent = 'Eroare la obținerea coordonatelor. Încearcă manual.';
+            statusEl.style.color = '#dc2626';
+            statusEl.classList.remove('hidden');
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>Folosește coordonatele orașului';
+        });
+});
+
+function applyCoordinates(lat, lng, cityName) {
     document.getElementById('craftsman_lat').value = lat;
     document.getElementById('craftsman_lng').value = lng;
-    document.getElementById('manual_lat').value = parseFloat(lat).toFixed(5);
-    document.getElementById('manual_lng').value = parseFloat(lng).toFixed(5);
+    document.getElementById('manual_lat').value = lat.toFixed(5);
+    document.getElementById('manual_lng').value = lng.toFixed(5);
 
-    statusEl.textContent = '✓ Coordonate preluate din: ' + option.textContent.trim() + ' (' + parseFloat(lat).toFixed(5) + ', ' + parseFloat(lng).toFixed(5) + '). Salvează profilul pentru a confirma.';
+    const statusEl = document.getElementById('location-status');
+    statusEl.textContent = '✓ Coordonate preluate din: ' + cityName + ' (' + lat.toFixed(5) + ', ' + lng.toFixed(5) + '). Salvează profilul pentru a confirma.';
     statusEl.style.color = '#15803d';
     statusEl.classList.remove('hidden');
-});
+}
 
 document.getElementById('detect-location-btn').addEventListener('click', function () {
     if (!navigator.geolocation) {
