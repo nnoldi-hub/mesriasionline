@@ -50,7 +50,7 @@ class MessageController extends Controller
         $user = Auth::user();
         
         // Check if user is part of this conversation
-        if ($conversation->client_id !== $user->id && $conversation->craftsman_id !== $user->id) {
+        if ((int)$conversation->client_id !== (int)$user->id && (int)$conversation->craftsman_id !== (int)$user->id) {
             abort(403, 'Nu ai acces la această conversație.');
         }
         
@@ -132,7 +132,11 @@ class MessageController extends Controller
         ]);
         
         // Send notification to craftsman
-        $craftsman->notify(new NewMessageNotification($message));
+        try {
+            $craftsman->notify(new NewMessageNotification($message));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Message notification failed: ' . $e->getMessage());
+        }
         
         return redirect()->route('messages.show', $conversation)
             ->with('success', 'Mesajul a fost trimis cu succes!');
@@ -146,7 +150,7 @@ class MessageController extends Controller
         $user = Auth::user();
         
         // Check if user is part of this conversation
-        if ($conversation->client_id !== $user->id && $conversation->craftsman_id !== $user->id) {
+        if ((int)$conversation->client_id !== (int)$user->id && (int)$conversation->craftsman_id !== (int)$user->id) {
             abort(403, 'Nu ai acces la această conversație.');
         }
         
@@ -176,7 +180,11 @@ class MessageController extends Controller
         
         // Send notification to the other participant
         $otherParticipant = $conversation->getOtherParticipant($user);
-        $otherParticipant->notify(new NewMessageNotification($message));
+        try {
+            $otherParticipant->notify(new NewMessageNotification($message));
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Reply notification failed: ' . $e->getMessage());
+        }
         
         if ($request->ajax()) {
             return response()->json([

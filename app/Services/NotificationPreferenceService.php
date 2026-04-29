@@ -18,7 +18,12 @@ class NotificationPreferenceService
      */
     public function getChannels(User $notifiable, string $type): array
     {
-        $setting = NotificationSetting::forType($type);
+        try {
+            $setting = NotificationSetting::forType($type);
+        } catch (\Exception $e) {
+            // Fallback if notification_settings table doesn't exist yet
+            return $this->defaultChannels($notifiable);
+        }
 
         // If no admin setting found, fall back to default behaviour (all channels).
         if (!$setting) {

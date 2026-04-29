@@ -28,12 +28,12 @@ class MessageObserver
                 'id' => $message->id,
                 'conversation_id' => $message->conversation_id,
                 'sender_id' => $message->sender_id,
-                'content' => $message->content,
+                'content' => $message->body,
                 'created_at' => $message->created_at,
             ];
 
             // Dispatch to the recipient (specialist)
-            $recipientId = $conversation->specialist_id;
+            $recipientId = $conversation->craftsman_id;
             
             $this->webhookService->dispatch(
                 Webhook::EVENT_MESSAGE_RECEIVED,
