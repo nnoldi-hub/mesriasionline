@@ -1,9 +1,9 @@
 # 📋 Progres Dezvoltare - Platforma Meseriași
 
-> **Ultima actualizare:** 23 Aprilie 2026  
-> **Versiune curentă:** 1.6.0-dev  
-> **Framework:** Laravel 12.x  
-> **Status:** În dezvoltare activă — Faza Monetizare & Go-to-Market
+> **Ultima actualizare:** 29 Aprilie 2026  
+> **Versiune curentă:** 1.7.0  
+> **Framework:** Laravel 11.x / PHP 8.3.30  
+> **Status:** Live pe meseriasionline.ro — Sistem mesaje complet funcțional
 
 ---
 
@@ -26,8 +26,8 @@
 | 💳 Plăți & Monetizare | ✅ Complet | 100% |
 | 🧭 Onboarding Wizard | ✅ Complet | 100% |
 | 🎯 Focus Segment/Zonă | ✅ Complet | 100% |
-| 🔔 Notificări | ✅ Complet | 90% |
-| 💬 Chat/Mesagerie | ✅ Complet | 90% |
+| 🔔 Notificări | ✅ Complet + Admin Config | 95% |
+| 💬 Chat/Mesagerie | ✅ Complet + Bugfix | 100% |
 | 📝 Sistem Oferte | ✅ Complet | 90% |
 | 📅 Disponibilitate | ✅ Complet | 90% |
 | 🏆 Certificări | ✅ Complet | 90% |
@@ -130,7 +130,7 @@
 - [x] Formular generic solicitare serviciu (`/solicitare-serviciu`)
 - [x] Procesare cereri în backend
 
-### 🔔 **9. Sistem Notificări** *(COMPLET)*
+### 🔔 **9. Sistem Notificări** *(COMPLET + Admin Config v1.7)*
 - [x] Tabel notificări în baza de date (UUID)
 - [x] Notificări pentru mesaje noi
 - [x] Notificări pentru cereri ofertă noi
@@ -143,10 +143,18 @@
 - [x] Marcare notificări ca citite
 - [x] Ștergere notificări individuale
 - [x] Suport email + database
-- [x] Notificări push în browser (WebPush/VAPID)
+- [x] Notificări push în browser (WebPush/VAPID) *(necesită VAPID keys pe server)*
 - [x] Template-uri email personalizabile (CRUD Admin)
+- [x] **Panel admin configurare notificări** (`/admin/notifications/settings`) *(NOU v1.7)*
+  - Toggle global on/off per tip notificare
+  - Toggle individual email/in-app/push
+  - Test email direct din interfață
+  - Card status SMTP (verde/amber)
+  - NotificationPreferenceService cu fallback la DB indisponibil
+- [x] **SMTP configurat și funcțional** (mail.meseriasionline.ro port 465 smtps) *(v1.7)*
+- ⚠️ **PENDING pe server:** `php artisan migrate` pentru tabelele notification_settings și notification_preferences
 
-### 💬 **10. Sistem Mesagerie/Chat** *(NOU)*
+### 💬 **10. Sistem Mesagerie/Chat** *(COMPLET + BUGFIX v1.7)*
 - [x] Conversații între clienți și meseriași
 - [x] Trimitere și primire mesaje
 - [x] Istoric complet conversații
@@ -157,6 +165,13 @@
 - [x] Creare conversație nouă (`/mesaje/create`)
 - [x] Soft delete pentru mesaje
 - [x] Iconiță mesaje în header
+- [x] **Buton „Trimite Mesaj" pe profil meseriaș** funcțional *(fix v1.7)*
+  - Utilizator autentificat → `/mesaje/nou?craftsman=ID`
+  - Vizitator → redirecționat la login cu redirect back
+- [x] **Fix 403** la vizualizare conversație — int casting corect *(fix v1.7)*
+- [x] **Notificare email meseriaș** la mesaj nou — trimisă sincron *(fix v1.7)*
+- [x] **Link Mesaje în sidebar meseriaș** cu badge necitite *(NOU v1.7)*
+- [x] **Card Mesaje pe dashboard meseriaș** *(NOU v1.7)*
 
 ### 📝 **11. Sistem Oferte & Cotații** *(NOU)*
 - [x] Formular cerere ofertă de la clienți
@@ -336,6 +351,8 @@
 - ✅ **Tabel affiliate_commissions** (affiliate_id, referral_id, amount, status, type) *(NOU)*
 - ✅ **Tabel affiliate_payouts** (affiliate_id, amount, payment_method, status) *(NOU)*
 - ✅ **Câmpuri users pentru referral** (referred_by_code, referred_by_affiliate_id, referral_converted_at) *(NOU)*
+- ⚠️ **PENDING pe server:** `2026_04_29_000003_create_notification_settings_table.php`
+- ⚠️ **PENDING pe server:** `2026_04_29_000004_add_notification_preferences_to_users.php`
 - ✅ **Tabel conversion_events** (session_id, user_id, craftsman_id, event_type, source, medium, campaign, device_type) *(NOU)*
 - ✅ **Tabel conversion_funnels** (session_id, stage timestamps, final_status, total_value) *(NOU)*
 - ✅ **Tabel platform_daily_stats** (date, visits, registrations, engagements, conversion rates) *(NOU)*
@@ -634,7 +651,60 @@
 
 ---
 
-## 📝 Note Tehnice
+## � Status Deployment (meseriasionline.ro) — 29 Apr 2026
+
+### ✅ Live și funcțional
+| Feature | Commit | Confirmat |
+|---------|--------|-----------|
+| Homepage, listare, profil public | - | ✅ |
+| Autentificare + înregistrare + middleware | - | ✅ |
+| Dashboard meseriaș, client, admin | - | ✅ |
+| Sistem mesaje complet (conversații, reply, arhivare) | `ec538cc` | ✅ |
+| Buton „Trimite Mesaj" pe profil meseriaș | `c0ac949` | ✅ |
+| Mesaje în sidebar + dashboard meseriaș | `006ca87` | ✅ |
+| Email notificare la mesaj nou (sincron) | `ec538cc` | ✅ confirmat primit |
+| SMTP smtps port 465 | `.env` server | ✅ confirmat |
+| Admin panel notificări (views) | `05066d0` | ✅ (UI vizibil) |
+| Affiliate programs + commissions views | `6cba7bd` | ✅ |
+| SEO sitemap, schema.org, meta tags | - | ✅ |
+| Blog, articole, Q&A | - | ✅ |
+| Sistem oferte & cotații | - | ✅ |
+| Booking / Disponibilitate | - | ✅ |
+| Analytics meseriași | - | ✅ |
+| Sistem afiliere | - | ✅ |
+| PWA + mobile responsive | - | ✅ |
+| Securitate: 2FA, CAPTCHA, audit log | - | ✅ |
+
+### ⚠️ Dezvoltat + push-uit dar PENDING migrare pe server
+| Migrare | Impact dacă nu rulează |
+|---------|----------------------|
+| `create_notification_settings_table` | Admin panel notificări nu salvează setări |
+| `add_notification_preferences_to_users` | Preferințe per-utilizator indisponibile |
+
+### 🔲 De făcut pe server (o singură dată)
+```bash
+git pull origin main
+php artisan migrate
+php artisan cache:clear
+php artisan view:clear
+php artisan config:clear
+# Pentru push notifications (opțional):
+php artisan webpush:vapid
+# Adaugă în .env: VAPID_PUBLIC_KEY și VAPID_PRIVATE_KEY
+```
+
+### ❌ Nedezvoltat / Planificat
+| Feature | Prioritate |
+|---------|-----------|
+| Plăți online (Stripe/PayPal) | 🔴 Înaltă |
+| Notificări push browser (VAPID keys lipsă pe server) | 🟡 Medie |
+| CDN pentru assets | 🟢 Normală |
+| Redis caching | 🟢 Normală |
+| Traduceri automate | 🟢 Normală |
+
+---
+
+## �📝 Note Tehnice
 
 ### Tehnologii Folosite:
 - **Backend:** Laravel 11.x
