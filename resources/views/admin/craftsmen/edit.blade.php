@@ -250,6 +250,114 @@
             </div>
         </div>
         
+        <!-- Subscription / Plan Management -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold mb-1">Abonament / Plan</h3>
+            <p class="text-xs text-gray-500 mb-4">Activează sau schimbă planul meșeriaşului. Poți oferi gratuit un plan pe o perioadă determinată sau permanent.</p>
+
+            {{-- Plan activ curent --}}
+            @if($activeSubscription)
+                <div class="mb-4 p-3 rounded-lg border
+                    {{ $activeSubscription->plan->slug === 'pro' ? 'border-yellow-300 bg-yellow-50' : 'border-gray-200 bg-gray-50' }}">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-sm font-semibold text-gray-800">
+                            {{ $activeSubscription->status === 'trial' ? '🎁' : '✓' }}
+                            {{ $activeSubscription->plan->name }}
+                        </span>
+                        <span class="text-xs px-2 py-0.5 rounded-full font-medium
+                            {{ $activeSubscription->status === 'active' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700' }}">
+                            {{ $activeSubscription->status === 'active' ? 'Activ' : 'Trial' }}
+                        </span>
+                    </div>
+                    <div class="text-xs text-gray-500 space-y-0.5">
+                        <div>Început: {{ $activeSubscription->started_at->format('d.m.Y') }}</div>
+                        @if($activeSubscription->ends_at)
+                            <div class="{{ $activeSubscription->ends_at->isPast() ? 'text-red-600 font-medium' : '' }}">
+                                Expiră: {{ $activeSubscription->ends_at->format('d.m.Y') }}
+                                @if($activeSubscription->ends_at->isFuture())
+                                    ({{ $activeSubscription->ends_at->diffForHumans() }})
+                                @else
+                                    (expirat)
+                                @endif
+                            </div>
+                        @else
+                            <div class="text-green-600">Fără expirare</div>
+                        @endif
+                        @if($activeSubscription->payment_reference)
+                            <div class="truncate">Ref: {{ $activeSubscription->payment_reference }}</div>
+                        @endif
+                    </div>
+                    <form action="{{ route('admin.craftsmen.subscription.cancel', $craftsman->id) }}" method="POST" class="mt-3">
+                        @csrf
+                        <button type="submit" onclick="return confirm('Anulezi subscripția activă?')"
+                            class="w-full text-xs px-3 py-1.5 rounded border border-red-200 text-red-600 hover:bg-red-50 transition">
+                            Anulează subscripția
+                        </button>
+                    </form>
+                </div>
+            @else
+                <div class="mb-4 p-3 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500">
+                    Niciun plan activ — meșeriaşul este pe planul gratuit implicit.
+                </div>
+            @endif
+
+            {{-- Formular activare plan --}}
+            <form action="{{ route('admin.craftsmen.subscription.assign', $craftsman->id) }}" method="POST" class="space-y-3">
+                @csrf
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Plan</label>
+                    <select name="plan_id" required
+                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white">
+                        @foreach($plans as $plan)
+                            <option value="{{ $plan->id }}"
+                                {{ $activeSubscription && $activeSubscription->plan_id === $plan->id ? 'selected' : '' }}>
+                                {{ $plan->name }}
+                                @if($plan->price_monthly > 0)
+                                    ({{ number_format($plan->price_monthly, 0) }} RON/lună)
+                                @else
+                                    (Gratuit)
+                                @endif
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">Status</label>
+                    <select name="status" required
+                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 bg-white">
+                        <option value="active">Activ (plătit)</option>
+                        <option value="trial">Trial / Gratuit oferit</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                        Expiră la <span class="text-gray-400 font-normal">(lasă gol = fără expirare)</span>
+                    </label>
+                    <input type="date" name="ends_at"
+                        value="{{ $activeSubscription && $activeSubscription->ends_at ? $activeSubscription->ends_at->format('Y-m-d') : '' }}"
+                        min="{{ now()->addDay()->format('Y-m-d') }}"
+                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1">
+                        Referință / Notă <span class="text-gray-400 font-normal">(ex: plată verificată, bon fiscal)</span>
+                    </label>
+                    <input type="text" name="payment_reference" maxlength="255"
+                        placeholder="ex: Plată cash 29.04.2026"
+                        class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+                </div>
+
+                <button type="submit"
+                    class="w-full px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition">
+                    Activează planul
+                </button>
+            </form>
+        </div>
+        
         <!-- Recent Reviews -->
         @if($craftsman->reviews->count() > 0)
         <div class="bg-white rounded-lg shadow p-6">

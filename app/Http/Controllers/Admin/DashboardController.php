@@ -8,7 +8,10 @@ use App\Models\Service;
 use App\Models\Appointment;
 use App\Models\Review;
 use App\Models\Category;
+use App\Models\Plan;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 
 class DashboardController extends Controller
@@ -263,14 +266,19 @@ class DashboardController extends Controller
     public function editCraftsman($id)
     {
         $craftsman = User::where('role', 'specialist')
-            ->with(['category', 'location', 'services', 'reviews', 'gallery'])
+            ->with(['category', 'location', 'services', 'reviews', 'gallery',
+                    'subscriptions' => fn($q) => $q->with('plan')->orderByDesc('created_at')])
             ->withCount(['reviews', 'gallery', 'services'])
             ->findOrFail($id);
 
         $categories = Category::where('is_active', true)->orderBy('name')->get();
         $locations = \App\Models\Location::where('is_active', true)->orderBy('city')->get();
+        $plans = Plan::where('is_active', true)->orderBy('sort_order')->get();
 
-        return view('admin.craftsmen.edit', compact('craftsman', 'categories', 'locations'));
+        $activeSubscription = $craftsman->subscriptions
+            ->first(fn($s) => in_array($s->status, ['active', 'trial']) && ($s->ends_at === null || $s->ends_at->isFuture()));
+
+        return view('admin.craftsmen.edit', compact('craftsman', 'categories', 'locations', 'plans', 'activeSubscription'));
     }
 
     /**
@@ -314,5 +322,55 @@ class DashboardController extends Controller
 
         return redirect()->route('admin.craftsmen.edit', $craftsman->id)
             ->with('success', 'Datele meșerișului au fost actualizate.');
+    }
+
+    /**
+     * Assign / update subscription for a craftsman from admin.
+     */
+    public function assignSubscription(Request $request, $id)
+    {
+        $craftsman = User::where('role', 'specialist')->findOrFail($id);
+
+        $validated = $request->validate([
+            'plan_id'            => 'required|exists:plans,id',
+            'status'             => 'required|in:active,trial,cancelled',
+            'ends_at'            => 'nullable|date|after:today',
+            'payment_reference'  => 'nullable|string|max:255',
+        ]);
+
+        // Anulează orice subscripție activă anterioară
+        Subscription::where('user_id', $craftsman->id)
+            ->whereIn('status', ['active', 'trial'])
+            ->update(['status' => 'cancelled', 'cancelled_at' => now()]);
+
+        Subscription::create([
+            'user_id'           => $craftsman->id,
+            'plan_id'           => $validated['plan_id'],
+            'status'            => $validated['status'],
+            'started_at'        => now(),
+            'ends_at'           => $validated['ends_at'] ? Carbon::parse($validated['ends_at'])->endOfDay() : null,
+            'payment_provider'  => 'manual',
+            'payment_reference' => $validated['payment_reference'] ?? 'Admin: ' . auth()->user()->name,
+        ]);
+
+        $plan = Plan::find($validated['plan_id']);
+
+        return redirect()->route('admin.craftsmen.edit', $craftsman->id)
+            ->with('success', 'Planul "' . $plan->name . '" a fost activat pentru ' . $craftsman->name . '.');
+    }
+
+    /**
+     * Cancel active subscription for a craftsman.
+     */
+    public function cancelSubscription($id)
+    {
+        $craftsman = User::where('role', 'specialist')->findOrFail($id);
+
+        Subscription::where('user_id', $craftsman->id)
+            ->whereIn('status', ['active', 'trial'])
+            ->update(['status' => 'cancelled', 'cancelled_at' => now()]);
+
+        return redirect()->route('admin.craftsmen.edit', $craftsman->id)
+            ->with('success', 'Subscripția a fost anulată.');
     }
 }
