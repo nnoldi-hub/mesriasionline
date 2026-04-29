@@ -59,7 +59,7 @@
                 <tr>
                     <td class="px-6 py-4">
                         <div class="text-sm font-medium text-gray-900">{{ $service->name }}</div>
-                        <div class="text-sm text-gray-500">{{ Str::limit($service->description, 50) }}</div>
+                        <div class="text-sm text-gray-500">{{ Str::limit(strip_tags($service->description), 50) }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">

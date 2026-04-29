@@ -468,7 +468,7 @@
                                 </div>
                             @endif
 
-                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ $craftsman->description }}</p>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ Str::limit(strip_tags($craftsman->description), 120) }}</p>
 
                             <div class="flex flex-wrap gap-3 text-sm text-gray-500 mb-4">
                                 <div class="flex items-center">
