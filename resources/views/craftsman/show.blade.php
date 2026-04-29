@@ -24,8 +24,20 @@
                                 {{ strtoupper(substr($craftsman->name, 0, 1)) }}
                             </div>
                             <div class="ml-6 flex-1">
-                                <h1 class="text-3xl font-extrabold text-gray-900 mb-2" style="font-family:'Rubik',sans-serif;">{{ $craftsman->name }}</h1>
+                                <h1 class="text-3xl font-extrabold text-gray-900 mb-2" style="font-family:'Rubik',sans-serif;">
+                                    @if($craftsman->is_company && $craftsman->company_name)
+                                        {{ $craftsman->company_name }}
+                                        <span class="text-lg font-normal text-gray-500 ml-2">({{ $craftsman->name }})</span>
+                                    @else
+                                        {{ $craftsman->name }}
+                                    @endif
+                                </h1>
                                 <p class="text-xl text-gray-600 mb-1">{{ $craftsman->category->name ?? 'Meseriaș' }}</p>
+                                @if($craftsman->is_company && $craftsman->company_type)
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 mb-2 mr-1">
+                                        🏢 {{ $craftsman->company_type }}
+                                    </span>
+                                @endif
                                 @if($craftsman->isPro())
                                     <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 mb-2">⭐ Pro</span>
                                 @elseif($craftsman->isStarter())
@@ -72,6 +84,24 @@
                                                 <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                             </svg>
                                             Asigurat profesional
+                                        </div>
+                                    @endif
+
+                                    @if($craftsman->is_company && $craftsman->cui)
+                                        <div class="flex items-center text-gray-600">
+                                            <svg class="w-5 h-5 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            CUI: {{ $craftsman->cui }}
+                                        </div>
+                                    @endif
+
+                                    @if($craftsman->is_company && $craftsman->reg_com)
+                                        <div class="flex items-center text-gray-600">
+                                            <svg class="w-5 h-5 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                            </svg>
+                                            Reg. Com.: {{ $craftsman->reg_com }}
                                         </div>
                                     @endif
                                 </div>

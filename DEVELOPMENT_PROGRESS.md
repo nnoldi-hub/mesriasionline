@@ -684,7 +684,7 @@
 ### 🔲 De făcut pe server (o singură dată)
 ```bash
 git pull origin main
-php artisan migrate
+php artisan migrate --force
 php artisan cache:clear
 php artisan view:clear
 php artisan config:clear

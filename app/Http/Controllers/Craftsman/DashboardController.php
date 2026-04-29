@@ -101,7 +101,27 @@ class DashboardController extends Controller
             'emergency_services' => 'boolean',
             'has_insurance' => 'boolean',
             'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            // Câmpuri firmă
+            'is_company' => 'boolean',
+            'company_name' => 'nullable|string|max:255|required_if:is_company,1',
+            'company_type' => 'nullable|in:PFA,SRL,SA,II,RA',
+            'cui' => ['nullable', 'string', 'max:20', 'regex:/^(RO)?\d{2,10}$/i'],
+            'reg_com' => ['nullable', 'string', 'max:30', 'regex:/^J\d{1,2}\/\d{1,6}\/\d{4}$/i'],
         ]);
+
+        // Forțăm boolean pentru checkboxuri (HTML trimite câmpul absent dacă e debifat)
+        $validated['available_weekends'] = $request->boolean('available_weekends');
+        $validated['emergency_services'] = $request->boolean('emergency_services');
+        $validated['has_insurance'] = $request->boolean('has_insurance');
+        $validated['is_company'] = $request->boolean('is_company');
+
+        // Dacă nu e firmă, curățăm câmpurile de firmă
+        if (!$validated['is_company']) {
+            $validated['company_name'] = null;
+            $validated['company_type'] = null;
+            $validated['cui'] = null;
+            $validated['reg_com'] = null;
+        }
 
         // Handle profile photo upload
         if ($request->hasFile('profile_photo')) {

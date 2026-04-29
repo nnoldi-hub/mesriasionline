@@ -133,9 +133,84 @@
                 </div>
 
                 <div class="flex items-center">
-                    <input type="checkbox" name="has_insurance" value="1" {{ $craftsman->has_insurance ? 'checked' : '' }}
+                    <input type="checkbox" name="has_insurance" value="1" {{ old('has_insurance', $craftsman->has_insurance) ? 'checked' : '' }}
                         class="h-4 w-4 text-primary-600 focus:ring-primary-600 border-gray-300 rounded">
                     <label class="ml-2 text-sm text-gray-700">Am asigurare profesională</label>
+                </div>
+            </div>
+
+            {{-- Secțiune Firmă / Persoană Juridică --}}
+            <div class="md:col-span-2">
+                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div class="flex items-center mb-3">
+                        <input type="checkbox" name="is_company" id="is_company" value="1"
+                            {{ old('is_company', $craftsman->is_company) ? 'checked' : '' }}
+                            class="h-4 w-4 text-primary-600 focus:ring-primary-600 border-gray-300 rounded"
+                            onchange="toggleCompanyFields(this.checked)">
+                        <label for="is_company" class="ml-2 text-sm font-medium text-gray-800">
+                            Activez ca firmă / persoană juridică (PFA, SRL, SA, II)
+                        </label>
+                    </div>
+
+                    <div id="company-fields" class="{{ old('is_company', $craftsman->is_company) ? '' : 'hidden' }}">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Denumire firmă <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="company_name"
+                                    value="{{ old('company_name', $craftsman->company_name) }}"
+                                    placeholder="ex: SC Instalații Rapide SRL"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent">
+                                @error('company_name')
+                                    <p class="mt-1 text-xs text-error-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tip entitate</label>
+                                <select name="company_type"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent bg-white">
+                                    <option value="">-- Selectează --</option>
+                                    @foreach(['PFA' => 'PFA – Persoană Fizică Autorizată', 'SRL' => 'SRL – Societate cu Răspundere Limitată', 'SA' => 'SA – Societate pe Acțiuni', 'II' => 'II – Întreprindere Individuală', 'RA' => 'RA – Regie Autonomă'] as $val => $label)
+                                        <option value="{{ $val }}" {{ old('company_type', $craftsman->company_type) === $val ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    CUI (Cod Unic de Înregistrare)
+                                </label>
+                                <input type="text" name="cui"
+                                    value="{{ old('cui', $craftsman->cui) }}"
+                                    placeholder="ex: RO12345678 sau 12345678"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent">
+                                @error('cui')
+                                    <p class="mt-1 text-xs text-error-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Nr. Registrul Comerțului
+                                </label>
+                                <input type="text" name="reg_com"
+                                    value="{{ old('reg_com', $craftsman->reg_com) }}"
+                                    placeholder="ex: J40/1234/2020"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent">
+                                @error('reg_com')
+                                    <p class="mt-1 text-xs text-error-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <p class="mt-3 text-xs text-gray-500">
+                            Datele firmei vor fi afișate pe profilul tău public și cresc încrederea clienților.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,6 +225,15 @@
 
 @push('scripts')
 <script>
+function toggleCompanyFields(checked) {
+    const fields = document.getElementById('company-fields');
+    if (checked) {
+        fields.classList.remove('hidden');
+    } else {
+        fields.classList.add('hidden');
+    }
+}
+
 document.getElementById('detect-location-btn').addEventListener('click', function () {
     if (!navigator.geolocation) {
         document.getElementById('location-status').textContent = 'Browserul tău nu suportă geolocalizare.';
