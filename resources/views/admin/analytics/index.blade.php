@@ -246,7 +246,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">⭐ Top 10 Meșteri</h5>
-                    <a href="{{ route('admin.users.index', ['type' => 'meserias']) }}" class="btn btn-sm btn-outline-primary">
+                    <a href="{{ route('admin.craftsmen') }}" class="btn btn-sm btn-outline-primary">
                         Vezi Toți
                     </a>
                 </div>
@@ -266,7 +266,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>
-                                        <a href="{{ route('admin.users.show', $craftsman) }}">
+                                        <a href="{{ route('admin.craftsmen.edit', $craftsman->id) }}">
                                             {{ $craftsman->name }}
                                         </a>
                                     </td>
@@ -291,7 +291,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">📁 Top Categorii</h5>
-                    <a href="{{ route('admin.categories.index') }}" class="btn btn-sm btn-outline-primary">
+                    <a href="{{ route('admin.craftsmen') }}" class="btn btn-sm btn-outline-primary">
                         Vezi Toate
                     </a>
                 </div>
