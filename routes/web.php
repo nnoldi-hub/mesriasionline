@@ -48,6 +48,12 @@ Route::get('/sitemap-meserii.xml', [LandingController::class, 'sitemap'])->name(
 Route::view('/cookies', 'pages.cookies')->name('cookies');
 Route::get('/politica-de-confidentialitate', [PageController::class, 'privacy'])->name('privacy');
 
+// Cereri publice (fără cont)
+use App\Http\Controllers\PublicJobRequestController;
+Route::get('/cere-oferte', [PublicJobRequestController::class, 'create'])->name('public-request.create');
+Route::post('/cere-oferte', [PublicJobRequestController::class, 'store'])->name('public-request.store');
+Route::get('/cere-oferte/confirmare/{token}', [PublicJobRequestController::class, 'success'])->name('public-request.success');
+
 // Articles & Blog
 Route::get('/articole', [ArticleController::class, 'index'])->name('articole');
 Route::get('/articole/{slug}', [ArticleController::class, 'show'])->name('articole.show');
@@ -302,6 +308,11 @@ Route::middleware(['auth', App\Http\Middleware\SpecialistMiddleware::class, 'onb
     Route::get('/certifications/{certification}/edit', [CraftsmanCertificationController::class, 'edit'])->name('certifications.edit');
     Route::put('/certifications/{certification}', [CraftsmanCertificationController::class, 'update'])->name('certifications.update');
     Route::delete('/certifications/{certification}', [CraftsmanCertificationController::class, 'destroy'])->name('certifications.destroy');
+
+    // Cereri publice clienți (vizibile meseriașilor cu abonament)
+    Route::get('/cereri-publice', [\App\Http\Controllers\Craftsman\PublicJobRequestController::class, 'index'])->name('public-requests.index');
+    Route::get('/cereri-publice/{publicJobRequest}', [\App\Http\Controllers\Craftsman\PublicJobRequestController::class, 'show'])->name('public-requests.show');
+    Route::post('/cereri-publice/{publicJobRequest}/raspunde', [\App\Http\Controllers\Craftsman\PublicJobRequestController::class, 'respond'])->name('public-requests.respond');
 });
 
 // Authenticated user routes (Messages, Notifications, Quotes)

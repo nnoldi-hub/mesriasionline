@@ -13,6 +13,18 @@
             <p class="text-xl mb-8" style="color: #2C3E50;">
                 Electricieni, instalatori, zugravi și alți profesioniști verificați.
             </p>
+
+            {{-- CTA dublu: caută SAU postează cerere --}}
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
+                <a href="{{ route('public-request.create') }}"
+                    class="inline-flex items-center text-white font-bold px-8 py-4 rounded-2xl text-lg shadow-xl transition hover:opacity-90"
+                    style="background-color: #C0392B;">
+                    🔨 Ai nevoie de un meseriaș?
+                    <span class="ml-2 text-sm font-normal opacity-90">Cere oferte gratuit →</span>
+                </a>
+            </div>
+
+            <p class="text-sm mb-6" style="color: #7f8c8d;">sau caută direct în lista de meseriași:</p>
             
             <!-- Search Form -->
             <form action="{{ route('home') }}" method="GET" class="bg-white rounded-2xl shadow-xl p-5" id="searchForm">
