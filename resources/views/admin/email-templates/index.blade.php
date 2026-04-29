@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+﻿@extends('layouts.admin')
 
 @section('title', 'Template-uri Email')
 @section('page-title', 'Template-uri Email')
@@ -8,18 +8,18 @@
 {{-- Header --}}
 <div class="flex items-center justify-between mb-6">
     <div>
-        <p class="text-gray-500 text-sm mt-1">Personalizează email-urile trimise automat de platformă</p>
+        <p class="text-gray-500 text-sm mt-1">PersonalizeazÄƒ email-urile trimise automat de platformÄƒ</p>
     </div>
     <div class="flex items-center gap-3">
         <form action="{{ route('admin.email-templates.seed-defaults') }}" method="POST">
             @csrf
             <button type="submit"
-                onclick="return confirm('Aceasta va genera template-urile default. Continuați?')"
+                onclick="return confirm('Aceasta va genera template-urile default. ContinuaÈ›i?')"
                 class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition shadow-sm">
                 <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
                 </svg>
-                Generează Default
+                GenereazÄƒ Default
             </button>
         </form>
         <a href="{{ route('admin.email-templates.create') }}"
@@ -73,7 +73,7 @@
                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/>
                 </svg>
-                Filtrează
+                FiltreazÄƒ
             </button>
             @if(request()->hasAny(['category', 'notification_type', 'status']))
                 <a href="{{ route('admin.email-templates.index') }}" class="inline-flex items-center px-3 py-2 border border-gray-300 text-gray-600 text-sm rounded-lg hover:bg-gray-50 transition">
@@ -98,7 +98,7 @@
                     <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tip</th>
                     <th class="px-5 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                     <th class="px-5 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Default</th>
-                    <th class="px-5 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Acțiuni</th>
+                    <th class="px-5 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">AcÈ›iuni</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
@@ -122,7 +122,7 @@
                                 {{ $template->notification_type_name }}
                             </span>
                         @else
-                            <span class="text-gray-300 text-sm">—</span>
+                            <span class="text-gray-300 text-sm">â€”</span>
                         @endif
                     </td>
                     <td class="px-5 py-4 text-center">
@@ -148,11 +148,11 @@
                             <form action="{{ route('admin.email-templates.set-default', $template) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="text-xs text-primary-600 hover:text-primary-800 font-medium underline underline-offset-2 transition">
-                                    Setează default
+                                    SeteazÄƒ default
                                 </button>
                             </form>
                         @else
-                            <span class="text-gray-300 text-sm">—</span>
+                            <span class="text-gray-300 text-sm">â€”</span>
                         @endif
                     </td>
                     <td class="px-5 py-4 text-right">
@@ -192,9 +192,9 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    onclick="return confirm('Sigur doriți să ștergeți acest template?')"
+                                    onclick="return confirm('Sigur doriÈ›i sÄƒ È™tergeÈ›i acest template?')"
                                     class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
-                                    title="Ștergere">
+                                    title="È˜tergere">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
@@ -220,8 +220,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
             </div>
-            <h3 class="text-gray-900 font-semibold text-lg mb-1">Nu există template-uri</h3>
-            <p class="text-gray-500 text-sm mb-6">Creează primul template sau generează template-urile default.</p>
+            <h3 class="text-gray-900 font-semibold text-lg mb-1">Nu existÄƒ template-uri</h3>
+            <p class="text-gray-500 text-sm mb-6">CreeazÄƒ primul template sau genereazÄƒ template-urile default.</p>
             <div class="flex items-center gap-3">
                 <form action="{{ route('admin.email-templates.seed-defaults') }}" method="POST">
                     @csrf
@@ -229,14 +229,14 @@
                         <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
                         </svg>
-                        Generează Default
+                        GenereazÄƒ Default
                     </button>
                 </form>
                 <a href="{{ route('admin.email-templates.create') }}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                     </svg>
-                    Creează Template
+                    CreeazÄƒ Template
                 </a>
             </div>
         </div>
@@ -265,7 +265,7 @@
                 <div id="preview-subject" class="bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 font-medium"></div>
             </div>
             <div>
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Conținut</p>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">ConÈ›inut</p>
                 <div id="preview-body" class="bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-700 min-h-[200px] leading-relaxed"></div>
             </div>
         </div>
@@ -296,223 +296,10 @@ document.querySelectorAll('.preview-btn').forEach(btn => {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
             })
-            .catch(() => alert('Eroare la încărcarea previzualizării.'));
+            .catch(() => alert('Eroare la Ã®ncÄƒrcarea previzualizÄƒrii.'));
     });
 });
 </script>
 @endpush
 
-@endsection
-
-
-    {{-- Filtre --}}
-    <div class="card mb-4">
-        <div class="card-body">
-            <form method="GET" class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Categorie</label>
-                    <select name="category" class="form-select">
-                        <option value="">Toate categoriile</option>
-                        @foreach($categories as $key => $name)
-                            <option value="{{ $key }}" {{ request('category') === $key ? 'selected' : '' }}>
-                                {{ $name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Tip Notificare</label>
-                    <select name="notification_type" class="form-select">
-                        <option value="">Toate tipurile</option>
-                        @foreach($notificationTypes as $key => $name)
-                            <option value="{{ $key }}" {{ request('notification_type') === $key ? 'selected' : '' }}>
-                                {{ $name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Status</label>
-                    <select name="status" class="form-select">
-                        <option value="">Toate</option>
-                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
-                    </select>
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-secondary me-2">
-                        <i class="fas fa-filter me-1"></i> Filtrează
-                    </button>
-                    <a href="{{ route('admin.email-templates.index') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-times"></i>
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    {{-- Lista template-uri --}}
-    <div class="card">
-        <div class="card-body p-0">
-            @if($templates->count() > 0)
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Nume</th>
-                                <th>Subiect</th>
-                                <th>Categorie</th>
-                                <th>Tip Notificare</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Default</th>
-                                <th class="text-end">Acțiuni</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($templates as $template)
-                                <tr>
-                                    <td>
-                                        <strong>{{ $template->name }}</strong>
-                                        <br>
-                                        <small class="text-muted">{{ $template->slug }}</small>
-                                    </td>
-                                    <td>
-                                        <span class="text-truncate d-inline-block" style="max-width: 250px;">
-                                            {{ $template->subject }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-secondary">{{ $template->category_name }}</span>
-                                    </td>
-                                    <td>
-                                        @if($template->notification_type)
-                                            <span class="badge bg-info">{{ $template->notification_type_name }}</span>
-                                        @else
-                                            <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                    <td class="text-center">
-                                        <form action="{{ route('admin.email-templates.toggle-status', $template) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm {{ $template->is_active ? 'btn-success' : 'btn-outline-secondary' }}">
-                                                {{ $template->is_active ? 'Activ' : 'Inactiv' }}
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td class="text-center">
-                                        @if($template->is_default)
-                                            <span class="badge bg-primary">
-                                                <i class="fas fa-check"></i> Default
-                                            </span>
-                                        @elseif($template->notification_type)
-                                            <form action="{{ route('admin.email-templates.set-default', $template) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button type="submit" class="btn btn-sm btn-outline-primary">
-                                                    Setează default
-                                                </button>
-                                            </form>
-                                        @else
-                                            <span class="text-muted">-</span>
-                                        @endif
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="btn-group btn-group-sm">
-                                            <button type="button" class="btn btn-outline-info preview-btn" 
-                                                    data-template-id="{{ $template->id }}"
-                                                    data-preview-url="{{ route('admin.email-templates.preview', $template) }}">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <a href="{{ route('admin.email-templates.edit', $template) }}" class="btn btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <form action="{{ route('admin.email-templates.duplicate', $template) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                <button type="submit" class="btn btn-outline-secondary">
-                                                    <i class="fas fa-copy"></i>
-                                                </button>
-                                            </form>
-                                            <form action="{{ route('admin.email-templates.destroy', $template) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline-danger" 
-                                                        onclick="return confirm('Sigur doriți să ștergeți acest template?')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="p-3">
-                    {{ $templates->withQueryString()->links() }}
-                </div>
-            @else
-                <div class="text-center py-5">
-                    <i class="fas fa-envelope-open-text fa-3x text-muted mb-3"></i>
-                    <h5>Nu există template-uri</h5>
-                    <p class="text-muted">Creează primul template sau generează template-urile default.</p>
-                    <div class="d-flex justify-content-center gap-2">
-                        <form action="{{ route('admin.email-templates.seed-defaults') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-primary">
-                                <i class="fas fa-magic me-1"></i> Generează Default
-                            </button>
-                        </form>
-                        <a href="{{ route('admin.email-templates.create') }}" class="btn btn-primary">
-                            <i class="fas fa-plus me-1"></i> Creează Template
-                        </a>
-                    </div>
-                </div>
-            @endif
-        </div>
-    </div>
-</div>
-
-{{-- Modal Preview --}}
-<div class="modal fade" id="previewModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Previzualizare Email</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Subiect:</label>
-                    <div id="preview-subject" class="border rounded p-2 bg-light"></div>
-                </div>
-                <div>
-                    <label class="form-label fw-bold">Conținut:</label>
-                    <div id="preview-body" class="border rounded p-3 bg-white" style="min-height: 200px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@push('scripts')
-<script>
-document.querySelectorAll('.preview-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        const url = this.dataset.previewUrl;
-        
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('preview-subject').textContent = data.subject;
-                document.getElementById('preview-body').innerHTML = data.body.replace(/\n/g, '<br>');
-                new bootstrap.Modal(document.getElementById('previewModal')).show();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Eroare la încărcarea previzualizării.');
-            });
-    });
-});
-</script>
-@endpush
 @endsection
