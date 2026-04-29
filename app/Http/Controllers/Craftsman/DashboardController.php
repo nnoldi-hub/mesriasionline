@@ -81,7 +81,7 @@ class DashboardController extends Controller
     public function profile()
     {
         $craftsman = auth()->user();
-        $locations = \App\Models\Location::orderBy('name')->get(['id', 'name', 'latitude', 'longitude']);
+        $locations = \App\Models\Location::where('is_active', true)->orderBy('county')->orderBy('city')->get(['id', 'city', 'county', 'latitude', 'longitude']);
         return view('craftsman.profile', compact('craftsman', 'locations'));
     }
 

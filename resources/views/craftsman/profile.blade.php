@@ -60,7 +60,7 @@
                             data-lat="{{ $loc->latitude }}"
                             data-lng="{{ $loc->longitude }}"
                             {{ old('location_id', $craftsman->location_id) == $loc->id ? 'selected' : '' }}>
-                            {{ $loc->name }}
+                            {{ $loc->city }}{{ $loc->city !== $loc->county ? ' (' . $loc->county . ')' : '' }}
                         </option>
                     @endforeach
                 </select>
