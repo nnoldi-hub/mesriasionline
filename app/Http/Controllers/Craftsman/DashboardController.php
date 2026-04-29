@@ -117,6 +117,12 @@ class DashboardController extends Controller
         $validated['has_insurance'] = $request->boolean('has_insurance');
         $validated['is_company'] = $request->boolean('is_company');
 
+        // Sanitizare descriere (permite doar taguri HTML sigure)
+        if (!empty($validated['description'])) {
+            $validated['description'] = strip_tags($validated['description'],
+                '<p><br><strong><b><em><i><ul><ol><li><h2><h3><a><blockquote>');
+        }
+
         // Dacă nu e firmă, curățăm câmpurile de firmă
         if (!$validated['is_company']) {
             $validated['company_name'] = null;
@@ -166,6 +172,15 @@ class DashboardController extends Controller
 
         $craftsman = auth()->user();
 
+        // Sanitizare descrieri
+        $allowedTags = '<p><br><strong><b><em><i><ul><ol><li><h2><h3><a><blockquote>';
+        if (!empty($validated['description'])) {
+            $validated['description'] = strip_tags($validated['description'], $allowedTags);
+        }
+        if (!empty($validated['detailed_description'])) {
+            $validated['detailed_description'] = strip_tags($validated['detailed_description'], $allowedTags);
+        }
+
         $service = $craftsman->services()->create([
             'name' => $validated['name'],
             'description' => $validated['description'] ?? null,
@@ -213,6 +228,15 @@ class DashboardController extends Controller
             'min_duration' => 'nullable|integer|min:0',
             'max_duration' => 'nullable|integer|min:0',
         ]);
+
+        // Sanitizare descrieri
+        $allowedTags = '<p><br><strong><b><em><i><ul><ol><li><h2><h3><a><blockquote>';
+        if (!empty($validated['description'])) {
+            $validated['description'] = strip_tags($validated['description'], $allowedTags);
+        }
+        if (!empty($validated['detailed_description'])) {
+            $validated['detailed_description'] = strip_tags($validated['detailed_description'], $allowedTags);
+        }
 
         $service->update([
             'name' => $validated['name'],

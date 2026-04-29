@@ -301,6 +301,12 @@ class DashboardController extends Controller
             'longitude' => 'nullable|numeric|between:-180,180',
         ]);
 
+        // Sanitizare descriere (permite doar taguri HTML sigure)
+        if (!empty($validated['description'])) {
+            $validated['description'] = strip_tags($validated['description'],
+                '<p><br><strong><b><em><i><ul><ol><li><h2><h3><a><blockquote>');
+        }
+
         $craftsman->update([
             'name' => $validated['name'],
             'email' => $validated['email'],

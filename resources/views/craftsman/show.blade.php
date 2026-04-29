@@ -186,7 +186,7 @@
                 @if($craftsman->description)
                     <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
                         <h2 class="text-2xl font-extrabold mb-4" style="font-family:'Rubik',sans-serif; color:#2980B9;">Despre</h2>
-                        <p class="text-gray-700 leading-relaxed">{{ $craftsman->description }}</p>
+                        <div class="text-gray-700 leading-relaxed prose prose-sm max-w-none">{!! $craftsman->description !!}</div>
                     </div>
                 @endif
 
@@ -205,7 +205,7 @@
                                             <span class="font-bold text-lg" style="color:#C0392B;">{{ number_format($service->min_price, 0) }} - {{ number_format($service->max_price, 0) }} RON</span>
                                         @endif
                                     </div>
-                                    <p class="text-gray-600 text-sm mb-2">{{ $service->description }}</p>
+                                    <p class="text-gray-600 text-sm mb-2">{!! $service->description !!}</p>
                                     <div class="flex items-center text-sm text-gray-500">
                                         @if($service->duration)
                                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">

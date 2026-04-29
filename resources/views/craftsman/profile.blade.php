@@ -142,8 +142,8 @@
 
             <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Descriere</label>
-                <textarea name="description" rows="4"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent">{{ old('description', $craftsman->description) }}</textarea>
+                <div id="profile_desc_editor" style="min-height:120px;" class="border border-gray-300 rounded-lg bg-white"></div>
+                <textarea name="description" id="profile_description" class="hidden">{{ old('description', $craftsman->description) }}</textarea>
             </div>
 
             <div class="md:col-span-2 space-y-3">
@@ -250,7 +250,34 @@
     </form>
 </div>
 
+@push('head')
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@endpush
+
 @push('scripts')
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+// Quill editor pentru descriere profil
+var profileDescQuill = new Quill('#profile_desc_editor', {
+    theme: 'snow',
+    placeholder: 'Descrie serviciile tale, experiența, specializările...',
+    modules: {
+        toolbar: [
+            [{ 'header': [2, 3, false] }],
+            ['bold', 'italic'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['clean']
+        ]
+    }
+});
+var profileDescExisting = document.getElementById('profile_description').value;
+if (profileDescExisting) {
+    profileDescQuill.clipboard.dangerouslyPasteHTML(profileDescExisting);
+}
+document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('profile_description').value = profileDescQuill.root.innerHTML;
+});
+</script>
 <script>
 function toggleCompanyFields(checked) {
     const fields = document.getElementById('company-fields');

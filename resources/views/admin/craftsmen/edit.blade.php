@@ -97,8 +97,8 @@
             
             <div class="mb-6">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Descriere</label>
-                <textarea name="description" rows="4" 
-                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent">{{ old('description', $craftsman->description) }}</textarea>
+                <div id="admin_craftsman_desc_editor" style="min-height:120px;" class="border border-gray-300 rounded-lg bg-white"></div>
+                <textarea name="description" id="admin_craftsman_description" class="hidden">{{ old('description', $craftsman->description) }}</textarea>
             </div>
             
             <h3 class="text-lg font-semibold mb-4 border-b pb-2">Coordonate GPS (pentru căutare prin proximitate)</h3>
@@ -382,4 +382,31 @@
         @endif
     </div>
 </div>
+
+@push('head')
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+var adminDescQuill = new Quill('#admin_craftsman_desc_editor', {
+    theme: 'snow',
+    placeholder: 'Descriere meșeriaș...',
+    modules: {
+        toolbar: [
+            [{ 'header': [2, 3, false] }],
+            ['bold', 'italic'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['clean']
+        ]
+    }
+});
+var adminDescVal = document.getElementById('admin_craftsman_description').value;
+if (adminDescVal) adminDescQuill.clipboard.dangerouslyPasteHTML(adminDescVal);
+document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('admin_craftsman_description').value = adminDescQuill.root.innerHTML;
+});
+</script>
+@endpush
 @endsection
