@@ -270,10 +270,10 @@
                                             {{ $craftsman->name }}
                                         </a>
                                     </td>
-                                    <td>{{ $craftsman->reviews_received_count }}</td>
+                                    <td>{{ $craftsman->reviews_count }}</td>
                                     <td>
                                         <span class="text-warning">⭐</span>
-                                        {{ number_format($craftsman->reviews_received_avg_rating ?? 0, 1) }}
+                                        {{ number_format($craftsman->reviews_avg_rating ?? 0, 1) }}
                                     </td>
                                 </tr>
                                 @empty

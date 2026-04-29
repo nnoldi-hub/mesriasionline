@@ -67,9 +67,9 @@ class AnalyticsController extends Controller
 
         // Top performers
         $topCraftsmen = User::where('user_type', 'meserias')
-            ->withCount(['reviewsReceived'])
-            ->withAvg('reviewsReceived', 'rating')
-            ->orderByDesc('reviews_received_count')
+            ->withCount(['reviews'])
+            ->withAvg('reviews', 'rating')
+            ->orderByDesc('reviews_count')
             ->limit(10)
             ->get();
 
