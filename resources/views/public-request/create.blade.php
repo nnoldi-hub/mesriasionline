@@ -100,7 +100,7 @@
                                 <option value="">Selectează categoria</option>
                                 @foreach($categories as $cat)
                                     <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
-                                        {{ $cat->icon }} {{ $cat->name }}
+                                        {{ $cat->name }}
                                     </option>
                                 @endforeach
                             </select>
