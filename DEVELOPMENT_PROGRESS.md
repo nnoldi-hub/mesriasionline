@@ -1,9 +1,9 @@
 # 📋 Progres Dezvoltare - Platforma Meseriași
 
 > **Ultima actualizare:** 29 Aprilie 2026  
-> **Versiune curentă:** 1.8.0  
+> **Versiune curentă:** 1.9.0  
 > **Framework:** Laravel 11.x / PHP 8.3.30  
-> **Status:** Live pe meseriasionline.ro — Editor WYSIWYG, notificări admin, analytics activ
+> **Status:** Live pe meseriasionline.ro — Sistem cereri publice (lead gen) activ
 
 ---
 
@@ -33,6 +33,7 @@
 | 🏆 Certificări | ✅ Complet | 90% |
 | 📈 Analytics | ✅ Complet | 100% |
 | ✏️ Editor WYSIWYG (Quill.js) | ✅ Complet | 100% |
+| 🔨 Cereri Publice (Lead Gen) | ✅ Complet | 100% |
 
 ---
 
@@ -338,7 +339,8 @@
 | `TwoFactorAuth` | Autentificare cu doi factori *(NOU v1.4)* |
 | `AuditLog` | Log acțiuni pentru securitate *(NOU v1.4)* |
 | `UserSession` | Sesiuni active pe dispozitive *(NOU v1.4)* |
-| `ArticleLike` | Like/dislike articole *(NOU v1.4)* |
+| `PublicJobRequest` | Cereri publice (lead gen) *(NOU v1.9)* |
+| `PublicJobRequestResponse` | Răspunsuri meseriași la cereri publice *(NOU v1.9)* |
 
 ### Migrări Executate:
 - ✅ Creare tabel users cu câmpuri extinse
@@ -383,6 +385,8 @@
 - ✅ **Tabel audit_logs** (user_id, action, model, model_id, changes, ip) *(NOU v1.4)*
 - ✅ **Tabel user_sessions** (user_id, ip, user_agent, device_type, browser, platform) *(NOU v1.4)*
 - ✅ **Tabel article_likes** (user_id, article_id, is_like) *(NOU v1.4)*
+- ✅ **Tabel public_job_requests** (name, phone, email, category_id, location_id, title, description, urgency, budget_max, status, notified_craftsmen, access_token) *(NOU v1.9)*
+- ✅ **Tabel public_job_request_responses** (public_job_request_id, craftsman_id, action, message) *(NOU v1.9)*
 
 ---
 
@@ -660,6 +664,23 @@
 - ~2000 linii cod
 - 17 rute noi
 
+### 🔨 **17. Sistem Cereri Publice (Lead Gen)** *(NOU v1.9)*
+- [x] Pagină publică `/cere-oferte` — formular fără cont (name, phone, email, categorie, locație, titlu, descriere, urgență, buget, dată preferată)
+- [x] Salvare cerere în DB cu token unic (`access_token`)
+- [x] Notificare automată email la toți meseriașii cu **abonament activ** din aceeași categorie + locație (`NewPublicJobRequestNotification`)
+- [x] Notificare DB (clopoțel) pentru meseriași
+- [x] Pagină confirmare cu numărul de meseriași notificați
+- [x] **Dashboard meseriaș — Cereri Publice:**
+  - [x] Listare cereri disponibile în zona + categoria proprie
+  - [x] Sortare: Urgent → Această săptămână → Flexibil
+  - [x] Badge color-coded urgență (roșu=urgent, galben=săptămâna aceasta)
+  - [x] Badge „✓ Ai răspuns" pe cererile la care meseriaşul a răspuns deja
+  - [x] Pagină detalii cerere cu formular răspuns
+  - [x] „Sunt interesat" → clientul primește email cu telefonul + link profil meseriaş
+  - [x] „Nu mă interesează" → înregistrare răspuns fără email
+- [x] Link **„Cereri Publice"** în sidebar meseriaș cu badge roșu (număr cereri nevăzute)
+- [x] Buton CTA roșu pe homepage: „🔨 Ai nevoie de un meseriaș? Cere oferte gratuit →"
+
 #### 15. Multilingv & Localizare ✅ *IMPLEMENTAT*
 - [x] Suport limbi multiple (RO/EN/HU) - SetLocale middleware, LocaleController
 - [x] Fișiere traduceri lang/ro/messages.php, lang/en/messages.php, lang/hu/messages.php
@@ -699,12 +720,16 @@
 | **strip_tags în carduri** — elimina HTML din listări | `72872c5` | ✅ |
 | **Email notificare admin** la înregistrare meseriaș nou | `b69c565` | ✅ |
 | **Fix analytics** — TrackConversionEvents activat în web | `1743682` | ✅ |
+| **Cereri Publice** — formular public, notificări meseriași, dashboard | `85724f3` | ✅ |
+| **Fix index MySQL** — nume index unic scurtat (max 64 chars) | `0466d71` | ✅ |
+| **Fix dropdown** — eliminare icon din lista categorii | `a22b520` | ✅ |
 
 ### ⚠️ Dezvoltat + push-uit dar PENDING migrare pe server
 | Migrare | Impact dacă nu rulează |
 |---------|----------------------|
 | `create_notification_settings_table` | Admin panel notificări nu salvează setări |
 | `add_notification_preferences_to_users` | Preferințe per-utilizator indisponibile |
+| `create_public_job_requests_table` | ✅ **Rulată** — tabele public_job_requests + public_job_request_responses active |
 
 ### 🔲 De făcut pe server (o singură dată)
 ```bash
