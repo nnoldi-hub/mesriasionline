@@ -145,9 +145,9 @@
                 </p>
                 <p class="text-gray-600 mb-4">
                     <strong>Data Protection Officer (DPO):</strong><br>
-                    Email: <a href="mailto:privacy@meseriasi.ro" class="text-primary-600 hover:underline">privacy@meseriasi.ro</a><br>
-                    Telefon: +40 720 123 456<br>
-                    Adresa: Str. Exemplu Nr. 123, Bucuresti, Romania
+                    Email: <a href="mailto:contact@meseriasionline.ro" class="text-primary-600 hover:underline">contact@meseriasionline.ro</a><br>
+                    Telefon: 0740 173 581<br>
+                    Adresa: Slt. Petre Ionel 205, 077030, Branesti, Ilfov
                 </p>
                 <p class="text-gray-600 mb-4">
                     De asemenea, aveti dreptul de a depune o plangere la Autoritatea Nationala de Supraveghere 

@@ -120,8 +120,8 @@
                     Pentru intrebari sau nelamuriri legate de acesti termeni si conditii, ne puteti contacta la:
                 </p>
                 <p class="text-gray-600 mb-4">
-                    Email: <a href="mailto:contact@meseriasi.ro" class="text-primary-600 hover:underline">contact@meseriasi.ro</a><br>
-                    Telefon: +40 720 123 456
+                    Email: <a href="mailto:contact@meseriasionline.ro" class="text-primary-600 hover:underline">contact@meseriasionline.ro</a><br>
+                    Telefon: 0740 173 581
                 </p>
 
                 <div class="bg-secondary-100 p-6 rounded-lg mt-8">

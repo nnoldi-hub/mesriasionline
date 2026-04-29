@@ -127,8 +127,8 @@
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-lg font-semibold text-gray-900">Email</h3>
-                                <p class="text-gray-600">contact@meseriasi.ro</p>
-                                <p class="text-gray-600">suport@meseriasi.ro</p>
+                                <p class="text-gray-600">contact@meseriasionline.ro</p>
+                                <p class="text-gray-600">suport@meseriasionline.ro</p>
                             </div>
                         </div>
 
@@ -140,7 +140,7 @@
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-lg font-semibold text-gray-900">Telefon</h3>
-                                <p class="text-gray-600">+40 720 123 456</p>
+                                <p class="text-gray-600">0740 173 581</p>
                                 <p class="text-sm text-gray-500">Luni - Vineri: 9:00 - 18:00</p>
                             </div>
                         </div>
@@ -153,8 +153,8 @@
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-lg font-semibold text-gray-900">Adresa</h3>
-                                <p class="text-gray-600">Str. Exemplu Nr. 123</p>
-                                <p class="text-gray-600">Bucuresti, Romania</p>
+                                <p class="text-gray-600">Slt. Petre Ionel 205, 077030</p>
+                                <p class="text-gray-600">Branesti, Ilfov</p>
                             </div>
                         </div>
 
