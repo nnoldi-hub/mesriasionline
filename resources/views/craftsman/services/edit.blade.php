@@ -30,7 +30,7 @@
 @endif
 
 <div class="bg-white rounded-lg shadow p-6">
-    <form action="{{ route('craftsman.services.update', $service->id) }}" method="POST">
+    <form id="service-edit-form" action="{{ route('craftsman.services.update', $service->id) }}" method="POST">
         @csrf
         @method('PUT')
         
@@ -190,13 +190,23 @@ var svcDetailQuill = new Quill('#svc_detail_editor', {
     }
 });
 var descVal = document.getElementById('svc_description').value;
-if (descVal) svcDescQuill.clipboard.dangerouslyPasteHTML(descVal);
+if (descVal) { svcDescQuill.clipboard.dangerouslyPasteHTML(descVal); setTimeout(function(){ svcDescQuill.setSelection(null); }, 50); }
 var detailVal = document.getElementById('svc_detailed_description').value;
-if (detailVal) svcDetailQuill.clipboard.dangerouslyPasteHTML(detailVal);
+if (detailVal) { svcDetailQuill.clipboard.dangerouslyPasteHTML(detailVal); setTimeout(function(){ svcDetailQuill.setSelection(null); }, 50); }
 
-document.querySelector('form').addEventListener('submit', function () {
-    document.getElementById('svc_description').value = svcDescQuill.root.innerHTML;
-    document.getElementById('svc_detailed_description').value = svcDetailQuill.root.innerHTML;
+svcDescQuill.on('text-change', function() {
+    var h = svcDescQuill.root.innerHTML;
+    document.getElementById('svc_description').value = (h === '<p><br></p>') ? '' : h;
+});
+svcDetailQuill.on('text-change', function() {
+    var h = svcDetailQuill.root.innerHTML;
+    document.getElementById('svc_detailed_description').value = (h === '<p><br></p>') ? '' : h;
+});
+document.getElementById('service-edit-form').addEventListener('submit', function () {
+    var h1 = svcDescQuill.root.innerHTML;
+    var h2 = svcDetailQuill.root.innerHTML;
+    document.getElementById('svc_description').value = (h1 === '<p><br></p>') ? '' : h1;
+    document.getElementById('svc_detailed_description').value = (h2 === '<p><br></p>') ? '' : h2;
 });
 </script>
 @endpush

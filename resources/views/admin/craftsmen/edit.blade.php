@@ -27,7 +27,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Main Info -->
     <div class="lg:col-span-2">
-        <form action="{{ route('admin.craftsmen.update', $craftsman->id) }}" method="POST" class="bg-white rounded-lg shadow p-6">
+        <form id="admin-craftsman-form" action="{{ route('admin.craftsmen.update', $craftsman->id) }}" method="POST" class="bg-white rounded-lg shadow p-6">
             @csrf
             @method('PUT')
             
@@ -403,9 +403,14 @@ var adminDescQuill = new Quill('#admin_craftsman_desc_editor', {
     }
 });
 var adminDescVal = document.getElementById('admin_craftsman_description').value;
-if (adminDescVal) adminDescQuill.clipboard.dangerouslyPasteHTML(adminDescVal);
-document.querySelector('form').addEventListener('submit', function () {
-    document.getElementById('admin_craftsman_description').value = adminDescQuill.root.innerHTML;
+if (adminDescVal) { adminDescQuill.clipboard.dangerouslyPasteHTML(adminDescVal); setTimeout(function(){ adminDescQuill.setSelection(null); }, 50); }
+adminDescQuill.on('text-change', function() {
+    var h = adminDescQuill.root.innerHTML;
+    document.getElementById('admin_craftsman_description').value = (h === '<p><br></p>') ? '' : h;
+});
+document.getElementById('admin-craftsman-form').addEventListener('submit', function () {
+    var h = adminDescQuill.root.innerHTML;
+    document.getElementById('admin_craftsman_description').value = (h === '<p><br></p>') ? '' : h;
 });
 </script>
 @endpush

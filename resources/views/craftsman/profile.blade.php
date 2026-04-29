@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="max-w-4xl">
-    <form action="{{ route('craftsman.profile.update') }}" method="POST" class="bg-white rounded-lg shadow p-6">
+    <form id="profile-update-form" action="{{ route('craftsman.profile.update') }}" method="POST" class="bg-white rounded-lg shadow p-6">
         @csrf
         @method('PUT')
 
@@ -273,9 +273,19 @@ var profileDescQuill = new Quill('#profile_desc_editor', {
 var profileDescExisting = document.getElementById('profile_description').value;
 if (profileDescExisting) {
     profileDescQuill.clipboard.dangerouslyPasteHTML(profileDescExisting);
+    // Deselect după paste pentru a evita "tot textul selectat"
+    setTimeout(function() { profileDescQuill.setSelection(null); }, 50);
 }
-document.querySelector('form').addEventListener('submit', function () {
-    document.getElementById('profile_description').value = profileDescQuill.root.innerHTML;
+// Sincronizare live: textarea se actualizează la orice modificare în editor
+profileDescQuill.on('text-change', function() {
+    var html = profileDescQuill.root.innerHTML;
+    // Nu salva starea goală Quill (<p><br></p>)
+    document.getElementById('profile_description').value = (html === '<p><br></p>') ? '' : html;
+});
+// Backup: sincronizare și la submit
+document.getElementById('profile-update-form').addEventListener('submit', function () {
+    var html = profileDescQuill.root.innerHTML;
+    document.getElementById('profile_description').value = (html === '<p><br></p>') ? '' : html;
 });
 </script>
 <script>

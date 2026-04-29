@@ -34,7 +34,7 @@
 @endif
 
 <div class="bg-white rounded-lg shadow p-6">
-    <form action="{{ route('admin.services.update', $service->id) }}" method="POST">
+    <form id="admin-service-form" action="{{ route('admin.services.update', $service->id) }}" method="POST">
         @csrf
         @method('PUT')
         
@@ -205,13 +205,23 @@ var adminSvcDetailQuill = new Quill('#admin_svc_detail_editor', {
     }
 });
 var adminSvcDescVal = document.getElementById('admin_svc_description').value;
-if (adminSvcDescVal) adminSvcDescQuill.clipboard.dangerouslyPasteHTML(adminSvcDescVal);
+if (adminSvcDescVal) { adminSvcDescQuill.clipboard.dangerouslyPasteHTML(adminSvcDescVal); setTimeout(function(){ adminSvcDescQuill.setSelection(null); }, 50); }
 var adminSvcDetailVal = document.getElementById('admin_svc_detailed_description').value;
-if (adminSvcDetailVal) adminSvcDetailQuill.clipboard.dangerouslyPasteHTML(adminSvcDetailVal);
+if (adminSvcDetailVal) { adminSvcDetailQuill.clipboard.dangerouslyPasteHTML(adminSvcDetailVal); setTimeout(function(){ adminSvcDetailQuill.setSelection(null); }, 50); }
 
-document.querySelector('form').addEventListener('submit', function () {
-    document.getElementById('admin_svc_description').value = adminSvcDescQuill.root.innerHTML;
-    document.getElementById('admin_svc_detailed_description').value = adminSvcDetailQuill.root.innerHTML;
+adminSvcDescQuill.on('text-change', function() {
+    var h = adminSvcDescQuill.root.innerHTML;
+    document.getElementById('admin_svc_description').value = (h === '<p><br></p>') ? '' : h;
+});
+adminSvcDetailQuill.on('text-change', function() {
+    var h = adminSvcDetailQuill.root.innerHTML;
+    document.getElementById('admin_svc_detailed_description').value = (h === '<p><br></p>') ? '' : h;
+});
+document.getElementById('admin-service-form').addEventListener('submit', function () {
+    var h1 = adminSvcDescQuill.root.innerHTML;
+    var h2 = adminSvcDetailQuill.root.innerHTML;
+    document.getElementById('admin_svc_description').value = (h1 === '<p><br></p>') ? '' : h1;
+    document.getElementById('admin_svc_detailed_description').value = (h2 === '<p><br></p>') ? '' : h2;
 });
 </script>
 @endpush
