@@ -5,7 +5,12 @@ if (!isset($_GET['run']) || $_GET['run'] !== 'yes') {
 }
 
 $envFile = __DIR__ . '/../.env';
-$env = parse_ini_file($envFile);
+$env = [];
+foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+    if (str_starts_with(trim($line), '#') || !str_contains($line, '=')) continue;
+    [$key, $val] = explode('=', $line, 2);
+    $env[trim($key)] = trim(trim($val), '"\'');
+}
 
 $host     = $env['DB_HOST'] ?? '127.0.0.1';
 $port     = $env['DB_PORT'] ?? '3306';
