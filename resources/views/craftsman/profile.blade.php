@@ -59,6 +59,7 @@
                         <option value="{{ $loc->id }}"
                             data-lat="{{ $loc->latitude }}"
                             data-lng="{{ $loc->longitude }}"
+                            data-slug="{{ $loc->slug }}"
                             {{ old('location_id', $craftsman->location_id) == $loc->id ? 'selected' : '' }}>
                             {{ $loc->city }}{{ $loc->city !== $loc->county ? ' (' . $loc->county . ')' : '' }}
                         </option>
@@ -260,6 +261,40 @@ function toggleCompanyFields(checked) {
     }
 }
 
+// Coordonate fallback pentru orașele principale (când DB are valori null)
+const CITY_COORDS_FALLBACK = {
+    'bucuresti': [44.4268, 26.1025],
+    'voluntari-ilfov': [44.4953, 26.1886],
+    'popesti-leordeni-ilfov': [44.3814, 26.1614],
+    'bragadiru-ilfov': [44.3614, 26.0408],
+    'pantelimon-ilfov': [44.4533, 26.2192],
+    'cluj-napoca-cluj': [46.7712, 23.6236],
+    'floresti-cluj': [46.7486, 23.4986],
+    'turda-cluj': [46.5683, 23.7847],
+    'iasi-iasi': [47.1585, 27.6014],
+    'pascani-iasi': [47.2453, 26.7167],
+    'timisoara-timis': [45.7489, 21.2087],
+    'lugoj-timis': [45.6856, 21.9031],
+    'constanta-constanta': [44.1598, 28.6348],
+    'mangalia-constanta': [43.8153, 28.5831],
+    'medgidia-constanta': [44.2469, 28.2769],
+    'brasov-brasov': [45.6427, 25.5887],
+    'sacele-brasov': [45.6167, 25.7000],
+    'codlea-brasov': [45.7042, 25.4514],
+    'craiova-dolj': [44.3302, 23.7949],
+    'ploiesti-prahova': [44.9397, 26.0173],
+    'campina-prahova': [45.1272, 25.7331],
+    'galati-galati': [45.4353, 28.0080],
+    'braila-braila': [45.2692, 27.9575],
+    'oradea-bihor': [47.0465, 21.9189],
+    'bacau-bacau': [46.5670, 26.9146],
+    'arad-arad': [46.1866, 21.3123],
+    'pitesti-arges': [44.8565, 24.8692],
+    'sibiu-sibiu': [45.7983, 24.1256],
+    'targu-mures-mures': [46.5425, 24.5575],
+    'baia-mare-maramures': [47.6567, 23.5678],
+};
+
 document.getElementById('use-city-btn').addEventListener('click', function () {
     const select = document.getElementById('location_select');
     const statusEl = document.getElementById('location-status');
@@ -274,14 +309,22 @@ document.getElementById('use-city-btn').addEventListener('click', function () {
     const option = select.options[select.selectedIndex];
     const lat = option.getAttribute('data-lat');
     const lng = option.getAttribute('data-lng');
+    const slug = option.getAttribute('data-slug');
 
-    // Dacă avem coordonatele direct în HTML, le folosim
+    // Dacă avem coordonatele direct din DB (în HTML), le folosim
     if (lat && lng && lat !== 'null' && lng !== 'null' && lat !== '' && lng !== '') {
         applyCoordinates(parseFloat(lat), parseFloat(lng), option.textContent.trim());
         return;
     }
 
-    // Fallback: le cerem din API
+    // Fallback 1: coordonate hardcodate pentru orașele principale
+    if (slug && CITY_COORDS_FALLBACK[slug]) {
+        const coords = CITY_COORDS_FALLBACK[slug];
+        applyCoordinates(coords[0], coords[1], option.textContent.trim());
+        return;
+    }
+
+    // Fallback 2: le cerem din API
     const btn = this;
     btn.disabled = true;
     btn.textContent = 'Se încarcă...';
