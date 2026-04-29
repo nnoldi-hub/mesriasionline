@@ -27,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\TrackAffiliateReferral::class,
             \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\TrackConversionEvents::class,
             // Temporar dezactivat pentru dezvoltare locală
             // \App\Http\Middleware\DetectSuspiciousActivity::class,
         ]);
