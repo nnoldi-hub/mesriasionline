@@ -37,51 +37,71 @@ class AnalyticsController extends Controller
         $startDate = now()->subDays((int)$period);
         $endDate = now();
 
-        // Get aggregated stats
-        $stats = PlatformDailyStat::getAggregatedStats($startDate, $endDate);
+        $emptyChartData = ['labels' => [], 'datasets' => []];
+        $emptyFunnel = ['total_sessions' => 0, 'stages' => [], 'conversion_rate' => 0, 'total_value' => 0];
+        $emptyStats = [
+            'total_visits' => 0, 'unique_visitors' => 0, 'page_views' => 0,
+            'new_registrations' => 0, 'new_craftsmen' => 0, 'new_clients' => 0,
+            'profile_views' => 0, 'messages_sent' => 0, 'quote_requests' => 0,
+            'quotes_sent' => 0, 'quotes_accepted' => 0, 'appointments_booked' => 0,
+            'reviews_submitted' => 0, 'total_revenue' => 0, 'affiliate_commissions' => 0,
+            'avg_visit_to_contact_rate' => 0, 'avg_contact_to_quote_rate' => 0,
+            'avg_quote_to_booking_rate' => 0,
+        ];
 
-        // Get chart data
-        $visitsChart = PlatformDailyStat::getVisitsChartData($startDate, $endDate);
-        $conversionsChart = PlatformDailyStat::getConversionsChartData($startDate, $endDate);
+        try { $stats = PlatformDailyStat::getAggregatedStats($startDate, $endDate); }
+        catch (\Throwable $e) { $stats = $emptyStats; }
 
-        // Get funnel stats
-        $funnelStats = $this->trackingService->getFunnelStats($startDate, $endDate);
+        try { $visitsChart = PlatformDailyStat::getVisitsChartData($startDate, $endDate); }
+        catch (\Throwable $e) { $visitsChart = $emptyChartData; }
 
-        // Get traffic sources
-        $trafficSources = $this->trackingService->getTrafficSources($startDate, $endDate);
+        try { $conversionsChart = PlatformDailyStat::getConversionsChartData($startDate, $endDate); }
+        catch (\Throwable $e) { $conversionsChart = $emptyChartData; }
 
-        // Get device breakdown
-        $deviceBreakdown = $this->trackingService->getDeviceBreakdown($startDate, $endDate);
+        try { $funnelStats = $this->trackingService->getFunnelStats($startDate, $endDate); }
+        catch (\Throwable $e) { $funnelStats = $emptyFunnel; }
+
+        try { $trafficSources = $this->trackingService->getTrafficSources($startDate, $endDate); }
+        catch (\Throwable $e) { $trafficSources = []; }
+
+        try { $deviceBreakdown = $this->trackingService->getDeviceBreakdown($startDate, $endDate); }
+        catch (\Throwable $e) { $deviceBreakdown = []; }
 
         // User counts
         $userStats = [
             'total_craftsmen' => User::where('role', 'specialist')->count(),
             'total_clients' => User::where('role', 'client')->count(),
-            'active_craftsmen' => User::where('role', 'specialist')
-                ->where('is_active', true)
-                ->count(),
-            'verified_craftsmen' => User::where('role', 'specialist')
-                ->whereNotNull('email_verified_at')
-                ->count(),
+            'active_craftsmen' => User::where('role', 'specialist')->where('is_active', true)->count(),
+            'verified_craftsmen' => User::where('role', 'specialist')->whereNotNull('email_verified_at')->count(),
         ];
 
         // Top performers
-        $topCraftsmen = User::where('role', 'specialist')
-            ->withCount(['reviews'])
-            ->withAvg('reviews', 'rating')
-            ->orderByDesc('reviews_count')
-            ->limit(10)
-            ->get();
+        try {
+            $topCraftsmen = User::where('role', 'specialist')
+                ->withCount(['reviews'])
+                ->withAvg('reviews', 'rating')
+                ->orderByDesc('reviews_count')
+                ->limit(10)
+                ->get();
+        } catch (\Throwable $e) {
+            $topCraftsmen = collect();
+        }
 
         // Top categories
-        $topCategories = Category::withCount('users')
-            ->orderByDesc('users_count')
-            ->limit(10)
-            ->get();
+        try {
+            $topCategories = Category::withCount('users')->orderByDesc('users_count')->limit(10)->get();
+        } catch (\Throwable $e) {
+            $topCategories = collect();
+        }
 
         // Recent activity
         $recentRegistrations = User::latest()->limit(10)->get();
-        $recentReviews = Review::with(['user', 'specialist'])->latest()->limit(10)->get();
+
+        try {
+            $recentReviews = Review::with(['user', 'specialist'])->latest()->limit(10)->get();
+        } catch (\Throwable $e) {
+            $recentReviews = collect();
+        }
 
         return view('admin.analytics.index', compact(
             'period',
