@@ -104,6 +104,22 @@
             </svg>
             Recenzii
         </a>
+
+        <a href="{{ route('messages.index') }}" class="flex items-center px-6 py-2.5 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('messages*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+            <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>
+                <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/>
+            </svg>
+            Mesaje
+            @php
+                $unreadMessages = \App\Models\Conversation::where('craftsman_id', auth()->id())
+                    ->whereHas('messages', fn($q) => $q->where('sender_id', '!=', auth()->id())->whereNull('read_at'))
+                    ->count();
+            @endphp
+            @if($unreadMessages > 0)
+                <span class="ml-auto bg-primary-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $unreadMessages }}</span>
+            @endif
+        </a>
     </div>
 </div>
 

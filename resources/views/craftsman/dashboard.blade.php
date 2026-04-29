@@ -119,6 +119,35 @@
     </div>
 </div>
 
+{{-- Mesaje Necitite --}}
+@php
+    $unreadMsgCount = \App\Models\Conversation::where('craftsman_id', auth()->id())
+        ->whereHas('messages', fn($q) => $q->where('sender_id', '!=', auth()->id())->whereNull('read_at'))
+        ->count();
+    $totalMsgCount = \App\Models\Conversation::where('craftsman_id', auth()->id())->count();
+@endphp
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+    <a href="{{ route('messages.index') }}" class="bg-white rounded-lg shadow p-6 hover:shadow-md transition block">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Mesaje primite</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2">{{ $totalMsgCount }}</p>
+                @if($unreadMsgCount > 0)
+                    <p class="text-sm font-semibold mt-1" style="color:#C0392B;">{{ $unreadMsgCount }} necitite</p>
+                @else
+                    <p class="text-sm text-gray-500 mt-1">Toate citite</p>
+                @endif
+            </div>
+            <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color:#FEF9C3;">
+                <svg class="w-6 h-6" style="color:#D97706;" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>
+                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z"/>
+                </svg>
+            </div>
+        </div>
+    </a>
+</div>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <!-- Recent Appointments -->
     <div class="bg-white rounded-lg shadow">
