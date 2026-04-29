@@ -319,9 +319,17 @@
                         </a>
                     @endif
                     
-                    <button class="block w-full bg-white hover:bg-gray-50 font-semibold px-6 py-3 rounded-xl transition border-2 text-center" style="color:#2980B9; border-color:#2980B9;">
-                        Trimite Mesaj
-                    </button>
+                    @auth
+                        <a href="{{ route('messages.create', ['craftsman' => $craftsman->id]) }}"
+                           class="block w-full bg-white hover:bg-gray-50 font-semibold px-6 py-3 rounded-xl transition border-2 text-center" style="color:#2980B9; border-color:#2980B9;">
+                            Trimite Mesaj
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}?redirect={{ urlencode(request()->fullUrl()) }}"
+                           class="block w-full bg-white hover:bg-gray-50 font-semibold px-6 py-3 rounded-xl transition border-2 text-center" style="color:#2980B9; border-color:#2980B9;">
+                            Trimite Mesaj
+                        </a>
+                    @endauth
 
                     <div class="mt-6 pt-6 border-t border-gray-200">
                         <h4 class="font-semibold mb-3">Informații suplimentare</h4>
