@@ -1,9 +1,9 @@
 # 📋 Progres Dezvoltare - Platforma Meseriași
 
 > **Ultima actualizare:** 29 Aprilie 2026  
-> **Versiune curentă:** 1.7.0  
+> **Versiune curentă:** 1.8.0  
 > **Framework:** Laravel 11.x / PHP 8.3.30  
-> **Status:** Live pe meseriasionline.ro — Sistem mesaje complet funcțional
+> **Status:** Live pe meseriasionline.ro — Editor WYSIWYG, notificări admin, analytics activ
 
 ---
 
@@ -14,7 +14,7 @@
 | 🏠 Homepage & Listare | ✅ Complet | 100% |
 | 👤 Autentificare | ✅ Complet | 100% |
 | 🔧 Profil Meseriaș | ✅ Complet | 95% |
-| 📊 Dashboard Admin | ✅ Complet | 90% |
+| 📊 Dashboard Admin | ✅ Complet | 95% |
 | 📊 Dashboard Meseriaș | ✅ Complet | 95% |
 | 📰 Blog & Articole | ✅ Complet | 90% |
 | ❓ Întrebări & Răspunsuri | ✅ Complet | 85% |
@@ -31,7 +31,8 @@
 | 📝 Sistem Oferte | ✅ Complet | 90% |
 | 📅 Disponibilitate | ✅ Complet | 90% |
 | 🏆 Certificări | ✅ Complet | 90% |
-| 📈 Analytics | ✅ Complet | 85% |
+| 📈 Analytics | ✅ Complet | 100% |
+| ✏️ Editor WYSIWYG (Quill.js) | ✅ Complet | 100% |
 
 ---
 
@@ -65,6 +66,8 @@
 - [x] Link-uri social media (Facebook, WhatsApp, LinkedIn, etc.)
 - [x] Badge verificat pentru meseriași de încredere
 - [x] Badge featured pentru meseriași promovați
+- [x] **Descriere HTML formatată** cu `{!! !!}` în pagina publică *(NOU v1.8)*
+- [x] **Text curat** (fără coduri HTML) în cardurile de listare *(NOU v1.8)*
 
 ### 📊 **4. Dashboard Administratori**
 - [x] Pagină dashboard principal
@@ -93,6 +96,8 @@
   - [x] Ștergere întrebări
 - [x] Solicitări generice mentenanță/întreținere
 - [x] Marcare solicitări ca finalizate
+- [x] **Activare/Dezactivare subscripții** pentru meseriași (plan, status, expirare, referință plată) *(NOU v1.8)*
+- [x] **Email notificare admin** la înregistrare cont meseriaș nou (`ADMIN_NOTIFY_EMAIL`) *(NOU v1.8)*
 
 ### 📊 **5. Dashboard Meseriași**
 - [x] Pagină dashboard personal
@@ -219,7 +224,19 @@
 - [x] Status verificat (badge)
 - [x] Alertă certificări expirate/aproape de expirare
 
-### 📈 **14. Analytics & Statistici** *(NOU)*
+### ✏️ **Editor WYSIWYG Quill.js** *(NOU v1.8)*
+- [x] Quill.js 1.3.7 via CDN (fără API key)
+- [x] Editor în profil meseriaș (`craftsman/profile`)
+- [x] Editor în servicii meseriaș — câmpuri descriere scurtă + detaliată (`craftsman/services/edit`)
+- [x] Editor în editare meseriaș admin (`admin/craftsmen/edit`)
+- [x] Editor în editare servicii admin (`admin/services/edit`)
+- [x] Sincronizare live prin `text-change` (nu doar la submit)
+- [x] Deselect automat după paste (fix vizual „tot textul selectat")
+- [x] Form ID specific pe fiecare formular (fix `document.querySelector('form')` greșit pe admin)
+- [x] Sanitizare PHP `strip_tags()` cu taguri permise în toate controllerele
+- [x] `@stack('head')` și `@stack('scripts')` adăugate în `layouts/dashboard.blade.php`
+
+### 📈 **14. Analytics & Statistici** *(COMPLET v1.8)*
 - [x] Dashboard statistici pentru meseriași
 - [x] Vizualizări profil cu tracking sursă
 - [x] Grafic evoluție în timp (Chart.js)
@@ -228,6 +245,7 @@
 - [x] Surse de trafic (Google, Facebook, Direct, etc.)
 - [x] Export date CSV
 - [x] Recenzii recente pe pagina statistici
+- [x] **Fix middleware TrackConversionEvents** — era definit dar neînregistrat în grupul `web`, cauzând 0 vizitatori în analytics *(fix v1.8)*
 
 ### 🔍 **15. SEO & Marketing** *(NOU)*
 - [x] Sitemap XML automat (`/sitemap.xml`)
@@ -674,6 +692,13 @@
 | Sistem afiliere | - | ✅ |
 | PWA + mobile responsive | - | ✅ |
 | Securitate: 2FA, CAPTCHA, audit log | - | ✅ |
+| **GPS coordonate** — fallback hardcodat 30 orașe | `304fe62` | ✅ |
+| **Admin subscripții** — asignare/anulare plan manual | `bbf01e3` | ✅ |
+| **Editor WYSIWYG Quill.js** — profil + servicii + admin | `11608d0` | ✅ |
+| **Fix Quill** — sync live, deselect după paste, form ID | `b4b6bb2` | ✅ |
+| **strip_tags în carduri** — elimina HTML din listări | `72872c5` | ✅ |
+| **Email notificare admin** la înregistrare meseriaș nou | `b69c565` | ✅ |
+| **Fix analytics** — TrackConversionEvents activat în web | `1743682` | ✅ |
 
 ### ⚠️ Dezvoltat + push-uit dar PENDING migrare pe server
 | Migrare | Impact dacă nu rulează |
