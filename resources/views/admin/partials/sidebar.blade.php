@@ -61,6 +61,28 @@
     Tranzacții
 </a>
 
+<a href="{{ route('admin.analytics.index') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.analytics*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+    </svg>
+    Analytics
+</a>
+
+<a href="{{ route('admin.affiliates.index') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.affiliates*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a4 4 0 00-4-4h-.5a4.002 4.002 0 00-3.5 2.1A4 4 0 002 17v1h14z"/>
+    </svg>
+    Afiliați
+</a>
+
+<a href="{{ route('admin.email-templates.index') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.email-templates*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+    </svg>
+    Template-uri Email
+</a>
+
 <a href="{{ route('home') }}" target="_blank" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition">
     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
         <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
