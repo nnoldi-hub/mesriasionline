@@ -1,9 +1,9 @@
 # 📋 Progres Dezvoltare - Platforma Meseriași
 
 > **Ultima actualizare:** 30 Aprilie 2026  
-> **Versiune curentă:** 1.10.0  
+> **Versiune curentă:** 1.11.0  
 > **Framework:** Laravel 11.x / PHP 8.3.30  
-> **Status:** Live pe meseriasionline.ro — Sistem cereri publice (lead gen) activ
+> **Status:** Live pe meseriasionline.ro — Chatbot AI + Bază cunoștințe + Transfer WhatsApp activ
 
 ---
 
@@ -36,6 +36,7 @@
 | 🔨 Cereri Publice (Lead Gen) | ✅ Complet | 100% |
 | ⚙️ Setări Platformă (Social Media Brand) | ✅ Complet | 100% |
 | 📋 Admin Cereri Clienți | ✅ Complet | 100% |
+| 🤖 Chatbot AI + Bază Cunoștințe | ✅ Complet | 95% |
 
 ---
 
@@ -357,6 +358,9 @@
 | `UserSession` | Sesiuni active pe dispozitive *(NOU v1.4)* |
 | `PublicJobRequest` | Cereri publice (lead gen) *(NOU v1.9)* |
 | `PublicJobRequestResponse` | Răspunsuri meseriași la cereri publice *(NOU v1.9)* |
+| `ChatbotConversation` | Sesiuni conversații chatbot *(NOU v1.11)* |
+| `ChatbotMessage` | Mesaje chatbot (user + assistant) *(NOU v1.11)* |
+| `ChatbotKnowledge` | Baza de cunoștințe chatbot *(NOU v1.11)* |
 
 ### Migrări Executate:
 - ✅ Creare tabel users cu câmpuri extinse
@@ -403,6 +407,9 @@
 - ✅ **Tabel article_likes** (user_id, article_id, is_like) *(NOU v1.4)*
 - ✅ **Tabel public_job_requests** (name, phone, email, category_id, location_id, title, description, urgency, budget_max, status, notified_craftsmen, access_token) *(NOU v1.9)*
 - ✅ **Tabel public_job_request_responses** (public_job_request_id, craftsman_id, action, message) *(NOU v1.9)*
+- ✅ **Tabel chatbot_conversations** (session_id, user_id, ip, started_at, last_message_at, message_count) *(NOU v1.11)*
+- ✅ **Tabel chatbot_messages** (conversation_id, role, content, metadata JSON, tokens_used) *(NOU v1.11)*
+- ✅ **Tabel chatbot_knowledge** (question_example, keywords, answer, cta_label, cta_url, priority, is_active) *(NOU v1.11)*
 
 ---
 
@@ -689,6 +696,55 @@
 - [x] Sidebar admin — link „Social Media Brand" în meniu
 - [x] Footer public dinamic — iconițe social media ascunse dacă URL-ul e null
 - [x] Câmpuri: `facebook_url`, `instagram_url`, `tiktok_url`, `youtube_url`, `contact_email`, `contact_phone`
+
+### 🤖 **20. Chatbot AI + Bază de Cunoștințe + Transfer WhatsApp** *(NOU v1.11)*
+
+#### Widget chatbot flotant
+- [x] Widget floating button roșu în colțul dreapta-jos (toate paginile publice)
+- [x] Deschidere/închidere animată cu Alpine.js
+- [x] Zona de mesaje cu scroll automat la ultimul mesaj
+- [x] Input text cu limită 500 caractere
+- [x] Indicator „scrie..." (typing indicator) cu animație puncte
+- [x] Mesaje bubble: utilizator dreapta roșu, bot stânga gri
+- [x] Butoane CTA inline în răspunsuri (ex: „Înscrie-te acum" → link direct)
+- [x] Footer widget: text „Asistent AI · MeseriasiOnline.ro" + buton WhatsApp verde
+
+#### Backend AI (ChatbotService)
+- [x] `app/Services/ChatbotService.php` — orchestrează răspunsurile
+- [x] Verificare **bază de cunoștințe locală** înainte de apel OpenAI (răspunsuri instant fără costuri API)
+- [x] Fallback la **OpenAI GPT-4o-mini** dacă nu există potrivire locală
+- [x] System prompt în română cu context platformă MeseriasiOnline.ro
+- [x] Injectare automată context din knowledge base în system prompt OpenAI
+- [x] Detectare intenții utilizator cu CTA buttons (`detectActions()`): înregistrare, login, cerere ofertă, prețuri, categorii, contact, despre noi
+- [x] `ChatbotController` — `sendMessage()`, `getHistory()`, `clearHistory()`
+- [x] Sesiuni separate per utilizator (session-based, fără cont obligatoriu)
+- [x] Rate limiting pe rute chatbot
+
+#### Admin — Bază de Cunoștințe (`/admin/chatbot/knowledge`)
+- [x] `ChatbotKnowledgeController` — CRUD complet + toggleActive
+- [x] Model `ChatbotKnowledge` cu `matchesMessage()` și `getKeywordsArrayAttribute()`
+- [x] View **index** — tabel cu toate intrările, toggle activ/inactiv, edit/delete
+- [x] View **create** — formular: exemplu întrebare, cuvinte cheie CSV, răspuns, CTA label, CTA URL, prioritate, activ
+- [x] View **edit** — formular pre-populat
+- [x] Sidebar admin — sub-link „Bază cunoștințe" sub „Chatbot AI"
+- [x] Rute corecte — grupul `knowledge` plasat înaintea wildcard `/{conversation}` (fix 404)
+
+#### Transfer WhatsApp
+- [x] Buton verde „Consultant WhatsApp" în footer widget cu iconița WhatsApp SVG
+- [x] URL dinamic cu Alpine.js: `wa.me/40740173581?text=...` — ultimul mesaj pre-completat
+- [x] Config `services.whatsapp.number` din `.env` (`WHATSAPP_NUMBER=40740173581`)
+
+#### Admin — Monitorizare Conversații (`/admin/chatbot`)
+- [x] `ChatbotAdminController` — index + show + destroy
+- [x] Lista conversații cu număr mesaje, utilizator, IP, dată
+- [x] Detaliu conversație — istoricul complet al mesajelor
+
+#### Configurare
+- [x] `config/services.php` — `openai.api_key`, `openai.model`, `openai.max_tokens`, `whatsapp.number`
+- [x] Variabile `.env`: `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_MAX_TOKENS`, `WHATSAPP_NUMBER`
+- ⚠️ OpenAI necesită credite pe cont — knowledge base funcționează și fără credite OpenAI
+
+---
 
 ### 📋 **18. Admin Panel Cereri Clienți** *(NOU v1.10)*
 - [x] 3 metode noi în `AdminDashboardController`: `publicJobRequests()`, `publicJobRequestShow()`, `publicJobRequestToggleStatus()`
