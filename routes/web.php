@@ -8,6 +8,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ClientRegisterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\SubscriptionManagementController as AdminSubscriptionController;
@@ -21,6 +22,13 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\LandingController;
+
+// ─── Chatbot AI (rate limit: 20 cereri/minut per IP) ─────────────────────────
+Route::middleware('throttle:20,1')->group(function () {
+    Route::post('/api/chatbot',         [ChatbotController::class, 'chat'])->name('chatbot.chat');
+    Route::post('/api/chatbot/reset',   [ChatbotController::class, 'reset'])->name('chatbot.reset');
+    Route::post('/api/chatbot/convert', [ChatbotController::class, 'convert'])->name('chatbot.convert');
+});
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -207,6 +215,13 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
         Route::get('/users', [\App\Http\Controllers\Admin\AnalyticsController::class, 'users'])->name('users');
         Route::post('/export-pdf', [\App\Http\Controllers\Admin\AnalyticsController::class, 'exportPdf'])->name('export-pdf');
         Route::post('/export-excel', [\App\Http\Controllers\Admin\AnalyticsController::class, 'exportExcel'])->name('export-excel');
+    });
+
+    // Chatbot AI — Monitorizare
+    Route::prefix('chatbot')->name('chatbot.')->group(function () {
+        Route::get('/',                   [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'index'])->name('index');
+        Route::get('/{conversation}',     [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'show'])->name('show');
+        Route::delete('/{conversation}',  [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'destroy'])->name('destroy');
     });
     
     // Email Templates management

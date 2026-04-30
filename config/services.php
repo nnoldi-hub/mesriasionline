@@ -125,4 +125,15 @@ return [
         'webhook_secret' => env('WHATSAPP_WEBHOOK_SECRET'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | OpenAI API
+    |--------------------------------------------------------------------------
+    */
+    'openai' => [
+        'api_key'    => env('OPENAI_API_KEY'),
+        'model'      => env('OPENAI_MODEL', 'gpt-4o-mini'),
+        'max_tokens' => env('OPENAI_MAX_TOKENS', 500),
+    ],
+
 ];

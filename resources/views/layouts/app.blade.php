@@ -408,5 +408,9 @@
             <span>Articole</span>
         </a>
     </nav>
+
+    {{-- Chatbot Widget AI --}}
+    @include('components.chatbot-widget')
+
 </body>
 </html>
