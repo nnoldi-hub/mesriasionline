@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Services\SeoService;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Appointment;
 use App\Models\Quote;
@@ -39,6 +42,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Pagination\Paginator::useTailwind();
+
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
 
         // Register model observers for webhook events
         Appointment::observe(AppointmentObserver::class);
