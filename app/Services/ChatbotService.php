@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
+use App\Models\ChatbotKnowledge;
 use Illuminate\Support\Facades\Log;
 use OpenAI;
 
@@ -25,6 +26,12 @@ class ChatbotService
      */
     public function getResponse(string $userMessage, array $history): array
     {
+        // 1. Verifică mai întâi baza de cunoștințe (răspuns direct, fără OpenAI)
+        $knowledgeResult = $this->checkKnowledgeBase($userMessage);
+        if ($knowledgeResult !== null) {
+            return $knowledgeResult;
+        }
+
         if (empty($this->apiKey)) {
             return [
                 'message' => 'Chatbotul nu este configurat momentan. Vă rugăm să ne contactați direct.',
@@ -58,6 +65,39 @@ class ChatbotService
                 'actions' => [],
             ];
         }
+    }
+
+    /**
+     * Verifică baza de cunoștințe pentru un răspuns direct.
+     * Returnează array cu message+actions sau null dacă nu există match.
+     */
+    private function checkKnowledgeBase(string $userMessage): ?array
+    {
+        try {
+            $entries = ChatbotKnowledge::active()->get();
+
+            foreach ($entries as $entry) {
+                if ($entry->matchesMessage($userMessage)) {
+                    $actions = [];
+                    if ($entry->cta_label && $entry->cta_url) {
+                        $actions[] = [
+                            'label' => $entry->cta_label,
+                            'url'   => $entry->cta_url,
+                            'type'  => 'primary',
+                        ];
+                    }
+
+                    return [
+                        'message' => $entry->answer,
+                        'actions' => $actions,
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            // Nu blocăm dacă tabela nu există încă
+        }
+
+        return null;
     }
 
     /**
@@ -139,11 +179,37 @@ Un asistent AI integrat în platforma MeseriasiOnline.ro, un marketplace române
 - Planuri și prețuri: /plans
 - Contact: /contact
 
+## INFORMAȚII VERIFICATE DIN BAZA DE CUNOȘTINȚE
+{$this->getKnowledgeContext()}
+
 ## TON
 Prietenos, ca un coleg de ajutor. Folosește "tu" (informal dar respectuos).
 Exemplu bun: "Bună! Poți crea un cont gratuit accesând /register — durează 2 minute."
 Exemplu rău: "Bine ați venit la MeseriasiOnline! Suntem o platformă inovatoare care..."
 PROMPT;
+    }
+
+    /**
+     * Extrage cunoștințele active pentru injectare în prompt OpenAI.
+     */
+    private function getKnowledgeContext(): string
+    {
+        try {
+            $entries = ChatbotKnowledge::active()->limit(20)->get();
+            if ($entries->isEmpty()) {
+                return '(nicio intrare adăugată încă)';
+            }
+
+            return $entries->map(function ($e) {
+                $line = "- {$e->question_example}: {$e->answer}";
+                if ($e->cta_url) {
+                    $line .= " Link: {$e->cta_url}";
+                }
+                return $line;
+            })->implode("\n");
+        } catch (\Exception $e) {
+            return '(nicio intrare adăugată încă)';
+        }
     }
 
     /**

@@ -136,4 +136,8 @@ return [
         'max_tokens' => env('OPENAI_MAX_TOKENS', 500),
     ],
 
+    'whatsapp' => [
+        'number' => env('WHATSAPP_NUMBER', '40740173581'),
+    ],
+
 ];

@@ -152,7 +152,7 @@
 
 ```bash
 composer require openai-php/client
-php artisan migrate
+php artisan migrate --force
 php artisan config:clear
 php artisan cache:clear
 ```

@@ -222,6 +222,17 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
         Route::get('/',                   [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'index'])->name('index');
         Route::get('/{conversation}',     [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'show'])->name('show');
         Route::delete('/{conversation}',  [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'destroy'])->name('destroy');
+
+        // Knowledge Base — Antrenare chatbot
+        Route::prefix('knowledge')->name('knowledge.')->group(function () {
+            Route::get('/',                    [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'index'])->name('index');
+            Route::get('/create',              [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'create'])->name('create');
+            Route::post('/',                   [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'store'])->name('store');
+            Route::get('/{knowledge}/edit',    [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'edit'])->name('edit');
+            Route::put('/{knowledge}',         [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'update'])->name('update');
+            Route::delete('/{knowledge}',      [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'destroy'])->name('destroy');
+            Route::patch('/{knowledge}/toggle',[\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'toggleActive'])->name('toggle');
+        });
     });
     
     // Email Templates management
