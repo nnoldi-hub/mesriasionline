@@ -235,6 +235,10 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
         Route::put('/settings', [\App\Http\Controllers\Admin\NotificationSettingsController::class, 'update'])->name('settings.update');
         Route::post('/test-email', [\App\Http\Controllers\Admin\NotificationSettingsController::class, 'testEmail'])->name('test-email');
     });
+
+    // Platform Settings (social media, contact info)
+    Route::get('/platform-settings', [\App\Http\Controllers\Admin\PlatformSettingsController::class, 'index'])->name('platform-settings');
+    Route::put('/platform-settings', [\App\Http\Controllers\Admin\PlatformSettingsController::class, 'update'])->name('platform-settings.update');
 });
 
 // Craftsman routes
