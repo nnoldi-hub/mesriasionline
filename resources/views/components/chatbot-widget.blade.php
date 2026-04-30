@@ -216,8 +216,8 @@
 </div>
 
 <script>
-function chatbotWidget() {
-    return {
+document.addEventListener('alpine:init', () => {
+    Alpine.data('chatbotWidget', () => ({
         isOpen: false,
         isTyping: false,
         currentMessage: '',
@@ -349,6 +349,6 @@ function chatbotWidget() {
                 }
             });
         },
-    };
-}
+    }));
+});
 </script>
