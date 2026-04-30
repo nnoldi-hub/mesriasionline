@@ -89,7 +89,11 @@
     </svg>
     Chatbot AI
     @php
-        $todayChatbot = \App\Models\ChatbotConversation::whereDate('created_at', today())->count();
+        try {
+            $todayChatbot = \App\Models\ChatbotConversation::whereDate('created_at', today())->count();
+        } catch (\Throwable $e) {
+            $todayChatbot = 0;
+        }
     @endphp
     @if($todayChatbot > 0)
         <span class="ml-auto bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $todayChatbot }}</span>
