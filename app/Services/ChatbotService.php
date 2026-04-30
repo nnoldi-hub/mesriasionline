@@ -178,36 +178,72 @@ PROMPT;
         $actions = [];
 
         // Intenție: înregistrare meseriaș
-        if (preg_match('/meserias|înregistr|cont nou|vreau cont|fac cont|inscri/u', $combined)) {
+        if (preg_match('/meserias|înregistr|cont nou|vreau cont|fac cont|inscri|lucrez ca|ofer servicii|devino meserias|deveni meserias/u', $combined)) {
             $actions[] = [
-                'label' => 'Creează cont meseriaș',
+                'label' => '👷 Înscrie-te ca meseriaș',
+                'url'   => '/register?type=craftsman',
+                'type'  => 'primary',
+            ];
+        }
+
+        // Intenție: înregistrare client
+        if (preg_match('/vreau cont client|inscriu client|creez cont|inregistrez client/u', $combined)) {
+            $actions[] = [
+                'label' => '👤 Creează cont client',
                 'url'   => '/register',
                 'type'  => 'primary',
             ];
         }
 
-        // Intenție: postare cerere client
-        if (preg_match('/cerere|am nevoie|caut|angajez|ajutor|reparat|instalat|constru/u', $combined)) {
+        // Intenție: postare cerere / caută meseriaș
+        if (preg_match('/cerere|am nevoie|caut meserias|angajez|ajutor cu|reparat|instalat|constru|renovare|zugrav|cere oferta|oferta|montaj/u', $combined)) {
             $actions[] = [
-                'label' => 'Postează cerere gratuită',
+                'label' => '📋 Postează cerere gratuită',
                 'url'   => '/public-requests/create',
+                'type'  => 'primary',
+            ];
+        }
+
+        // Intenție: browse meseriași / categorii
+        if (preg_match('/cauta meserias|gasesc|lista meseriasi|categorii|servicii disponibile|ce meseriasi/u', $combined)) {
+            $actions[] = [
+                'label' => '🔍 Caută meseriași',
+                'url'   => '/#categories',
                 'type'  => 'secondary',
             ];
         }
 
         // Intenție: prețuri / planuri
-        if (preg_match('/pret|cost|comision|plan|abonament|gratuit|platesc/u', $combined)) {
+        if (preg_match('/pret|cost|comision|plan|abonament|gratuit|platesc|cat costa|tarif|premium|standard/u', $combined)) {
             $actions[] = [
-                'label' => 'Vezi planuri și prețuri',
+                'label' => '💰 Vezi planuri și prețuri',
                 'url'   => '/plans',
                 'type'  => 'secondary',
             ];
         }
 
-        // Intenție: contact
-        if (preg_match('/contact|email|telefon|suport|ajutor/u', $combined)) {
+        // Intenție: cum funcționează
+        if (preg_match('/cum functioneaza|cum merge|cum se foloseste|cum lucreaza|despre platforma|explica/u', $combined)) {
             $actions[] = [
-                'label' => 'Contactează-ne',
+                'label' => 'ℹ️ Despre platformă',
+                'url'   => '/despre',
+                'type'  => 'secondary',
+            ];
+        }
+
+        // Intenție: login
+        if (preg_match('/autentific|login|intru in cont|am cont deja|parola/u', $combined)) {
+            $actions[] = [
+                'label' => '🔑 Intră în cont',
+                'url'   => '/login',
+                'type'  => 'secondary',
+            ];
+        }
+
+        // Intenție: contact / suport
+        if (preg_match('/contact|email|telefon|suport|problema|reclamatie|ajutor urgent/u', $combined)) {
+            $actions[] = [
+                'label' => '📞 Contactează-ne',
                 'url'   => '/contact',
                 'type'  => 'secondary',
             ];
@@ -223,15 +259,15 @@ PROMPT;
     {
         $msg = strtolower($message);
 
-        if (preg_match('/meserias|înregistr|cont nou|vreau cont|fac cont|inscri|lucrez ca|ofer servicii/u', $msg)) {
+        if (preg_match('/meserias|înregistr|cont nou|vreau cont|fac cont|inscri|lucrez ca|ofer servicii|devino|deveni meserias/u', $msg)) {
             return 'craftsman_register';
         }
 
-        if (preg_match('/cerere|am nevoie|caut meserias|angajez|ajutor cu|reparat|instalat|constru|renovare|zugrav/u', $msg)) {
+        if (preg_match('/cerere|am nevoie|caut meserias|angajez|ajutor cu|reparat|instalat|constru|renovare|zugrav|cere oferta|montaj/u', $msg)) {
             return 'client_request';
         }
 
-        if (preg_match('/pret|cost|comision|plan|abonament|cat costa|platesc|gratuit|tarif/u', $msg)) {
+        if (preg_match('/pret|cost|comision|plan|abonament|cat costa|platesc|gratuit|tarif|premium/u', $msg)) {
             return 'pricing';
         }
 
