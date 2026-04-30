@@ -186,7 +186,7 @@
                 @csrf
                 @method('PATCH')
                 @if($jobRequest->status === 'open' || $jobRequest->status === 'in_progress')
-                    <button type="submit" class="w-full py-2.5 px-4 bg-gray-700 hover:bg-gray-800 text-white text-sm font-semibold rounded-xl transition">
+                    <button type="submit" class="w-full py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-xl transition">
                         Închide cererea
                     </button>
                 @else
