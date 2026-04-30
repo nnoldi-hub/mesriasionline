@@ -174,7 +174,7 @@ Un asistent AI integrat în platforma MeseriasiOnline.ro, un marketplace române
 
 ## LINK-URI UTILE (menționează-le când e relevant)
 - Înregistrare: /register
-- Postare cerere: /public-requests/create  
+- Postare cerere: /cere-oferte  
 - Categorii: /#categories
 - Planuri și prețuri: /plans
 - Contact: /contact
@@ -265,7 +265,7 @@ PROMPT;
         if (preg_match('/cerere|am nevoie|caut meserias|angajez|ajutor cu|reparat|instalat|constru|renovare|zugrav|cere oferta|oferta|montaj/u', $combined)) {
             $actions[] = [
                 'label' => '📋 Postează cerere gratuită',
-                'url'   => '/public-requests/create',
+                'url'   => '/cere-oferte',
                 'type'  => 'primary',
             ];
         }
