@@ -173,10 +173,11 @@ Un asistent AI integrat în platforma MeseriasiOnline.ro, un marketplace române
 - Nu folosi markdown excesiv în răspunsuri (fără **bold** sau # headings)
 
 ## LINK-URI UTILE (menționează-le când e relevant)
-- Înregistrare: /register
+- Înregistrare meseriaș: /register
+- Înregistrare client: /register/client
 - Postare cerere: /cere-oferte  
 - Categorii: /#categories
-- Planuri și prețuri: /plans
+- Planuri și prețuri: /planuri
 - Contact: /contact
 
 ## INFORMAȚII VERIFICATE DIN BAZA DE CUNOȘTINȚE
@@ -247,16 +248,16 @@ PROMPT;
         if (preg_match('/meserias|înregistr|cont nou|vreau cont|fac cont|inscri|lucrez ca|ofer servicii|devino meserias|deveni meserias/u', $combined)) {
             $actions[] = [
                 'label' => '👷 Înscrie-te ca meseriaș',
-                'url'   => '/register?type=craftsman',
+                'url'   => '/register',
                 'type'  => 'primary',
             ];
         }
 
         // Intenție: înregistrare client
-        if (preg_match('/vreau cont client|inscriu client|creez cont|inregistrez client/u', $combined)) {
+        if (preg_match('/vreau cont client|inscriu client|creez cont|inregistrez client|cont client|ca client/u', $combined)) {
             $actions[] = [
                 'label' => '👤 Creează cont client',
-                'url'   => '/register',
+                'url'   => '/register/client',
                 'type'  => 'primary',
             ];
         }
@@ -283,7 +284,7 @@ PROMPT;
         if (preg_match('/pret|cost|comision|plan|abonament|gratuit|platesc|cat costa|tarif|premium|standard/u', $combined)) {
             $actions[] = [
                 'label' => '💰 Vezi planuri și prețuri',
-                'url'   => '/plans',
+                'url'   => '/planuri',
                 'type'  => 'secondary',
             ];
         }
