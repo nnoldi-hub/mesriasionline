@@ -5,7 +5,7 @@
 --}}
 
 <div
-    x-data="chatbotWidget()"
+    x-data="chatbotWidget"
     x-init="init()"
     class="fixed bottom-6 right-6 z-[9000] flex flex-col items-end"
     style="font-family: 'Nunito', sans-serif;"
