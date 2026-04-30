@@ -226,6 +226,8 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
             Route::get('/',                    [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'index'])->name('index');
             Route::get('/create',              [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'create'])->name('create');
             Route::post('/',                   [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'store'])->name('store');
+            Route::get('/test',                [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'test'])->name('test');
+            Route::post('/test',               [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'testQuery'])->name('test.query');
             Route::get('/{knowledge}/edit',    [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'edit'])->name('edit');
             Route::put('/{knowledge}',         [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'update'])->name('update');
             Route::delete('/{knowledge}',      [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'destroy'])->name('destroy');

@@ -80,4 +80,51 @@ class ChatbotKnowledgeController extends Controller
 
         return back()->with('success', 'Status actualizat.');
     }
+
+    /**
+     * Pagina de testare a knowledge base-ului.
+     */
+    public function test()
+    {
+        $totalEntries  = ChatbotKnowledge::count();
+        $activeEntries = ChatbotKnowledge::where('is_active', true)->count();
+        return view('admin.chatbot-knowledge.test', compact('totalEntries', 'activeEntries'));
+    }
+
+    /**
+     * Testează un mesaj față de knowledge base și returnează rezultatul JSON.
+     */
+    public function testQuery(Request $request)
+    {
+        $request->validate(['message' => ['required', 'string', 'max:500']]);
+
+        $message = trim($request->input('message'));
+        $entries = ChatbotKnowledge::active()->get();
+
+        $results = [];
+        foreach ($entries as $entry) {
+            $matched = $entry->matchesMessage($message);
+            $results[] = [
+                'id'               => $entry->id,
+                'question_example' => $entry->question_example,
+                'keywords'         => $entry->keywords,
+                'matched'          => $matched,
+                'cta_label'        => $entry->cta_label,
+                'cta_url'          => $entry->cta_url,
+                'answer_preview'   => mb_substr($entry->answer, 0, 80) . '...',
+            ];
+        }
+
+        // Sortăm matched-urile primele
+        usort($results, fn($a, $b) => $b['matched'] <=> $a['matched']);
+
+        $firstMatch = collect($results)->firstWhere('matched', true);
+
+        return response()->json([
+            'message'     => $message,
+            'total'       => count($results),
+            'first_match' => $firstMatch,
+            'all_results' => $results,
+        ]);
+    }
 }

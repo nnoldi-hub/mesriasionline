@@ -6,13 +6,19 @@
 
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
     <p class="text-gray-500 text-sm">Răspunsuri directe și linkuri corecte — chatbot-ul le folosește când detectează keyworduri</p>
-    <a href="{{ route('admin.chatbot.knowledge.create') }}"
-       class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-        </svg>
-        Adaugă intrare
-    </a>
+    <div class="flex items-center gap-2">
+        <a href="{{ route('admin.chatbot.knowledge.test') }}"
+           class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg transition">
+            🧪 Testează
+        </a>
+        <a href="{{ route('admin.chatbot.knowledge.create') }}"
+           class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            Adaugă intrare
+        </a>
+    </div>
 </div>
 
 @if(session('success'))
