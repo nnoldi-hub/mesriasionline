@@ -239,6 +239,11 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
     // Platform Settings (social media, contact info)
     Route::get('/platform-settings', [\App\Http\Controllers\Admin\PlatformSettingsController::class, 'index'])->name('platform-settings');
     Route::put('/platform-settings', [\App\Http\Controllers\Admin\PlatformSettingsController::class, 'update'])->name('platform-settings.update');
+
+    // Cereri publice clienți (formularul /cere-oferte)
+    Route::get('/cereri-publice', [AdminDashboardController::class, 'publicJobRequests'])->name('public-job-requests.index');
+    Route::get('/cereri-publice/{jobRequest}', [AdminDashboardController::class, 'publicJobRequestShow'])->name('public-job-requests.show');
+    Route::patch('/cereri-publice/{jobRequest}/toggle-status', [AdminDashboardController::class, 'publicJobRequestToggleStatus'])->name('public-job-requests.toggle-status');
 });
 
 // Craftsman routes

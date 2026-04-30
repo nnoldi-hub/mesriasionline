@@ -10,6 +10,8 @@ use App\Models\Review;
 use App\Models\Category;
 use App\Models\Plan;
 use App\Models\Subscription;
+use App\Models\PublicJobRequest;
+use App\Models\PublicJobRequestResponse;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -52,6 +54,54 @@ class DashboardController extends Controller
                 ->get();
             return view('admin.generic_requests', compact('requests'));
         }
+
+    // Cereri publice clienți (formularul /cere-oferte)
+    public function publicJobRequests(Request $request)
+    {
+        $query = PublicJobRequest::with(['category', 'location'])
+            ->withCount([
+                'responses',
+                'responses as interested_count' => fn($q) => $q->where('action', 'interested'),
+                'responses as viewed_count'     => fn($q) => $q->where('action', 'viewed'),
+            ]);
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->search}%")
+                  ->orWhere('title', 'like', "%{$request->search}%")
+                  ->orWhere('phone', 'like', "%{$request->search}%");
+            });
+        }
+
+        $jobRequests = $query->orderByDesc('created_at')->paginate(20)->withQueryString();
+
+        return view('admin.public-job-requests.index', compact('jobRequests'));
+    }
+
+    public function publicJobRequestShow(PublicJobRequest $jobRequest)
+    {
+        $jobRequest->load(['category', 'location']);
+
+        $responses = PublicJobRequestResponse::with('craftsman')
+            ->where('public_job_request_id', $jobRequest->id)
+            ->orderByRaw("FIELD(action, 'interested', 'viewed', 'not_interested')")
+            ->orderByDesc('updated_at')
+            ->get();
+
+        return view('admin.public-job-requests.show', compact('jobRequest', 'responses'));
+    }
+
+    public function publicJobRequestToggleStatus(PublicJobRequest $jobRequest)
+    {
+        $newStatus = $jobRequest->status === 'open' ? 'closed' : 'open';
+        $jobRequest->update(['status' => $newStatus]);
+
+        $label = $newStatus === 'open' ? 'redeschisă' : 'închisă';
+        return back()->with('success', "Cererea a fost {$label}.");
+    }
     public function index()
     {
         $stats = [

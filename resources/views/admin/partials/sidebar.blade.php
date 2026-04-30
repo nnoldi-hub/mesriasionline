@@ -5,11 +5,26 @@
     Dashboard
 </a>
 
-<a href="{{ route('admin.generic.requests') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.generic.requests') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+<a href="{{ route('admin.generic.requests') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.generic.requests*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
         <path d="M4 3a1 1 0 011-1h10a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V3zM4 9a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM15 8a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
     </svg>
     Solicitări
+</a>
+
+<a href="{{ route('admin.public-job-requests.index') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.public-job-requests*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+    @php
+        $unrepliedCount = \App\Models\PublicJobRequest::where('status', 'open')
+            ->whereDoesntHave('responses', fn($q) => $q->where('action', 'interested'))
+            ->count();
+    @endphp
+    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+    </svg>
+    Cereri Clienți
+    @if($unrepliedCount > 0)
+        <span class="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ $unrepliedCount }}</span>
+    @endif
 </a>
 
 <a href="{{ route('admin.craftsmen') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.craftsmen*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
