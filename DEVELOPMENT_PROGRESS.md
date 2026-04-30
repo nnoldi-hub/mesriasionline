@@ -1,7 +1,7 @@
 # 📋 Progres Dezvoltare - Platforma Meseriași
 
-> **Ultima actualizare:** 29 Aprilie 2026  
-> **Versiune curentă:** 1.9.0  
+> **Ultima actualizare:** 30 Aprilie 2026  
+> **Versiune curentă:** 1.10.0  
 > **Framework:** Laravel 11.x / PHP 8.3.30  
 > **Status:** Live pe meseriasionline.ro — Sistem cereri publice (lead gen) activ
 
@@ -34,6 +34,8 @@
 | 📈 Analytics | ✅ Complet | 100% |
 | ✏️ Editor WYSIWYG (Quill.js) | ✅ Complet | 100% |
 | 🔨 Cereri Publice (Lead Gen) | ✅ Complet | 100% |
+| ⚙️ Setări Platformă (Social Media Brand) | ✅ Complet | 100% |
+| 📋 Admin Cereri Clienți | ✅ Complet | 100% |
 
 ---
 
@@ -97,6 +99,20 @@
   - [x] Ștergere întrebări
 - [x] Solicitări generice mentenanță/întreținere
 - [x] Marcare solicitări ca finalizate
+- [x] **Setări Platformă (Social Media Brand)** *(NOU v1.10)*
+  - [x] Panel admin `/admin/platform-settings` pentru setare URL-uri Facebook, Instagram, TikTok, YouTube
+  - [x] Câmpuri contact (email, telefon) configurabile din admin
+  - [x] Model `PlatformSetting` cu cache (1h TTL, auto-invalidare la update)
+  - [x] Footer public afișează iconițele social media dinamic (ascunde dacă URL null)
+- [x] **Admin Cereri Clienți** *(NOU v1.10)*
+  - [x] Lista toate cererile `/admin/cereri-publice` cu filtrare (status, căutare)
+  - [x] Statistici sumar (total, deschise, fără răspuns, închise)
+  - [x] Vizibil: client name/phone/email, titlu, urgență, notificați, interesați, status
+  - [x] Pagină detaliu `/admin/cereri-publice/{id}` cu datele complete ale clientului
+  - [x] Lista răspunsuri meseriași cu acțiunea fiecăruia (Interesat / Văzut / Neinteresat)
+  - [x] Statistici: notificați → văzut → ofertă trimisă → neinteresat
+  - [x] Buton Închide/Redeschide cerere (roșu/verde)
+  - [x] Badge roșu în sidebar admin cu numărul de cereri fără niciun meseriaș interesat
 - [x] **Activare/Dezactivare subscripții** pentru meseriași (plan, status, expirare, referință plată) *(NOU v1.8)*
 - [x] **Email notificare admin** la înregistrare cont meseriaș nou (`ADMIN_NOTIFY_EMAIL`) *(NOU v1.8)*
 
@@ -664,7 +680,32 @@
 - ~2000 linii cod
 - 17 rute noi
 
-### 🔨 **17. Sistem Cereri Publice (Lead Gen)** *(NOU v1.9)*
+### ⚙️ **17. Setări Platformă (Social Media Brand)** *(NOU v1.10)*
+- [x] Tabel `platform_settings` (key-value store) — migrare `2026_04_30_000001_create_platform_settings_table.php`
+- [x] Model `PlatformSetting` cu metode statice `getValue()` / `setValue()` + cache 1h (auto-invalidare la update)
+- [x] `PlatformSettingsController` — index + update cu validare URL/email/phone
+- [x] View admin `resources/views/admin/platform-settings.blade.php`
+- [x] Rute: `GET/PUT /admin/platform-settings` → `admin.platform-settings` / `admin.platform-settings.update`
+- [x] Sidebar admin — link „Social Media Brand" în meniu
+- [x] Footer public dinamic — iconițe social media ascunse dacă URL-ul e null
+- [x] Câmpuri: `facebook_url`, `instagram_url`, `tiktok_url`, `youtube_url`, `contact_email`, `contact_phone`
+
+### 📋 **18. Admin Panel Cereri Clienți** *(NOU v1.10)*
+- [x] 3 metode noi în `AdminDashboardController`: `publicJobRequests()`, `publicJobRequestShow()`, `publicJobRequestToggleStatus()`
+- [x] View index `resources/views/admin/public-job-requests/index.blade.php`
+  - Statistici sumar (total / deschise / fără răspuns / închise)
+  - Tabel cu: client, titlu, urgență, notificați, interesați (verde dacă >0 / roșu dacă 0), status, dată, acțiuni
+  - Filtre: status, căutare text
+- [x] View detaliu `resources/views/admin/public-job-requests/show.blade.php`
+  - Date complete client (clickable tel + email)
+  - Detalii cerere (categorie, locație, buget, dată preferată)
+  - Lista răspunsuri meseriași cu badge acțiune (✓ Interesat / 👁 Văzut / ✗ Neinteresat) + contact meseriaș
+  - Statistici vizuale: notificați → văzut → ofertă trimisă → neinteresat
+  - Buton roșu „Închide cererea" / verde „Redeschide cererea"
+- [x] Rute: `GET /admin/cereri-publice`, `GET /admin/cereri-publice/{id}`, `PATCH /admin/cereri-publice/{id}/toggle-status`
+- [x] Sidebar admin — link „Cereri Clienți" cu badge roșu (cereri fără niciun meseriaș interesat)
+
+### 🔨 **19. Sistem Cereri Publice (Lead Gen)** *(NOU v1.9)*
 - [x] Pagină publică `/cere-oferte` — formular fără cont (name, phone, email, categorie, locație, titlu, descriere, urgență, buget, dată preferată)
 - [x] Salvare cerere în DB cu token unic (`access_token`)
 - [x] Notificare automată email la toți meseriașii cu **abonament activ** din aceeași categorie + locație (`NewPublicJobRequestNotification`)
@@ -721,6 +762,9 @@
 | **Email notificare admin** la înregistrare meseriaș nou | `b69c565` | ✅ |
 | **Fix analytics** — TrackConversionEvents activat în web | `1743682` | ✅ |
 | **Cereri Publice** — formular public, notificări meseriași, dashboard | `85724f3` | ✅ |
+| **Platform Settings** — Social Media Brand + footer dinamic | `254d27f` | ✅ confirmat live |
+| **Admin Cereri Clienți** — list, detaliu, tracking răspunsuri, toggle status | `1b847ef` | ✅ |
+| **Fix buton culoare** — roșu Închide / verde Redeschide | `ba2352a` | ✅ |
 | **Fix index MySQL** — nume index unic scurtat (max 64 chars) | `0466d71` | ✅ |
 | **Fix dropdown** — eliminare icon din lista categorii | `a22b520` | ✅ |
 
