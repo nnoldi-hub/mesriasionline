@@ -220,10 +220,8 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
     // Chatbot AI — Monitorizare
     Route::prefix('chatbot')->name('chatbot.')->group(function () {
         Route::get('/',                   [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'index'])->name('index');
-        Route::get('/{conversation}',     [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'show'])->name('show');
-        Route::delete('/{conversation}',  [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'destroy'])->name('destroy');
 
-        // Knowledge Base — Antrenare chatbot
+        // Knowledge Base — Antrenare chatbot (trebuie înainte de /{conversation})
         Route::prefix('knowledge')->name('knowledge.')->group(function () {
             Route::get('/',                    [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'index'])->name('index');
             Route::get('/create',              [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'create'])->name('create');
@@ -233,6 +231,9 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
             Route::delete('/{knowledge}',      [\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'destroy'])->name('destroy');
             Route::patch('/{knowledge}/toggle',[\App\Http\Controllers\Admin\ChatbotKnowledgeController::class, 'toggleActive'])->name('toggle');
         });
+
+        Route::get('/{conversation}',     [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'show'])->name('show');
+        Route::delete('/{conversation}',  [\App\Http\Controllers\Admin\ChatbotAdminController::class, 'destroy'])->name('destroy');
     });
     
     // Email Templates management
