@@ -22,6 +22,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\CraftsmanRecruitmentController;
+use App\Http\Controllers\Admin\CraftsmanLeadController;
 
 // ─── Chatbot AI (rate limit: 20 cereri/minut per IP) ─────────────────────────
 Route::middleware('throttle:20,1')->group(function () {
@@ -96,6 +98,15 @@ Route::post('/register/client', [ClientRegisterController::class, 'register'])->
 Route::get('/pentru-meseriasi', function () {
     return view('pages.pentru-meseriasi');
 })->name('pentru-meseriasi');
+
+// ─── Formular recrutare meseriași (lead magnet) ───────────────────────────────
+Route::middleware('throttle:10,1')->group(function () {
+    Route::get('/inscriere-meserias',  [CraftsmanRecruitmentController::class, 'showForm'])->name('recruitment.form');
+    Route::post('/inscriere-meserias', [CraftsmanRecruitmentController::class, 'store'])->name('recruitment.store');
+});
+Route::get('/inscriere-meserias/confirmare/{id}', [CraftsmanRecruitmentController::class, 'success'])->name('recruitment.success');
+Route::get('/inscriere-meserias/activare/{token}',  [CraftsmanRecruitmentController::class, 'activateForm'])->name('recruitment.activate');
+Route::post('/inscriere-meserias/activare/{token}', [CraftsmanRecruitmentController::class, 'activateStore'])->name('recruitment.activate.store');
 
 // Planuri & Subscriptions
 Route::get('/planuri', [\App\Http\Controllers\SubscriptionController::class, 'index'])->name('plans.index');
@@ -273,6 +284,16 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
     Route::get('/cereri-publice', [AdminDashboardController::class, 'publicJobRequests'])->name('public-job-requests.index');
     Route::get('/cereri-publice/{jobRequest}', [AdminDashboardController::class, 'publicJobRequestShow'])->name('public-job-requests.show');
     Route::patch('/cereri-publice/{jobRequest}/toggle-status', [AdminDashboardController::class, 'publicJobRequestToggleStatus'])->name('public-job-requests.toggle-status');
+
+    // ─── Leads recrutare meseriași ────────────────────────────────────────────
+    Route::prefix('leads')->name('leads.')->group(function () {
+        Route::get('/',                       [CraftsmanLeadController::class, 'index'])->name('index');
+        Route::get('/{lead}',                 [CraftsmanLeadController::class, 'show'])->name('show');
+        Route::patch('/{lead}',               [CraftsmanLeadController::class, 'update'])->name('update');
+        Route::post('/{lead}/invite',         [CraftsmanLeadController::class, 'sendInvite'])->name('invite');
+        Route::get('/{lead}/activation-link', [CraftsmanLeadController::class, 'getActivationLink'])->name('activation-link');
+        Route::delete('/{lead}',              [CraftsmanLeadController::class, 'destroy'])->name('destroy');
+    });
 });
 
 // Craftsman routes
