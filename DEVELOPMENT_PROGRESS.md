@@ -1,9 +1,9 @@
 # 📋 Progres Dezvoltare - Platforma Meseriași
 
-> **Ultima actualizare:** 30 Aprilie 2026  
-> **Versiune curentă:** 1.11.0  
+> **Ultima actualizare:** 1 Mai 2026  
+> **Versiune curentă:** 1.12.0  
 > **Framework:** Laravel 11.x / PHP 8.3.30  
-> **Status:** Live pe meseriasionline.ro — Chatbot AI + Bază cunoștințe + Transfer WhatsApp activ
+> **Status:** Live pe meseriasionline.ro — Formular Recrutare Meseriași activ
 
 ---
 
@@ -37,6 +37,7 @@
 | ⚙️ Setări Platformă (Social Media Brand) | ✅ Complet | 100% |
 | 📋 Admin Cereri Clienți | ✅ Complet | 100% |
 | 🤖 Chatbot AI + Bază Cunoștințe | ✅ Complet | 95% |
+| 🎯 Formular Recrutare Meseriași | ✅ Complet | 100% |
 
 ---
 
@@ -761,6 +762,21 @@
 - [x] Rute: `GET /admin/cereri-publice`, `GET /admin/cereri-publice/{id}`, `PATCH /admin/cereri-publice/{id}/toggle-status`
 - [x] Sidebar admin — link „Cereri Clienți" cu badge roșu (cereri fără niciun meseriaș interesat)
 
+### 🎯 **21. Formular Recrutare Meseriași (Lead Magnet)** *(NOU v1.12)*
+- [x] Migrare `craftsman_leads` — name, phone, email, city, trade (enum 5 meserii), experience_range (enum), profile_photo, work_photo, status (nou/contactat/invitat/inregistrat/respins), admin_notes, invite_token unic, invite_sent_at, user_id (FK), account_created_at, UTM tracking (source/medium/campaign)
+- [x] Model `CraftsmanLead` cu accesorii (tradeLabel, statusLabel, statusColor), scopuri (byTrade, byStatus, pending), metode `generateInviteToken()` + `markAsRegistered()`
+- [x] Controller public `CraftsmanRecruitmentController` — showForm, store (upload poze + rate limit 10/min), success, activateForm, activateStore (creare user + login automat)
+- [x] Controller admin `Admin\CraftsmanLeadController` — index (filtre + statistici per meserie), show, update (status + note), sendInvite (email cu token), getActivationLink (JSON pentru WhatsApp), destroy
+- [x] View public `/inscriere-meserias` — landing page cu badge „Primele 10 locuri gratuite", 3 secțiuni (date rapide / email opțional / poze opționale), social proof
+- [x] View confirmare — mesaj personalizat pe nume + meserie + oraș, share WhatsApp viral
+- [x] View activare `/inscriere-meserias/activare/{token}` — formular creare cont cu date pre-completate
+- [x] View admin index `/admin/leads` — grid statistici per meserie cu progress bar spre ținta 10, sumar general, filtre, tabel paginat
+- [x] View admin detaliu — date contact, poze, trimitere invitație email, copiere link WhatsApp, schimbare status, note interne, ștergere
+- [x] Email confirmare înregistrare + email invitație activare cont cu CTA
+- [x] Rute publice (`recruitment.*`) + rute admin (`admin.leads.*`)
+- [x] Sidebar admin — link „Recrutare Meseriași" cu badge leads noi
+- [x] **Testat end-to-end** — formular → lead creat → admin trimite invitație → email primit → activare cont → user creat Inactiv ✅
+
 ### 🔨 **19. Sistem Cereri Publice (Lead Gen)** *(NOU v1.9)*
 - [x] Pagină publică `/cere-oferte` — formular fără cont (name, phone, email, categorie, locație, titlu, descriere, urgență, buget, dată preferată)
 - [x] Salvare cerere în DB cu token unic (`access_token`)
@@ -823,6 +839,8 @@
 | **Fix buton culoare** — roșu Închide / verde Redeschide | `ba2352a` | ✅ |
 | **Fix index MySQL** — nume index unic scurtat (max 64 chars) | `0466d71` | ✅ |
 | **Fix dropdown** — eliminare icon din lista categorii | `a22b520` | ✅ |
+| **Formular Recrutare Meseriași** — lead magnet complet cu admin panel | `a13686d` | ✅ confirmat live |
+| **Fix admin leads 500** — pluck(null) → get()->keyBy() pentru perTrade | `5515485` | ✅ |
 
 ### ⚠️ Dezvoltat + push-uit dar PENDING migrare pe server
 | Migrare | Impact dacă nu rulează |
