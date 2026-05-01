@@ -37,9 +37,10 @@ class CraftsmanLeadController extends Controller
         ];
 
         // Per meserie
-        $perTrade = CraftsmanLead::selectRaw('trade, count(*) as total, sum(status = "inregistrat") as converted')
+        $perTrade = CraftsmanLead::selectRaw("trade, count(*) as total, sum(status = 'inregistrat') as converted")
             ->groupBy('trade')
-            ->pluck(null, 'trade')
+            ->get()
+            ->keyBy('trade')
             ->toArray();
 
         return view('admin.leads.index', compact('leads', 'stats', 'perTrade'));
