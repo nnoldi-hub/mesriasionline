@@ -168,6 +168,7 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
     Route::post('/craftsmen/{id}/toggle-status', [AdminDashboardController::class, 'toggleCraftsmanStatus'])->name('craftsmen.toggle-status');
     Route::post('/craftsmen/{id}/toggle-featured', [AdminDashboardController::class, 'toggleCraftsmanFeatured'])->name('craftsmen.toggle-featured');
     Route::post('/craftsmen/{id}/toggle-verified', [AdminDashboardController::class, 'toggleCraftsmanVerified'])->name('craftsmen.toggle-verified');
+    Route::delete('/craftsmen/{id}', [AdminDashboardController::class, 'destroyCraftsman'])->name('craftsmen.destroy');
     Route::post('/craftsmen/{id}/subscription', [AdminDashboardController::class, 'assignSubscription'])->name('craftsmen.subscription.assign');
     Route::post('/craftsmen/{id}/subscription/cancel', [AdminDashboardController::class, 'cancelSubscription'])->name('craftsmen.subscription.cancel');
     

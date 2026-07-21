@@ -311,6 +311,23 @@ class DashboardController extends Controller
     }
 
     /**
+     * Delete a craftsman account.
+     */
+    public function destroyCraftsman($id)
+    {
+        $craftsman = User::where('role', 'specialist')->findOrFail($id);
+        $name = $craftsman->name;
+
+        try {
+            $craftsman->delete();
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->with('error', "Meseriașul {$name} nu poate fi șters deoarece are date asociate care blochează ștergerea. Poți să-l dezactivezi în schimb.");
+        }
+
+        return back()->with('success', "Meseriașul {$name} a fost șters definitiv.");
+    }
+
+    /**
      * Show craftsman edit page.
      */
     public function editCraftsman($id)
