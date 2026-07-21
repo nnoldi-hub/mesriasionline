@@ -6,6 +6,7 @@ use App\Models\CraftsmanLead;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
+use App\Services\AdminNotificationService;
 use App\Services\ImageCompressionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -117,7 +118,7 @@ class CraftsmanRecruitmentController extends Controller
     /**
      * Crearea contului din formularul de activare.
      */
-    public function activateStore(Request $request, string $token)
+    public function activateStore(Request $request, string $token, AdminNotificationService $adminNotifier)
     {
         $lead = CraftsmanLead::where('invite_token', $token)
             ->whereNull('account_created_at')
@@ -161,6 +162,20 @@ class CraftsmanRecruitmentController extends Controller
         ]);
 
         $lead->markAsRegistered($user->id);
+
+        // Trimite notificare email la admin
+        $profileUrl = url('/admin/craftsmen/' . $user->id . '/edit');
+        $adminNotifier->send(
+            "Cont nou meseriaș (recrutare): {$user->name} - meseriasionline.ro",
+            "Un lead de recrutare și-a activat contul:\n\n" .
+            "Nume: {$user->name}\n" .
+            "Email: {$user->email}\n" .
+            "Telefon: {$user->phone}\n" .
+            "Meserie: " . (self::TRADES[$lead->trade] ?? $lead->trade) . "\n" .
+            "Oraș: {$lead->city}\n\n" .
+            "Contul este inactiv și necesită aprobare.\n" .
+            "Activează contul: {$profileUrl}"
+        );
 
         auth()->login($user);
 

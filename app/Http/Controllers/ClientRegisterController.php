@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\AdminNotificationService;
 use App\Services\AffiliateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,7 +15,7 @@ class ClientRegisterController extends Controller
         return view('auth.register-client');
     }
 
-    public function register(Request $request)
+    public function register(Request $request, AdminNotificationService $adminNotifier)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -38,6 +39,17 @@ class ClientRegisterController extends Controller
 
         // Attribute registration to affiliate if referral cookie exists
         app(AffiliateService::class)->attributeRegistration($user);
+
+        // Trimite notificare email la admin
+        $profileUrl = url('/admin/users/' . $user->id);
+        $adminNotifier->send(
+            "Cont nou client: {$user->name} - meseriasionline.ro",
+            "Cont nou de client înregistrat:\n\n" .
+            "Nume: {$user->name}\n" .
+            "Email: {$user->email}\n" .
+            "Telefon: " . ($user->phone ?? 'N/A') . "\n\n" .
+            "Detalii cont: {$profileUrl}"
+        );
 
         // Auto-login after registration
         auth()->login($user);

@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Location;
+use App\Services\AdminNotificationService;
 use App\Services\AffiliateService;
 use App\Services\ImageCompressionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -19,11 +19,11 @@ class RegisterController extends Controller
     {
         $categories = Category::orderBy('name')->get();
         $locations = Location::orderBy('city')->get();
-        
+
         return view('auth.register', compact('categories', 'locations'));
     }
 
-    public function register(Request $request, ImageCompressionService $imageService)
+    public function register(Request $request, ImageCompressionService $imageService, AdminNotificationService $adminNotifier)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -86,28 +86,19 @@ class RegisterController extends Controller
         app(AffiliateService::class)->attributeRegistration($user);
 
         // Trimite notificare email la admin
-        try {
-            $adminEmail = env('ADMIN_NOTIFY_EMAIL', 'admin@meseriasionline.ro');
-            $profileUrl = url('/admin/craftsmen/' . $user->id . '/edit');
-            Mail::raw(
-                "Cont nou de meseriaș înregistrat:\n\n" .
-                "Nume: {$user->name}\n" .
-                "Email: {$user->email}\n" .
-                "Telefon: {$user->phone}\n" .
-                "Specialitate: {$user->specialization}\n" .
-                "Locație: " . ($user->location->city ?? 'N/A') . "\n" .
-                "Experiență: {$user->experience_years} ani\n\n" .
-                "Contul este inactiv și necesită aprobare.\n" .
-                "Activează contul: {$profileUrl}",
-                function ($message) use ($adminEmail, $user) {
-                    $message->to($adminEmail)
-                        ->subject("Cont nou meseriaș: {$user->name} - meseriasionline.ro");
-                }
-            );
-        } catch (\Exception $e) {
-            // Nu blocăm înregistrarea dacă emailul eșuează
-            \Log::warning('Admin notification email failed: ' . $e->getMessage());
-        }
+        $profileUrl = url('/admin/craftsmen/' . $user->id . '/edit');
+        $adminNotifier->send(
+            "Cont nou meseriaș: {$user->name} - meseriasionline.ro",
+            "Cont nou de meseriaș înregistrat:\n\n" .
+            "Nume: {$user->name}\n" .
+            "Email: {$user->email}\n" .
+            "Telefon: {$user->phone}\n" .
+            "Specialitate: {$user->specialization}\n" .
+            "Locație: " . ($user->location->city ?? 'N/A') . "\n" .
+            "Experiență: {$user->experience_years} ani\n\n" .
+            "Contul este inactiv și necesită aprobare.\n" .
+            "Activează contul: {$profileUrl}"
+        );
 
         // Auto-login after registration
         auth()->login($user);
