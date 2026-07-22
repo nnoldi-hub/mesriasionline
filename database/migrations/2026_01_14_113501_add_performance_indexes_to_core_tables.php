@@ -2,15 +2,13 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     private function hasIndex(string $table, string $indexName): bool
     {
-        $indexes = DB::select("SHOW INDEX FROM `{$table}` WHERE Key_name = ?", [$indexName]);
-        return count($indexes) > 0;
+        return Schema::hasIndex($table, $indexName);
     }
 
     private function addIndex(Blueprint $table, string $tableName, array $columns, string $indexName): void
