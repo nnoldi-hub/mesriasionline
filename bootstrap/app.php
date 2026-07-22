@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
         
         // Add middleware to web group
         $middleware->web(append: [
+            \App\Http\Middleware\SecurityHeaders::class,
             \App\Http\Middleware\TrackAffiliateReferral::class,
             \App\Http\Middleware\SetLocale::class,
             \App\Http\Middleware\TrackConversionEvents::class,
