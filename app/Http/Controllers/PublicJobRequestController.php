@@ -63,6 +63,7 @@ class PublicJobRequestController extends Controller
                 $craftsman->notify(new NewPublicJobRequestNotification($jobRequest));
             } catch (\Exception $e) {
                 // Nu opri procesul dacă un email eșuează
+                \Log::warning("Public job request notification failed for craftsman #{$craftsman->id}: " . $e->getMessage());
             }
         }
 
