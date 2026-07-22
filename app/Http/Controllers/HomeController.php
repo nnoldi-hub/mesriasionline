@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Location;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -206,16 +207,21 @@ class HomeController extends Controller
             return \App\Models\Review::where('is_approved', true)->avg('rating');
         });
 
+        $videos = Cache::remember('homepage_videos', 1800, function () {
+            return Video::where('is_active', true)->orderBy('sort_order')->orderBy('id')->get();
+        });
+
         return view('home', compact(
-            'categories', 
-            'locations', 
+            'categories',
+            'locations',
             'craftsmen',
             'totalCraftsmen',
             'totalReviews',
             'avgRating',
             'userLat',
             'userLng',
-            'searchRadius'
+            'searchRadius',
+            'videos'
         ));
     }
 

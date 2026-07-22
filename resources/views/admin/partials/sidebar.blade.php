@@ -148,6 +148,13 @@
     Social Media Brand
 </a>
 
+<a href="{{ route('admin.videos.index') }}" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('admin.videos*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.622-.257A1 1 0 0016 6.586V13.414a1 1 0 01-1.622.777l-2.909-2.328a1 1 0 010-1.562l2.909-2.328z" clip-rule="evenodd"/>
+    </svg>
+    Materiale Video
+</a>
+
 <a href="{{ route('home') }}" target="_blank" class="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition">
     <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
         <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>

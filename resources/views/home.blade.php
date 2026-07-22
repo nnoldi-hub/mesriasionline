@@ -180,6 +180,63 @@
     </div>
 </section>
 
+<!-- Video Section -->
+@if(isset($videos) && $videos->isNotEmpty())
+<section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold" style="font-family:'Rubik',sans-serif; color:#2C3E50;">Cum funcționează meseriasionline.ro</h2>
+            <p class="mt-2" style="color:#7f8c8d;">Vezi în câteva minute cum găsești rapid omul potrivit</p>
+        </div>
+
+        <div class="rounded-2xl overflow-hidden shadow-lg bg-black mb-4" style="aspect-ratio:16/9;">
+            <iframe id="main-video-player" class="w-full h-full"
+                src="{{ $videos->first()->embed_url }}"
+                title="{{ $videos->first()->title }}"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+
+        <p id="main-video-title" class="text-center font-semibold mb-6" style="color:#2C3E50;">{{ $videos->first()->title }}</p>
+
+        @if($videos->count() > 1)
+        <div class="flex gap-4 overflow-x-auto pb-2">
+            @foreach($videos as $video)
+                <button type="button"
+                    class="video-thumb shrink-0 w-40 rounded-lg overflow-hidden border-2 transition {{ $loop->first ? 'border-primary-600' : 'border-transparent hover:border-gray-300' }} focus:outline-none"
+                    data-embed="{{ $video->embed_url }}"
+                    data-title="{{ $video->title }}">
+                    <img src="{{ $video->thumbnail_url }}" alt="{{ $video->title }}" class="w-full h-24 object-cover">
+                </button>
+            @endforeach
+        </div>
+        @endif
+    </div>
+</section>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const player = document.getElementById('main-video-player');
+    const titleEl = document.getElementById('main-video-title');
+    document.querySelectorAll('.video-thumb').forEach(function(thumb) {
+        thumb.addEventListener('click', function() {
+            player.src = this.dataset.embed;
+            titleEl.textContent = this.dataset.title;
+            document.querySelectorAll('.video-thumb').forEach(function(t) {
+                t.classList.remove('border-primary-600');
+                t.classList.add('border-transparent', 'hover:border-gray-300');
+            });
+            this.classList.remove('border-transparent', 'hover:border-gray-300');
+            this.classList.add('border-primary-600');
+        });
+    });
+});
+</script>
+@endpush
+@endif
+
 <!-- Stats Bar -->
 @if(isset($totalCraftsmen) && $totalCraftsmen > 0)
 <section class="py-5 text-white" style="background-color: #2980B9;">

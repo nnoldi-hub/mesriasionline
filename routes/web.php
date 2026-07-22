@@ -281,6 +281,17 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
     Route::get('/platform-settings', [\App\Http\Controllers\Admin\PlatformSettingsController::class, 'index'])->name('platform-settings');
     Route::put('/platform-settings', [\App\Http\Controllers\Admin\PlatformSettingsController::class, 'update'])->name('platform-settings.update');
 
+    // Materiale video (pagina principala)
+    Route::get('/videos', [\App\Http\Controllers\Admin\VideoController::class, 'index'])->name('videos.index');
+    Route::get('/videos/create', [\App\Http\Controllers\Admin\VideoController::class, 'create'])->name('videos.create');
+    Route::post('/videos', [\App\Http\Controllers\Admin\VideoController::class, 'store'])->name('videos.store');
+    Route::get('/videos/{id}/edit', [\App\Http\Controllers\Admin\VideoController::class, 'edit'])->name('videos.edit');
+    Route::put('/videos/{id}', [\App\Http\Controllers\Admin\VideoController::class, 'update'])->name('videos.update');
+    Route::delete('/videos/{id}', [\App\Http\Controllers\Admin\VideoController::class, 'destroy'])->name('videos.destroy');
+    Route::post('/videos/{id}/toggle-status', [\App\Http\Controllers\Admin\VideoController::class, 'toggleStatus'])->name('videos.toggle-status');
+    Route::post('/videos/{id}/move-up', [\App\Http\Controllers\Admin\VideoController::class, 'moveUp'])->name('videos.move-up');
+    Route::post('/videos/{id}/move-down', [\App\Http\Controllers\Admin\VideoController::class, 'moveDown'])->name('videos.move-down');
+
     // Cereri publice clienți (formularul /cere-oferte)
     Route::get('/cereri-publice', [AdminDashboardController::class, 'publicJobRequests'])->name('public-job-requests.index');
     Route::get('/cereri-publice/{jobRequest}', [AdminDashboardController::class, 'publicJobRequestShow'])->name('public-job-requests.show');
