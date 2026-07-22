@@ -88,22 +88,25 @@ class PublicJobRequestController extends Controller
         if ($validated['action'] === 'interested') {
             // Trimite email clientului cu datele meseriaşului
             try {
-                \Illuminate\Support\Facades\Mail::raw(
-                    "Bună, {$publicJobRequest->name}!\n\n" .
-                    "Meseriașul {$craftsman->name} este interesat de cererea ta:\n" .
-                    "  \"{$publicJobRequest->title}\"\n\n" .
-                    ($validated['message'] ? "Mesaj: {$validated['message']}\n\n" : '') .
-                    "Contact meseriaș:\n" .
-                    "  Telefon: " . ($craftsman->phone ?? 'vezi profilul') . "\n" .
-                    "  Profil: " . route('craftsman.show', $craftsman->slug) . "\n\n" .
-                    "-- Echipa Meseriași Online",
+                \Illuminate\Support\Facades\Mail::send(
+                    'emails.craftsman-interested',
+                    [
+                        'jobRequest'    => $publicJobRequest,
+                        'craftsman'     => $craftsman,
+                        'message'       => $validated['message'] ?? null,
+                        'profileUrl'    => route('craftsman.show', $craftsman->slug),
+                        'facebookUrl'   => \App\Models\PlatformSetting::getValue('facebook_url'),
+                        'instagramUrl'  => \App\Models\PlatformSetting::getValue('instagram_url'),
+                        'tiktokUrl'     => \App\Models\PlatformSetting::getValue('tiktok_url'),
+                        'youtubeUrl'    => \App\Models\PlatformSetting::getValue('youtube_url'),
+                    ],
                     function ($mail) use ($publicJobRequest, $craftsman) {
                         $mail->to($publicJobRequest->email)
                              ->subject("Ofertă de la {$craftsman->name} pentru cererea ta");
                     }
                 );
             } catch (\Exception $e) {
-                // Logăm dar nu blocăm
+                \Log::warning("Client notification email failed for public job request #{$publicJobRequest->id}: " . $e->getMessage());
             }
 
             return back()->with('success', 'Clientul a fost notificat cu datele tale de contact!');
