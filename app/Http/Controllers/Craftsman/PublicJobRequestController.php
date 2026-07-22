@@ -89,7 +89,7 @@ class PublicJobRequestController extends Controller
             // Trimite email clientului cu datele meseriaşului
             try {
                 \Illuminate\Support\Facades\Mail::send(
-                    'emails.craftsman-interested',
+                    ['html' => 'emails.craftsman-interested', 'text' => 'emails.craftsman-interested-text'],
                     [
                         'jobRequest'    => $publicJobRequest,
                         'craftsman'     => $craftsman,
