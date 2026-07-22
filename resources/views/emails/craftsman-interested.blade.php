@@ -27,9 +27,9 @@
     <p><strong>{{ $craftsman->name }}</strong> este interesat de cererea ta:</p>
     <p>„{{ $jobRequest->title }}"</p>
 
-    @if($message)
+    @if($craftsmanMessage)
         <div class="message-box">
-            💬 „{{ $message }}"
+            💬 „{{ $craftsmanMessage }}"
         </div>
     @endif
 

@@ -88,12 +88,12 @@ class PublicJobRequestController extends Controller
         if ($validated['action'] === 'interested') {
             // Trimite email clientului cu datele meseriaşului
             try {
-                \Illuminate\Support\Facades\Mail::mailer('log')->send(
+                \Illuminate\Support\Facades\Mail::send(
                     ['html' => 'emails.craftsman-interested', 'text' => 'emails.craftsman-interested-text'],
                     [
                         'jobRequest'    => $publicJobRequest,
                         'craftsman'     => $craftsman,
-                        'message'       => $validated['message'] ?? null,
+                        'craftsmanMessage' => $validated['message'] ?? null,
                         'profileUrl'    => route('craftsman.show', $craftsman->slug),
                         'facebookUrl'   => \App\Models\PlatformSetting::getValue('facebook_url'),
                         'instagramUrl'  => \App\Models\PlatformSetting::getValue('instagram_url'),

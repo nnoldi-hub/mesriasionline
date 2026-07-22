@@ -1,9 +1,9 @@
 Bună, {{ $jobRequest->name }}!
 
 {{ $craftsman->name }} este interesat de cererea ta: "{{ $jobRequest->title }}"
-@if($message)
+@if($craftsmanMessage)
 
-Mesaj: {{ $message }}
+Mesaj: {{ $craftsmanMessage }}
 @endif
 
 Contact meseriaș:
