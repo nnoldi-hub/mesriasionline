@@ -29,8 +29,8 @@
                 document.documentElement.classList.add('dark');
             }
         })();
-    </script>>
-    
+    </script>
+
     {{-- Dynamic SEO Meta Tags --}}
     @if(View::hasSection('seo'))
         @yield('seo')

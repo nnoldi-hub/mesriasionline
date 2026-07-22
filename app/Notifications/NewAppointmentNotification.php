@@ -7,13 +7,12 @@ use App\Models\EmailTemplate;
 use App\Services\EmailTemplateService;
 use App\Services\NotificationPreferenceService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class NewAppointmentNotification extends Notification implements ShouldQueue
+class NewAppointmentNotification extends Notification
 {
     use Queueable;
 

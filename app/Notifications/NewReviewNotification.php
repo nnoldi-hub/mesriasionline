@@ -6,13 +6,12 @@ use App\Models\Review;
 use App\Services\EmailTemplateService;
 use App\Services\NotificationPreferenceService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class NewReviewNotification extends Notification implements ShouldQueue
+class NewReviewNotification extends Notification
 {
     use Queueable;
 

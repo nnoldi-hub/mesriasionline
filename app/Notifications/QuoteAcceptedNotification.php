@@ -6,13 +6,12 @@ use App\Models\Quote;
 use App\Services\EmailTemplateService;
 use App\Services\NotificationPreferenceService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\WebPush\WebPushChannel;
 use NotificationChannels\WebPush\WebPushMessage;
 
-class QuoteAcceptedNotification extends Notification implements ShouldQueue
+class QuoteAcceptedNotification extends Notification
 {
     use Queueable;
 
