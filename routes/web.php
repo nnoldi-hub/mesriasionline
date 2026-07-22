@@ -341,7 +341,7 @@ Route::middleware(['auth', App\Http\Middleware\SpecialistMiddleware::class, 'onb
     Route::get('/quotes', [CraftsmanQuoteController::class, 'index'])->name('quotes.index');
     Route::get('/quotes/pending-count', [CraftsmanQuoteController::class, 'pendingCount'])->name('quotes.pending-count');
     Route::get('/quotes/{quoteRequest}', [CraftsmanQuoteController::class, 'show'])->name('quotes.show');
-    Route::post('/quotes/{quoteRequest}', [CraftsmanQuoteController::class, 'store'])->name('quotes.store')->middleware(['plan.limits', 'rate.limit']);
+    Route::post('/quotes/{quoteRequest}', [CraftsmanQuoteController::class, 'store'])->name('quotes.store')->middleware(['plan.limits', 'rate.limit:quotes.store']);
     Route::get('/quotes/{quoteRequest}/edit/{quote}', [CraftsmanQuoteController::class, 'edit'])->name('quotes.edit');
     Route::put('/quotes/{quoteRequest}/update/{quote}', [CraftsmanQuoteController::class, 'update'])->name('quotes.update');
     Route::post('/quotes/{quoteRequest}/withdraw/{quote}', [CraftsmanQuoteController::class, 'withdraw'])->name('quotes.withdraw');
@@ -399,7 +399,7 @@ Route::middleware(['auth'])->group(function () {
     // Messages
     Route::get('/mesaje', [MessageController::class, 'index'])->name('messages.index');
     Route::get('/mesaje/nou', [MessageController::class, 'create'])->name('messages.create');
-    Route::post('/mesaje', [MessageController::class, 'store'])->name('messages.store')->middleware('rate.limit');
+    Route::post('/mesaje', [MessageController::class, 'store'])->name('messages.store')->middleware('rate.limit:messages.store');
     Route::get('/mesaje/necitite', [MessageController::class, 'unreadCount'])->name('messages.unread-count');
     Route::get('/mesaje/{conversation}', [MessageController::class, 'show'])->name('messages.show');
     Route::post('/mesaje/{conversation}/reply', [MessageController::class, 'reply'])->name('messages.reply');
@@ -476,7 +476,7 @@ Route::middleware(['auth'])->group(function () {
     // Quote Requests (Client)
     Route::get('/cereri-oferta', [QuoteController::class, 'index'])->name('quotes.index');
     Route::get('/cereri-oferta/nou', [QuoteController::class, 'create'])->name('quotes.create');
-    Route::post('/cereri-oferta', [QuoteController::class, 'store'])->name('quotes.store')->middleware('rate.limit');
+    Route::post('/cereri-oferta', [QuoteController::class, 'store'])->name('quotes.store')->middleware('rate.limit:quotes.store');
     Route::get('/cereri-oferta/{quoteRequest}', [QuoteController::class, 'show'])->name('quotes.show');
     Route::post('/cereri-oferta/{quoteRequest}/anuleaza', [QuoteController::class, 'cancel'])->name('quotes.cancel');
     Route::post('/cereri-oferta/{quoteRequest}/finalizat', [QuoteController::class, 'complete'])->name('quotes.complete');
@@ -495,7 +495,7 @@ Route::middleware(['auth', App\Http\Middleware\ClientMiddleware::class])->prefix
     Route::patch('/addresses/{address}/set-default', [App\Http\Controllers\Client\AddressController::class, 'setDefault'])->name('addresses.set-default');
     
     // Search craftsmen
-    Route::get('/search', [App\Http\Controllers\Client\SearchController::class, 'index'])->name('search')->middleware('rate.limit');
+    Route::get('/search', [App\Http\Controllers\Client\SearchController::class, 'index'])->name('search')->middleware('rate.limit:search');
     
     // Quotes (placeholder routes - folosesc controller existent pentru quotes)
     Route::get('/quotes', [App\Http\Controllers\QuoteController::class, 'index'])->name('quotes.index');
