@@ -224,7 +224,7 @@ class CompareManager {
         document.querySelectorAll('.compare-select').forEach(checkbox => {
             const isSelected = this.compareList.some(c => c.id == checkbox.dataset.id);
             checkbox.checked = isSelected;
-            this.updateCheckboxStyle(checkbox);
+            this.updateCheckboxVisual(checkbox);
         });
     }
 
