@@ -1,4 +1,4 @@
-﻿@extends('layouts.admin')
+@extends('layouts.admin')
 
 @section('title', 'Template-uri Email')
 @section('page-title', 'Template-uri Email')
