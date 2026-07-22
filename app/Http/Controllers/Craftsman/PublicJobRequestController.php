@@ -88,7 +88,7 @@ class PublicJobRequestController extends Controller
         if ($validated['action'] === 'interested') {
             // Trimite email clientului cu datele meseriaşului
             try {
-                \Illuminate\Support\Facades\Mail::send(
+                \Illuminate\Support\Facades\Mail::mailer('log')->send(
                     ['html' => 'emails.craftsman-interested', 'text' => 'emails.craftsman-interested-text'],
                     [
                         'jobRequest'    => $publicJobRequest,
