@@ -36,3 +36,9 @@ Schedule::command('requests:notify-unanswered')
     ->hourly()
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/reminders.log'));
+
+// Schedule admin daily digest
+Schedule::command('admin:daily-digest')
+    ->dailyAt('08:00')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/reminders.log'));
