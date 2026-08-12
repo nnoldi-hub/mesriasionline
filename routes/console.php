@@ -18,3 +18,9 @@ Schedule::command('appointments:send-reminders --type=sms')
     ->hourly()
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/reminders.log'));
+
+// Schedule subscription expiry reminders
+Schedule::command('subscriptions:send-expiry-reminders')
+    ->daily()
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/reminders.log'));
