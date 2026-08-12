@@ -40,7 +40,7 @@ class CraftsmanRecruitmentController extends Controller
     /**
      * Procesarea submitului formularului.
      */
-    public function store(Request $request)
+    public function store(Request $request, AdminNotificationService $adminNotifier)
     {
         $validated = $request->validate([
             'name'             => 'required|string|max:100',
@@ -85,6 +85,20 @@ class CraftsmanRecruitmentController extends Controller
         if ($lead->email) {
             $this->sendConfirmationEmail($lead);
         }
+
+        // Notifică adminul despre lead-ul nou
+        $leadUrl = url('/admin/leads');
+        $adminNotifier->send(
+            "Lead nou recrutare meseriaș: {$lead->name} (" . (self::TRADES[$lead->trade] ?? $lead->trade) . ")",
+            "Un meseriaș nou s-a înscris prin formularul public de recrutare:\n\n" .
+            "Nume: {$lead->name}\n" .
+            "Telefon: {$lead->phone}\n" .
+            "Oraș: {$lead->city}\n" .
+            "Meserie: " . (self::TRADES[$lead->trade] ?? $lead->trade) . "\n" .
+            "Experiență: {$lead->experience_range} ani\n" .
+            "Email: " . ($lead->email ?: '-') . "\n\n" .
+            "Vezi lead-ul: {$leadUrl}"
+        );
 
         return redirect()->route('recruitment.success', ['id' => $lead->id])
             ->with('success', true);
