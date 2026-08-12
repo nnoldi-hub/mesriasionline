@@ -24,3 +24,9 @@ Schedule::command('subscriptions:send-expiry-reminders')
     ->daily()
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/reminders.log'));
+
+// Schedule stale recruitment lead alerts
+Schedule::command('recruitment:notify-stale-leads')
+    ->dailyAt('09:00')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/reminders.log'));
