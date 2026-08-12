@@ -9,6 +9,10 @@
 
 @section('header-actions')
 <div class="flex items-center gap-3">
+    <a href="{{ route('admin.leads.guide') }}"
+       class="inline-flex items-center gap-2 px-4 py-2 border border-primary-300 text-primary-700 rounded-lg hover:bg-primary-50 text-sm font-medium transition">
+        💡 Idei de recrutare
+    </a>
     <a href="{{ route('admin.leads.create') }}"
        class="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 text-sm font-medium transition">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

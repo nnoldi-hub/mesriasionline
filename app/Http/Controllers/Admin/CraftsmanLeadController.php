@@ -80,6 +80,14 @@ class CraftsmanLeadController extends Controller
     }
 
     /**
+     * Ghid cu idei de recrutare pentru admin.
+     */
+    public function guide()
+    {
+        return view('admin.leads.guide');
+    }
+
+    /**
      * Detaliu lead.
      */
     public function show(CraftsmanLead $lead)
