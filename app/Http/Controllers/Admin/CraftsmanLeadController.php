@@ -47,6 +47,39 @@ class CraftsmanLeadController extends Controller
     }
 
     /**
+     * Formular adăugare manuală lead (prospect identificat de admin).
+     */
+    public function create()
+    {
+        return view('admin.leads.create');
+    }
+
+    /**
+     * Salvare lead adăugat manual din admin.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name'             => 'required|string|max:100',
+            'phone'            => 'required|string|max:20',
+            'city'             => 'required|string|max:100',
+            'trade'            => 'required|in:electrician,instalator,tamplar,zugrav,mecanic',
+            'experience_range' => 'required|in:0-2,3-5,5+',
+            'email'            => 'nullable|email|max:255',
+            'status'           => 'required|in:nou,contactat,invitat,inregistrat,respins',
+            'admin_notes'      => 'nullable|string|max:1000',
+        ]);
+
+        $lead = CraftsmanLead::create([
+            ...$validated,
+            'utm_source' => 'admin',
+        ]);
+
+        return redirect()->route('admin.leads.show', $lead)
+            ->with('success', 'Lead adăugat cu succes.');
+    }
+
+    /**
      * Detaliu lead.
      */
     public function show(CraftsmanLead $lead)

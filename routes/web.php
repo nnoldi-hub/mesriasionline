@@ -300,6 +300,8 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
     // ─── Leads recrutare meseriași ────────────────────────────────────────────
     Route::prefix('leads')->name('leads.')->group(function () {
         Route::get('/',                       [CraftsmanLeadController::class, 'index'])->name('index');
+        Route::get('/create',                 [CraftsmanLeadController::class, 'create'])->name('create');
+        Route::post('/',                      [CraftsmanLeadController::class, 'store'])->name('store');
         Route::get('/{lead}',                 [CraftsmanLeadController::class, 'show'])->name('show');
         Route::patch('/{lead}',               [CraftsmanLeadController::class, 'update'])->name('update');
         Route::post('/{lead}/invite',         [CraftsmanLeadController::class, 'sendInvite'])->name('invite');
