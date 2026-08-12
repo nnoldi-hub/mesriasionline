@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/ooxlvzey/meseriasionline.ro/
+    - /bin/cp -R * $DEPLOYPATH
