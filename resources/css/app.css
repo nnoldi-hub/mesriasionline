@@ -928,20 +928,6 @@ body {
         height: 5rem !important;
     }
     
-    /* Dashboard sidebar mobile */
-    aside.w-64 {
-        position: fixed;
-        left: -100%;
-        top: 0;
-        bottom: 0;
-        z-index: 1000;
-        transition: left 0.3s ease;
-    }
-    
-    aside.w-64.open {
-        left: 0;
-    }
-    
     /* Forms mobile */
     .form-group,
     .mb-4 > label + input,
@@ -986,6 +972,24 @@ body {
     #cookie-banner button {
         margin-left: 0 !important;
         width: 100%;
+    }
+}
+
+/* ============================================
+   DASHBOARD SIDEBAR (< 768px) — vezi layouts/dashboard.blade.php
+   ============================================ */
+@media (max-width: 767px) {
+    aside.w-64 {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        bottom: 0;
+        z-index: 1000;
+        transition: left 0.3s ease;
+    }
+
+    aside.w-64.open {
+        left: 0;
     }
 }
 

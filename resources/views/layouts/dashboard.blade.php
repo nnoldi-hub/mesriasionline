@@ -23,8 +23,7 @@
 
         <!-- Sidebar -->
         <aside id="dashboard-sidebar"
-            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40"
-            style="transform: translateX(-100%); transition: transform 0.25s ease;">
+            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40">
             <div class="p-6 shrink-0 flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('images/logo-white.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.src='{{ asset('images/logo.png') }}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
@@ -119,21 +118,13 @@
             var closeBtn = document.getElementById('sidebar-close-btn');
 
             function openSidebar() {
-                sidebar.style.transform = 'translateX(0)';
+                sidebar.classList.add('open');
                 backdrop.style.display = 'block';
-                alert('DEBUG deschide: sidebar=' + (sidebar ? 'gasit' : 'LIPSA') +
-                    ' | latime ecran=' + window.innerWidth +
-                    ' | transform dupa=' + getComputedStyle(sidebar).transform +
-                    ' | pozitie=' + getComputedStyle(sidebar).position +
-                    ' | left=' + getComputedStyle(sidebar).left +
-                    ' | display=' + getComputedStyle(sidebar).display);
             }
             function closeSidebar() {
-                sidebar.style.transform = 'translateX(-100%)';
+                sidebar.classList.remove('open');
                 backdrop.style.display = 'none';
             }
-
-            alert('DEBUG init: buton=' + (openBtn ? 'gasit' : 'LIPSA') + ' | sidebar=' + (sidebar ? 'gasit' : 'LIPSA') + ' | latime=' + window.innerWidth);
 
             if (openBtn) openBtn.addEventListener('click', openSidebar);
             if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
