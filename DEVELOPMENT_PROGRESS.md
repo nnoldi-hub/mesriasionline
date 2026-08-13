@@ -176,7 +176,7 @@
   - Card status SMTP (verde/amber)
   - NotificationPreferenceService cu fallback la DB indisponibil
 - [x] **SMTP configurat și funcțional** (mail.meseriasionline.ro port 465 smtps) *(v1.7)*
-- ⚠️ **PENDING pe server:** `php artisan migrate` pentru tabelele notification_settings și notification_preferences
+- [x] **Migrate rulat pe server** pentru tabelele notification_settings și notification_preferences
 
 ### 💬 **10. Sistem Mesagerie/Chat** *(COMPLET + BUGFIX v1.7)*
 - [x] Conversații între clienți și meseriași
@@ -392,8 +392,8 @@
 - ✅ **Tabel affiliate_commissions** (affiliate_id, referral_id, amount, status, type) *(NOU)*
 - ✅ **Tabel affiliate_payouts** (affiliate_id, amount, payment_method, status) *(NOU)*
 - ✅ **Câmpuri users pentru referral** (referred_by_code, referred_by_affiliate_id, referral_converted_at) *(NOU)*
-- ⚠️ **PENDING pe server:** `2026_04_29_000003_create_notification_settings_table.php`
-- ⚠️ **PENDING pe server:** `2026_04_29_000004_add_notification_preferences_to_users.php`
+- [x] **Rulat pe server:** `2026_04_29_000003_create_notification_settings_table.php`
+- [x] **Rulat pe server:** `2026_04_29_000004_add_notification_preferences_to_users.php`
 - ✅ **Tabel conversion_events** (session_id, user_id, craftsman_id, event_type, source, medium, campaign, device_type) *(NOU)*
 - ✅ **Tabel conversion_funnels** (session_id, stage timestamps, final_status, total_value) *(NOU)*
 - ✅ **Tabel platform_daily_stats** (date, visits, registrations, engagements, conversion rates) *(NOU)*
