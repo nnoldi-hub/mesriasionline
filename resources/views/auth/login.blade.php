@@ -28,7 +28,7 @@
                     <input id="email" name="email" type="email" required 
                         value="{{ old('email') }}"
                         class="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary-600 focus:border-primary-600 focus:z-10 sm:text-sm @error('email') border-error-400 @enderror" 
-                        placeholder="admin@meseriasi.ro">
+                        placeholder="email@meseriasionline.ro">
                     @error('email')
                         <p class="mt-1 text-sm text-error-400">{{ $message }}</p>
                     @enderror

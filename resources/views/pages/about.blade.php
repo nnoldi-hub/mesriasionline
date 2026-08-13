@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Despre Noi - Meseriasi Profesionisti')
+@section('title', 'Despre Noi - Omul Potrivit')
 
 @section('content')
 <div class="bg-white">

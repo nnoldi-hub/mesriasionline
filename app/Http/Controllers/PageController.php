@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\AdminNotificationService;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -16,7 +17,7 @@ class PageController extends Controller
         return view('pages.contact');
     }
 
-    public function contactSubmit(Request $request)
+    public function contactSubmit(Request $request, AdminNotificationService $adminNotifier)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -30,9 +31,15 @@ class PageController extends Controller
             'g-recaptcha-response.captcha' => 'Verificarea reCAPTCHA a eșuat. Te rugăm să încerci din nou.',
         ]);
 
-        // În viitor poți trimite email sau salva în baza de date
-        // Pentru moment, doar returnăm cu success message
-        
+        $adminNotifier->send(
+            "Mesaj de contact: {$validated['subject']}",
+            "Nume: {$validated['name']}\n" .
+            "Email: {$validated['email']}\n" .
+            "Telefon: " . ($validated['phone'] ?: '-') . "\n" .
+            "Subiect: {$validated['subject']}\n\n" .
+            "Mesaj:\n{$validated['message']}"
+        );
+
         return back()->with('success', 'Mesajul tău a fost trimis cu succes! Te vom contacta în curând.');
     }
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Politica de Confidentialitate - Meseriasi Profesionisti')
+@section('title', 'Politica de Confidentialitate - Omul Potrivit')
 
 @section('content')
 <div class="bg-white">
@@ -145,18 +145,18 @@
                 </p>
                 <p class="text-gray-600 mb-4">
                     <strong>Data Protection Officer (DPO):</strong><br>
-                    Email: <a href="mailto:contact@meseriasionline.ro" class="text-primary-600 hover:underline">contact@meseriasionline.ro</a><br>
-                    Telefon: 0740 173 581<br>
+                    Email: <a href="mailto:{{ \App\Models\PlatformSetting::getValue('contact_email', 'contact@meseriasionline.ro') }}" class="text-primary-600 hover:underline">{{ \App\Models\PlatformSetting::getValue('contact_email', 'contact@meseriasionline.ro') }}</a><br>
+                    Telefon: {{ \App\Models\PlatformSetting::getValue('contact_phone', '+40 740 173 581') }}<br>
                     Adresa: Slt. Petre Ionel 205, 077030, Branesti, Ilfov
                 </p>
                 <p class="text-gray-600 mb-4">
-                    De asemenea, aveti dreptul de a depune o plangere la Autoritatea Nationala de Supraveghere 
+                    De asemenea, aveti dreptul de a depune o plangere la Autoritatea Nationala de Supraveghere
                     a Prelucrarii Datelor cu Caracter Personal (ANSPDCP).
                 </p>
 
                 <div class="bg-secondary-100 p-6 rounded-lg mt-8">
                     <p class="text-gray-600">
-                        <strong>Consimtamant:</strong> Prin utilizarea platformei Meseriasi Profesionisti, confirmati 
+                        <strong>Consimtamant:</strong> Prin utilizarea platformei Omul Potrivit, confirmati
                         ca ati citit si inteles aceasta politica de confidentialitate si consimtiti la prelucrarea 
                         datelor dvs. personale conform celor descrise mai sus.
                     </p>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Termeni si Conditii - Meseriasi Profesionisti')
+@section('title', 'Termeni si Conditii - Omul Potrivit')
 
 @section('content')
 <div class="bg-white">
@@ -21,13 +21,13 @@
                 
                 <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Introducere</h2>
                 <p class="text-gray-600 mb-4">
-                    Bine ați venit pe platforma Meseriași Profesioniști. Prin accesarea și utilizarea acestui site web, 
+                    Bine ați venit pe platforma Omul Potrivit. Prin accesarea și utilizarea acestui site web,
                     acceptați să respectați și să fiți obligat de următorii termeni și condiții de utilizare.
                 </p>
 
                 <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">2. Definiții</h2>
                 <ul class="list-disc list-inside text-gray-600 space-y-2 mb-4">
-                    <li><strong>Platformă</strong> - site-ul web Meseriași Profesioniști și toate serviciile aferente</li>
+                    <li><strong>Platformă</strong> - site-ul web Omul Potrivit și toate serviciile aferente</li>
                     <li><strong>Utilizator</strong> - orice persoană care accesează platforma</li>
                     <li><strong>Meseriaș</strong> - profesionist înregistrat care oferă servicii prin platformă</li>
                     <li><strong>Client</strong> - utilizator care caută serviciile unui meseriaș</li>
@@ -120,13 +120,13 @@
                     Pentru intrebari sau nelamuriri legate de acesti termeni si conditii, ne puteti contacta la:
                 </p>
                 <p class="text-gray-600 mb-4">
-                    Email: <a href="mailto:contact@meseriasionline.ro" class="text-primary-600 hover:underline">contact@meseriasionline.ro</a><br>
-                    Telefon: 0740 173 581
+                    Email: <a href="mailto:{{ \App\Models\PlatformSetting::getValue('contact_email', 'contact@meseriasionline.ro') }}" class="text-primary-600 hover:underline">{{ \App\Models\PlatformSetting::getValue('contact_email', 'contact@meseriasionline.ro') }}</a><br>
+                    Telefon: {{ \App\Models\PlatformSetting::getValue('contact_phone', '+40 740 173 581') }}
                 </p>
 
                 <div class="bg-secondary-100 p-6 rounded-lg mt-8">
                     <p class="text-gray-600">
-                        <strong>Nota:</strong> Prin utilizarea platformei Meseriasi Profesionisti, confirmati ca ati citit, 
+                        <strong>Nota:</strong> Prin utilizarea platformei Omul Potrivit, confirmati ca ati citit,
                         inteles si acceptat acesti termeni si conditii in intregime.
                     </p>
                 </div>

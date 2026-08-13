@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact - Meseriasi Profesionisti')
+@section('title', 'Contact - Omul Potrivit')
 
 @section('content')
 <div class="bg-white">
@@ -127,7 +127,7 @@
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-lg font-semibold text-gray-900">Email</h3>
-                                <p class="text-gray-600">contact@meseriasionline.ro</p>
+                                <p class="text-gray-600">{{ \App\Models\PlatformSetting::getValue('contact_email', 'contact@meseriasionline.ro') }}</p>
                                 <p class="text-gray-600">suport@meseriasionline.ro</p>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                             </div>
                             <div class="ml-4">
                                 <h3 class="text-lg font-semibold text-gray-900">Telefon</h3>
-                                <p class="text-gray-600">0740 173 581</p>
+                                <p class="text-gray-600">{{ \App\Models\PlatformSetting::getValue('contact_phone', '+40 740 173 581') }}</p>
                                 <p class="text-sm text-gray-500">Luni - Vineri: 9:00 - 18:00</p>
                             </div>
                         </div>
