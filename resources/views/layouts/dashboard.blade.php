@@ -7,18 +7,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
     <style>
-        #dashboard-sidebar {
-            transform: translateX(-100%);
-            transition: transform 0.25s ease;
-        }
-        #dashboard-sidebar.is-open {
-            transform: translateX(0);
-        }
         @media (min-width: 768px) {
             #dashboard-sidebar {
-                position: static;
+                position: static !important;
                 transform: none !important;
-                transition: none;
             }
         }
     </style>
@@ -31,7 +23,8 @@
 
         <!-- Sidebar -->
         <aside id="dashboard-sidebar"
-            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40">
+            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40"
+            style="transform: translateX(-100%); transition: transform 0.25s ease;">
             <div class="p-6 shrink-0 flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('images/logo-white.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.src='{{ asset('images/logo.png') }}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
@@ -126,11 +119,11 @@
             var closeBtn = document.getElementById('sidebar-close-btn');
 
             function openSidebar() {
-                sidebar.classList.add('is-open');
+                sidebar.style.transform = 'translateX(0)';
                 backdrop.style.display = 'block';
             }
             function closeSidebar() {
-                sidebar.classList.remove('is-open');
+                sidebar.style.transform = 'translateX(-100%)';
                 backdrop.style.display = 'none';
             }
 
