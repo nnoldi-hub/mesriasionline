@@ -8,16 +8,14 @@
     @stack('head')
 </head>
 <body class="bg-gray-100">
-    <div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
+    <div class="flex h-screen overflow-hidden">
 
         {{-- Mobile backdrop --}}
-        <div x-show="sidebarOpen" @click="sidebarOpen = false"
-             class="fixed inset-0 bg-black/50 z-30 md:hidden" style="display: none;"></div>
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 z-30 md:hidden" style="display: none;"></div>
 
         <!-- Sidebar -->
-        <aside
-            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out -translate-x-full md:static md:translate-x-0"
-            :class="{ 'translate-x-0': sidebarOpen }">
+        <aside id="dashboard-sidebar"
+            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out -translate-x-full md:static md:translate-x-0">
             <div class="p-6 shrink-0 flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('images/logo-white.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.src='{{ asset('images/logo.png') }}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
@@ -32,7 +30,7 @@
                         <span class="text-xl font-bold text-white">Omul Potrivit</span>
                     </div>
                 </a>
-                <button @click="sidebarOpen = false" class="md:hidden text-gray-400 hover:text-white p-1" aria-label="Închide meniul">
+                <button type="button" id="sidebar-close-btn" class="md:hidden text-gray-400 hover:text-white p-2" style="touch-action: manipulation;" aria-label="Închide meniul">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
@@ -71,7 +69,7 @@
             <header class="bg-white shadow-sm z-10">
                 <div class="px-4 md:px-6 py-4 flex items-center justify-between gap-3">
                     <div class="flex items-center gap-3 min-w-0">
-                        <button @click="sidebarOpen = !sidebarOpen" class="md:hidden text-gray-600 hover:text-gray-900 p-1 shrink-0" aria-label="Meniu">
+                        <button type="button" id="sidebar-open-btn" class="md:hidden text-gray-600 hover:text-gray-900 p-2 shrink-0" style="touch-action: manipulation;" aria-label="Meniu">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                             </svg>
@@ -103,6 +101,31 @@
             </main>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var sidebar = document.getElementById('dashboard-sidebar');
+            var backdrop = document.getElementById('sidebar-backdrop');
+            var openBtn = document.getElementById('sidebar-open-btn');
+            var closeBtn = document.getElementById('sidebar-close-btn');
+
+            function openSidebar() {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                backdrop.style.display = 'block';
+            }
+            function closeSidebar() {
+                sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('translate-x-0');
+                backdrop.style.display = 'none';
+            }
+
+            if (openBtn) openBtn.addEventListener('click', openSidebar);
+            if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+            if (backdrop) backdrop.addEventListener('click', closeSidebar);
+        });
+    </script>
+
     @stack('scripts')
 </body>
 </html>
