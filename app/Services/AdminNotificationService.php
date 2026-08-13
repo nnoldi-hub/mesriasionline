@@ -13,7 +13,7 @@ class AdminNotificationService
     public function send(string $subject, string $body): void
     {
         try {
-            $adminEmail = env('ADMIN_NOTIFY_EMAIL', 'admin@meseriasionline.ro');
+            $adminEmail = config('services.admin_notify_email');
 
             Mail::raw($body, function ($message) use ($adminEmail, $subject) {
                 $message->to($adminEmail)->subject($subject);

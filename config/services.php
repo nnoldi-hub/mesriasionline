@@ -140,4 +140,11 @@ return [
         'number' => env('WHATSAPP_NUMBER', '40740173581'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Notifications
+    |--------------------------------------------------------------------------
+    */
+    'admin_notify_email' => env('ADMIN_NOTIFY_EMAIL', 'admin@meseriasionline.ro'),
+
 ];
