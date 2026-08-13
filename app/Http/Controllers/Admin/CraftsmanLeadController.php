@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CraftsmanLead;
+use App\Services\AdminNotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CraftsmanLeadController extends Controller
 {
@@ -140,6 +143,55 @@ class CraftsmanLeadController extends Controller
             \Log::error('Lead invite email failed: ' . $e->getMessage());
             return back()->with('error', 'Eroare la trimiterea emailului. Verifică configurarea mail.');
         }
+    }
+
+    /**
+     * Creare directă a contului de meseriaș de către admin (fără să aștepte
+     * auto-activarea lead-ului). Generează o parolă temporară, o trimite
+     * meseriașului prin email și îi trimite și adminului o copie cu datele.
+     */
+    public function createAccount(Request $request, CraftsmanLead $lead, AdminNotificationService $adminNotifier)
+    {
+        if ($lead->status === 'inregistrat') {
+            return back()->with('error', 'Acest lead are deja un cont creat.');
+        }
+
+        $validated = $request->validate([
+            'email' => 'required|email|max:255|unique:users,email',
+        ]);
+
+        $password = Str::random(10);
+
+        $user = $lead->createUserAccount($validated['email'], $password);
+
+        try {
+            Mail::send('emails.account-created', [
+                'lead'     => $lead,
+                'user'     => $user,
+                'password' => $password,
+                'loginUrl' => route('login'),
+            ], function ($message) use ($user) {
+                $message->to($user->email, $user->name)
+                    ->subject('Contul tău pe meseriasionline.ro a fost creat');
+            });
+        } catch (\Throwable $e) {
+            Log::error('Account-created email failed: ' . $e->getMessage());
+        }
+
+        $adminNotifier->send(
+            "Cont creat manual: {$user->name} ({$user->email})",
+            "Ai creat manual contul pentru {$user->name} ({$lead->trade_label}, {$lead->city}).\n\n" .
+            "Email: {$user->email}\n" .
+            "Parolă temporară: {$password}\n\n" .
+            "Contul este inactiv și necesită aprobare: " . url('/admin/craftsmen/' . $user->id . '/edit')
+        );
+
+        if ($lead->referred_by_user_id) {
+            $lead->rewardReferrer($adminNotifier);
+        }
+
+        return redirect()->route('admin.leads.show', $lead)
+            ->with('success', "Cont creat cu succes pentru {$user->email}. Datele de conectare au fost trimise pe email, cu o copie la tine.");
     }
 
     /**

@@ -312,6 +312,7 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
         Route::get('/{lead}',                 [CraftsmanLeadController::class, 'show'])->name('show');
         Route::patch('/{lead}',               [CraftsmanLeadController::class, 'update'])->name('update');
         Route::post('/{lead}/invite',         [CraftsmanLeadController::class, 'sendInvite'])->name('invite');
+        Route::post('/{lead}/create-account', [CraftsmanLeadController::class, 'createAccount'])->name('create-account');
         Route::get('/{lead}/activation-link', [CraftsmanLeadController::class, 'getActivationLink'])->name('activation-link');
         Route::delete('/{lead}',              [CraftsmanLeadController::class, 'destroy'])->name('destroy');
     });

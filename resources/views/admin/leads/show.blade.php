@@ -171,6 +171,29 @@
             </span>
         </div>
 
+        {{-- Creare directă cont de admin --}}
+        @if($lead->status !== 'inregistrat')
+        <div class="bg-white rounded-xl border border-gray-200 p-4">
+            <h3 class="text-sm font-bold text-gray-700 mb-1">Creează cont direct</h3>
+            <p class="text-xs text-gray-500 mb-3">
+                Contul e creat imediat cu o parolă temporară, trimisă meseriașului pe email (cu o copie la tine).
+            </p>
+            <form method="POST" action="{{ route('admin.leads.create-account', $lead) }}"
+                  onsubmit="return confirm('Sigur creezi contul acum pentru ' + this.email.value + '? Se va trimite un email cu parola temporară.');"
+                  class="space-y-2">
+                @csrf
+                <input type="email" name="email" required
+                       value="{{ old('email', $lead->email) }}"
+                       placeholder="email@exemplu.ro"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500">
+                <button type="submit"
+                        class="w-full bg-gray-800 hover:bg-gray-900 text-white font-medium py-2.5 rounded-lg text-sm transition">
+                    👤 Creează cont acum
+                </button>
+            </form>
+        </div>
+        @endif
+
         {{-- Buton trimite invitație email --}}
         @if($lead->email && $lead->status !== 'inregistrat')
         <div class="bg-white rounded-xl border border-gray-200 p-4">
