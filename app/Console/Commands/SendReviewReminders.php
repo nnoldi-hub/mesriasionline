@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\QuoteRequest;
+use App\Notifications\ClientReviewPendingNotification;
 use App\Notifications\ReviewRequestNotification;
 use Illuminate\Console\Command;
 
@@ -41,14 +42,19 @@ class SendReviewReminders extends Command
             }
 
             if ($dryRun) {
-                $this->line("  [DRY-RUN] Ar trimite reminder către {$quoteRequest->client->email} pentru lucrarea \"{$quoteRequest->title}\"");
+                $this->line("  [DRY-RUN] Ar trimite reminder către {$quoteRequest->client->email} și ar anunța meseriașul pentru lucrarea \"{$quoteRequest->title}\"");
                 continue;
             }
 
-            $quoteRequest->client->notify(new ReviewRequestNotification($quoteRequest));
+            $quoteRequest->client->notify(new ReviewRequestNotification($quoteRequest, isReminder: true));
+
+            if ($quoteRequest->craftsman) {
+                $quoteRequest->craftsman->notify(new ClientReviewPendingNotification($quoteRequest));
+            }
+
             $quoteRequest->update(['review_reminder_sent_at' => now()]);
 
-            $this->line("  Reminder trimis către {$quoteRequest->client->email}");
+            $this->line("  Reminder trimis către {$quoteRequest->client->email}, meseriaș anunțat");
         }
 
         if ($dryRun) {

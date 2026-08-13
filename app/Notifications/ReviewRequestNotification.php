@@ -13,10 +13,12 @@ class ReviewRequestNotification extends Notification
     use Queueable;
 
     protected QuoteRequest $quoteRequest;
+    protected bool $isReminder;
 
-    public function __construct(QuoteRequest $quoteRequest)
+    public function __construct(QuoteRequest $quoteRequest, bool $isReminder = false)
     {
         $this->quoteRequest = $quoteRequest;
+        $this->isReminder = $isReminder;
     }
 
     public function via(object $notifiable): array
@@ -28,6 +30,17 @@ class ReviewRequestNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $craftsman = $this->quoteRequest->craftsman;
+
+        if ($this->isReminder) {
+            return (new MailMessage)
+                ->subject('Ne pasă de părerea dvs., ' . $notifiable->name)
+                ->greeting('Bună, ' . $notifiable->name . '!')
+                ->line('Ne-am dat seama că nu ați apucat încă să lăsați o recenzie pentru lucrarea „' . $this->quoteRequest->title . '" cu **' . $craftsman->name . '**.')
+                ->line('Ne pasă cu adevărat de experiența clienților noștri, iar părerea dvs. — bună sau cu sugestii de îmbunătățire — ne ajută pe noi și pe alți clienți care caută un meseriaș de încredere.')
+                ->action('Lasă o recenzie (durează 1 minut)', url('/recenzie/' . $this->quoteRequest->review_token))
+                ->line('Vă mulțumim pentru timpul acordat!')
+                ->salutation('Cu stimă, Echipa Meseriași');
+        }
 
         return (new MailMessage)
             ->subject('Cum a fost lucrarea cu ' . $craftsman->name . '?')
