@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class QuoteRequest extends Model
 {
@@ -23,6 +24,9 @@ class QuoteRequest extends Model
         'urgency',
         'status',
         'expires_at',
+        'review_token',
+        'review_requested_at',
+        'review_reminder_sent_at',
     ];
 
     protected function casts(): array
@@ -35,6 +39,8 @@ class QuoteRequest extends Model
             'client_lat' => 'decimal:8',
             'client_lng' => 'decimal:8',
             'expires_at' => 'datetime',
+            'review_requested_at' => 'datetime',
+            'review_reminder_sent_at' => 'datetime',
         ];
     }
 
@@ -76,6 +82,27 @@ class QuoteRequest extends Model
     public function acceptedQuote()
     {
         return $this->hasOne(Quote::class)->where('status', 'accepted');
+    }
+
+    /**
+     * Get the review left by the client, if any.
+     */
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+
+    /**
+     * Generează un token unic pentru accesul public la formularul de recenzie.
+     */
+    public function generateReviewToken(): string
+    {
+        $token = Str::random(48);
+        $this->update([
+            'review_token'         => $token,
+            'review_requested_at'  => now(),
+        ]);
+        return $token;
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\NewQuoteRequestNotification;
 use App\Notifications\QuoteReceivedNotification;
 use App\Notifications\QuoteAcceptedNotification;
+use App\Notifications\ReviewRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -248,8 +249,11 @@ class QuoteController extends Controller
         }
         
         $quoteRequest->update(['status' => 'completed']);
-        
+
+        $quoteRequest->generateReviewToken();
+        $user->notify(new ReviewRequestNotification($quoteRequest));
+
         return redirect()->route('quotes.show', $quoteRequest)
-            ->with('success', 'Lucrarea a fost marcată ca finalizată. Mulțumim!');
+            ->with('success', 'Lucrarea a fost marcată ca finalizată. Mulțumim! Îți vom trimite un email pentru a lăsa o recenzie.');
     }
 }

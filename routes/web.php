@@ -108,6 +108,12 @@ Route::get('/inscriere-meserias/confirmare/{id}', [CraftsmanRecruitmentControlle
 Route::get('/inscriere-meserias/activare/{token}',  [CraftsmanRecruitmentController::class, 'activateForm'])->name('recruitment.activate');
 Route::post('/inscriere-meserias/activare/{token}', [CraftsmanRecruitmentController::class, 'activateStore'])->name('recruitment.activate.store');
 
+// ─── Recenzie publică (link primit prin email după finalizarea lucrării) ─────
+Route::middleware('throttle:20,1')->group(function () {
+    Route::get('/recenzie/{token}',  [\App\Http\Controllers\ReviewSubmissionController::class, 'create'])->name('reviews.public.create');
+    Route::post('/recenzie/{token}', [\App\Http\Controllers\ReviewSubmissionController::class, 'store'])->name('reviews.public.store');
+});
+
 // Planuri & Subscriptions
 Route::get('/planuri', [\App\Http\Controllers\SubscriptionController::class, 'index'])->name('plans.index');
 Route::middleware(['auth'])->group(function () {

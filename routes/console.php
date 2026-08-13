@@ -42,3 +42,15 @@ Schedule::command('admin:daily-digest')
     ->dailyAt('08:00')
     ->withoutOverlapping()
     ->appendOutputTo(storage_path('logs/reminders.log'));
+
+// Schedule review reminders
+Schedule::command('reviews:send-reminders')
+    ->dailyAt('10:00')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/reminders.log'));
+
+// Schedule low-rating craftsman alerts
+Schedule::command('admin:notify-low-ratings')
+    ->weeklyOn(1, '08:30')
+    ->withoutOverlapping()
+    ->appendOutputTo(storage_path('logs/reminders.log'));

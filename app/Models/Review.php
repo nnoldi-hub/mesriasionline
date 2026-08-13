@@ -8,6 +8,7 @@ class Review extends Model
 {
     protected $fillable = [
         'appointment_id',
+        'quote_request_id',
         'specialist_id',
         'client_name',
         'rating',
@@ -31,6 +32,11 @@ class Review extends Model
     public function appointment()
     {
         return $this->belongsTo(Appointment::class);
+    }
+
+    public function quoteRequest()
+    {
+        return $this->belongsTo(QuoteRequest::class);
     }
 
     public function specialist()

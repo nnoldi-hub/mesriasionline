@@ -14,7 +14,7 @@
                     </div>
                     <div>
                         <h3 class="font-semibold text-gray-900">{{ $review->client_name }}</h3>
-                        <p class="text-sm text-gray-600">{{ $review->appointment->service->name ?? 'N/A' }}</p>
+                        <p class="text-sm text-gray-600">{{ $review->appointment?->service?->name ?? $review->quoteRequest?->title ?? 'N/A' }}</p>
                         <p class="text-sm text-gray-500">{{ $review->created_at->format('d.m.Y H:i') }}</p>
                     </div>
                 </div>

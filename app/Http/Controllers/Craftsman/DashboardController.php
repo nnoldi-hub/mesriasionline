@@ -71,7 +71,7 @@ class DashboardController extends Controller
         $craftsman = auth()->user();
         $reviews = $craftsman->reviews()
             ->where('is_approved', true)
-            ->with('appointment')
+            ->with(['appointment.service', 'quoteRequest'])
             ->latest()
             ->paginate(20);
 
