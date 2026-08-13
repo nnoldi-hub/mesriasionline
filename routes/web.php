@@ -345,6 +345,10 @@ Route::middleware(['auth', App\Http\Middleware\SpecialistMiddleware::class, 'onb
     
     Route::get('/appointments', [CraftsmanDashboardController::class, 'appointments'])->name('appointments');
     Route::get('/reviews', [CraftsmanDashboardController::class, 'reviews'])->name('reviews');
+
+    // Recomandă un coleg
+    Route::get('/recomandari', [\App\Http\Controllers\Craftsman\ReferralController::class, 'index'])->name('referrals.index');
+    Route::post('/recomandari', [\App\Http\Controllers\Craftsman\ReferralController::class, 'store'])->name('referrals.store');
     
     // Quotes - Cereri de ofertă primite
     Route::get('/quotes', [CraftsmanQuoteController::class, 'index'])->name('quotes.index');

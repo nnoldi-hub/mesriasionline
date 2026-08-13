@@ -248,6 +248,13 @@ class User extends Authenticatable
         return $this->hasMany(Webhook::class);
     }
 
+    // ─── Recomandări meseriași ──────────────────────────────────────
+
+    public function referredLeads()
+    {
+        return $this->hasMany(CraftsmanLead::class, 'referred_by_user_id');
+    }
+
     // ─── Subscriptions ───────────────────────────────────────────────
 
     public function subscriptions()

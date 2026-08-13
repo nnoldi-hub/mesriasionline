@@ -124,6 +124,13 @@
             Recenzii
         </a>
 
+        <a href="{{ route('craftsman.referrals.index') }}" class="flex items-center px-6 py-2.5 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('craftsman.referrals*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
+            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+            </svg>
+            Recomandă un coleg
+        </a>
+
         <a href="{{ route('messages.index') }}" class="flex items-center px-6 py-2.5 text-gray-300 hover:bg-gray-800 hover:text-white transition {{ request()->routeIs('messages*') ? 'bg-gray-800 text-white border-l-4 border-primary-600' : '' }}">
             <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z"/>

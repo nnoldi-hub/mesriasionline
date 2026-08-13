@@ -6,6 +6,7 @@ use App\Models\CraftsmanLead;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
+use App\Notifications\ReferralConvertedNotification;
 use App\Services\AdminNotificationService;
 use App\Services\ImageCompressionService;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class CraftsmanRecruitmentController extends Controller
         return view('recruitment.form', [
             'trades'         => self::TRADES,
             'selectedTrade'  => $trade,
+            'referralCode'   => $request->query('ref'),
         ]);
     }
 
@@ -51,7 +53,15 @@ class CraftsmanRecruitmentController extends Controller
             'email'            => 'nullable|email|max:255',
             'profile_photo'    => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
             'work_photo'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:3072',
+            'ref'              => 'nullable|string|max:255',
         ]);
+
+        $referrer = null;
+        if (!empty($validated['ref'])) {
+            $referrer = User::where('slug', $validated['ref'])
+                ->where('role', 'specialist')
+                ->first();
+        }
 
         // Upload-uri opționale
         $profilePhotoPath = null;
@@ -79,6 +89,7 @@ class CraftsmanRecruitmentController extends Controller
             'utm_source'       => $request->query('utm_source'),
             'utm_medium'       => $request->query('utm_medium'),
             'utm_campaign'     => $request->query('utm_campaign'),
+            'referred_by_user_id' => $referrer?->id,
         ]);
 
         // Trimite email de confirmare dacă a furnizat adresa
@@ -96,8 +107,9 @@ class CraftsmanRecruitmentController extends Controller
             "Oraș: {$lead->city}\n" .
             "Meserie: " . (self::TRADES[$lead->trade] ?? $lead->trade) . "\n" .
             "Experiență: {$lead->experience_range} ani\n" .
-            "Email: " . ($lead->email ?: '-') . "\n\n" .
-            "Vezi lead-ul: {$leadUrl}"
+            "Email: " . ($lead->email ?: '-') . "\n" .
+            ($referrer ? "Recomandat de: {$referrer->name}\n" : '') .
+            "\nVezi lead-ul: {$leadUrl}"
         );
 
         return redirect()->route('recruitment.success', ['id' => $lead->id])
@@ -191,6 +203,10 @@ class CraftsmanRecruitmentController extends Controller
             "Activează contul: {$profileUrl}"
         );
 
+        if ($lead->referred_by_user_id) {
+            $this->rewardReferrer($lead, $adminNotifier);
+        }
+
         auth()->login($user);
 
         return redirect()->route('onboarding.step', ['step' => 1])
@@ -198,6 +214,39 @@ class CraftsmanRecruitmentController extends Controller
     }
 
     // ─── Helpers private ─────────────────────────────────────────────────────
+
+    /**
+     * Recompensează meseriașul care a recomandat lead-ul, la conversia acestuia.
+     */
+    private function rewardReferrer(CraftsmanLead $lead, AdminNotificationService $adminNotifier): void
+    {
+        $referrer = $lead->referredBy;
+        if (!$referrer) {
+            return;
+        }
+
+        $subscription = $referrer->activeSubscription();
+        $rewardGiven = false;
+
+        if ($subscription && $subscription->ends_at) {
+            $subscription->update(['ends_at' => $subscription->ends_at->addDays(30)]);
+            $rewardGiven = true;
+        }
+
+        $lead->update(['referral_reward_given' => $rewardGiven]);
+
+        $referrer->notify(new ReferralConvertedNotification($lead, $rewardGiven));
+
+        $adminNotifier->send(
+            "Recomandare convertită: {$referrer->name} → {$lead->name}",
+            "{$referrer->name} a recomandat un coleg care tocmai și-a creat cont: {$lead->name} (" .
+            (self::TRADES[$lead->trade] ?? $lead->trade) . ").\n\n" .
+            ($rewardGiven
+                ? "Recompensă acordată automat: 30 de zile în plus la abonamentul activ al lui {$referrer->name}.\n"
+                : "{$referrer->name} nu are un abonament activ cu dată de expirare — nu s-a acordat automat nicio recompensă. Poți decide manual o recompensă.\n") .
+            "Profil recomandant: " . url('/admin/craftsmen/' . $referrer->id . '/edit')
+        );
+    }
 
     private function sendConfirmationEmail(CraftsmanLead $lead): void
     {

@@ -81,6 +81,19 @@
                     </div>
                 </div>
                 @endif
+                @if($lead->referredBy)
+                <div class="col-span-2">
+                    <div class="text-xs text-gray-500 mb-0.5">Recomandat de</div>
+                    <div class="font-medium text-gray-900">
+                        {{ $lead->referredBy->name }}
+                        @if($lead->status === 'inregistrat')
+                            <span class="text-xs {{ $lead->referral_reward_given ? 'text-green-600' : 'text-yellow-600' }}">
+                                ({{ $lead->referral_reward_given ? 'recompensă acordată automat' : 'fără recompensă automată — verifică manual' }})
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                @endif
                 <div>
                     <div class="text-xs text-gray-500 mb-0.5">Înregistrat la</div>
                     <div class="font-medium text-gray-900">{{ $lead->created_at->format('d.m.Y H:i') }}</div>

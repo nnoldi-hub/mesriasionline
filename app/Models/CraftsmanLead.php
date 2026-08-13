@@ -28,11 +28,14 @@ class CraftsmanLead extends Model
         'utm_source',
         'utm_medium',
         'utm_campaign',
+        'referred_by_user_id',
+        'referral_reward_given',
     ];
 
     protected $casts = [
-        'invite_sent_at'      => 'datetime',
-        'account_created_at'  => 'datetime',
+        'invite_sent_at'        => 'datetime',
+        'account_created_at'    => 'datetime',
+        'referral_reward_given' => 'boolean',
     ];
 
     // ─── Etichete lizibile ────────────────────────────────────────────────────
@@ -83,6 +86,11 @@ class CraftsmanLead extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function referredBy()
+    {
+        return $this->belongsTo(User::class, 'referred_by_user_id');
     }
 
     // ─── Utilitare ────────────────────────────────────────────────────────────

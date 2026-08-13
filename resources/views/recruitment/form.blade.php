@@ -50,6 +50,9 @@
     <form method="POST" action="{{ route('recruitment.store') }}" enctype="multipart/form-data"
           class="bg-white rounded-2xl shadow-xl p-6 md:p-8 space-y-6">
         @csrf
+        @if($referralCode ?? null)
+            <input type="hidden" name="ref" value="{{ $referralCode }}">
+        @endif
 
         {{-- Secțiunea 1 — Date rapide --}}
         <div>
