@@ -8,10 +8,17 @@
     @stack('head')
 </head>
 <body class="bg-gray-100">
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex h-screen overflow-hidden" x-data="{ sidebarOpen: false }">
+
+        {{-- Mobile backdrop --}}
+        <div x-show="sidebarOpen" @click="sidebarOpen = false"
+             class="fixed inset-0 bg-black/50 z-30 md:hidden" style="display: none;"></div>
+
         <!-- Sidebar -->
-        <aside class="w-64 bg-gray-900 text-white shrink-0 hidden md:flex md:flex-col">
-            <div class="p-6 shrink-0">
+        <aside
+            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out -translate-x-full md:static md:translate-x-0"
+            :class="{ 'translate-x-0': sidebarOpen }">
+            <div class="p-6 shrink-0 flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('images/logo-white.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.src='{{ asset('images/logo.png') }}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
                     <div class="hidden items-center space-x-2">
@@ -25,6 +32,11 @@
                         <span class="text-xl font-bold text-white">Omul Potrivit</span>
                     </div>
                 </a>
+                <button @click="sidebarOpen = false" class="md:hidden text-gray-400 hover:text-white p-1" aria-label="Închide meniul">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
             </div>
 
             <nav class="flex-1 overflow-y-auto pb-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
@@ -57,17 +69,24 @@
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
             <header class="bg-white shadow-sm z-10">
-                <div class="px-6 py-4 flex items-center justify-between">
-                    <h1 class="text-2xl font-bold text-gray-900">@yield('page-title', 'Dashboard')</h1>
-                    
-                    <div class="flex items-center space-x-4">
+                <div class="px-4 md:px-6 py-4 flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <button @click="sidebarOpen = !sidebarOpen" class="md:hidden text-gray-600 hover:text-gray-900 p-1 shrink-0" aria-label="Meniu">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                            </svg>
+                        </button>
+                        <h1 class="text-xl md:text-2xl font-bold text-gray-900 truncate">@yield('page-title', 'Dashboard')</h1>
+                    </div>
+
+                    <div class="flex items-center space-x-4 shrink-0">
                         @yield('header-actions')
                     </div>
                 </div>
             </header>
 
             <!-- Page Content -->
-            <main class="flex-1 overflow-auto bg-gray-100 p-6">
+            <main class="flex-1 overflow-auto bg-gray-100 p-4 md:p-6">
                 @if(session('success'))
                     <div class="mb-6 bg-success-50 border border-success-200 text-success-700 px-4 py-3 rounded-lg">
                         {{ session('success') }}

@@ -145,6 +145,8 @@
                         </svg>
                     </button>
                     
+                    {{-- Acțiuni desktop — pe mobil sunt disponibile în meniul hamburger --}}
+                    <div class="hidden md:flex md:items-center md:space-x-4">
                     @auth
                         {{-- Favorites Link --}}
                         <a href="{{ route('favorites.index') }}" class="relative text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition p-2" title="Favoriți">
@@ -152,7 +154,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                             </svg>
                         </a>
-                    
+
                         <!-- Notifications Bell -->
                         <div class="relative" x-data="{ open: false, loaded: false }" @click.away="open = false">
                             <button @click="open = !open; if(!loaded) { loadNotifications(); loaded = true; }" class="relative text-gray-600 hover:text-primary-600 transition p-2">
@@ -171,7 +173,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Messages Icon -->
                         <a href="{{ route('messages.index') }}" class="relative text-gray-600 hover:text-primary-600 transition p-2">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,7 +181,7 @@
                             </svg>
                             <span id="messages-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
                         </a>
-                    
+
                         @if(auth()->user()->role === 'superadmin' || auth()->user()->role === 'admin')
                             <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-primary-600 transition">
                                 Dashboard Admin
@@ -206,10 +208,144 @@
                             Intră în cont
                         </a>
                     @endauth
+                    </div>
                 </div>
             </div>
         </div>
     </header>
+
+    {{-- Meniu mobil (slide-out) — reflectă starea reală de autentificare --}}
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay">
+        <div class="mobile-menu-panel">
+            <div class="p-4 border-b dark:border-gray-700">
+                <div class="flex items-center justify-between">
+                    <span class="text-xl font-bold text-primary-600">Omul Potrivit</span>
+                    <button id="close-mobile-menu" class="p-2 text-gray-500 hover:text-gray-700" aria-label="Închide meniul">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <nav class="p-4 space-y-1">
+                <a href="{{ route('home') }}" class="mobile-nav-item">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    <span>Acasă</span>
+                </a>
+                <a href="{{ route('home') }}#categories" class="mobile-nav-item">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                    </svg>
+                    <span>Categorii</span>
+                </a>
+                <a href="{{ route('articole') }}" class="mobile-nav-item">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                    </svg>
+                    <span>Articole</span>
+                </a>
+                <a href="{{ route('intrebari') }}" class="mobile-nav-item">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Întrebări</span>
+                </a>
+                <a href="{{ route('about') }}" class="mobile-nav-item">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Despre noi</span>
+                </a>
+                <a href="{{ route('contact') }}" class="mobile-nav-item">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Contact</span>
+                </a>
+
+                @auth
+                    <div class="my-2 border-t dark:border-gray-700"></div>
+
+                    <a href="{{ route('favorites.index') }}" class="mobile-nav-item">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        <span>Favoriți</span>
+                    </a>
+                    <a href="{{ route('notifications.index') }}" class="mobile-nav-item">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span>Notificări</span>
+                    </a>
+                    <a href="{{ route('messages.index') }}" class="mobile-nav-item">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                        </svg>
+                        <span>Mesaje</span>
+                    </a>
+                    @if(auth()->user()->role === 'superadmin' || auth()->user()->role === 'admin')
+                        <a href="{{ route('admin.dashboard') }}" class="mobile-nav-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                            </svg>
+                            <span>Dashboard Admin</span>
+                        </a>
+                    @elseif(auth()->user()->role === 'specialist')
+                        <a href="{{ route('craftsman.dashboard') }}" class="mobile-nav-item">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+                            </svg>
+                            <span>Dashboard</span>
+                        </a>
+                    @endif
+                @endauth
+            </nav>
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                @auth
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full text-center py-2 px-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium">
+                            Deconectare
+                        </button>
+                    </form>
+                @else
+                    <div class="flex gap-2">
+                        <a href="{{ route('login') }}" class="flex-1 text-center py-2 px-4 bg-primary-600 text-white rounded-lg font-medium">
+                            Intră în cont
+                        </a>
+                        <a href="{{ route('register.client.form') }}" class="flex-1 text-center py-2 px-4 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium">
+                            Creează cont
+                        </a>
+                    </div>
+                @endauth
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('mobile-menu-btn');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            const closeBtn = document.getElementById('close-mobile-menu');
+
+            function openMenu() {
+                overlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeMenu() {
+                overlay.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            btn?.addEventListener('click', openMenu);
+            closeBtn?.addEventListener('click', closeMenu);
+            overlay?.addEventListener('click', function (e) {
+                if (e.target === overlay) closeMenu();
+            });
+        });
+    </script>
 
     <!-- Main Content -->
     <main>

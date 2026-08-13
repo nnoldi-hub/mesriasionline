@@ -482,6 +482,13 @@ class TouchGesturesManager {
      * Swipe from edge to open mobile menu
      */
     setupMobileMenuGesture() {
+        // Doar pe paginile care folosesc header-ul public (layouts/app.blade.php).
+        // Paginile de dashboard (admin/meseriaș) au propriul meniu lateral și nu
+        // trebuie să primească panoul generic construit aici.
+        if (!document.getElementById('mobile-menu-btn')) {
+            return;
+        }
+
         let startX = 0;
         let menuOpen = false;
 
