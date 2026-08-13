@@ -121,11 +121,19 @@
             function openSidebar() {
                 sidebar.style.transform = 'translateX(0)';
                 backdrop.style.display = 'block';
+                alert('DEBUG deschide: sidebar=' + (sidebar ? 'gasit' : 'LIPSA') +
+                    ' | latime ecran=' + window.innerWidth +
+                    ' | transform dupa=' + getComputedStyle(sidebar).transform +
+                    ' | pozitie=' + getComputedStyle(sidebar).position +
+                    ' | left=' + getComputedStyle(sidebar).left +
+                    ' | display=' + getComputedStyle(sidebar).display);
             }
             function closeSidebar() {
                 sidebar.style.transform = 'translateX(-100%)';
                 backdrop.style.display = 'none';
             }
+
+            alert('DEBUG init: buton=' + (openBtn ? 'gasit' : 'LIPSA') + ' | sidebar=' + (sidebar ? 'gasit' : 'LIPSA') + ' | latime=' + window.innerWidth);
 
             if (openBtn) openBtn.addEventListener('click', openSidebar);
             if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
