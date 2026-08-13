@@ -76,7 +76,8 @@ class PublicJobRequestController extends Controller
     public function success(string $token)
     {
         $jobRequest = PublicJobRequest::where('access_token', $token)->firstOrFail();
+        $interestedCount = $jobRequest->interestedCraftsmen()->count();
 
-        return view('public-request.success', compact('jobRequest'));
+        return view('public-request.success', compact('jobRequest', 'interestedCount'));
     }
 }

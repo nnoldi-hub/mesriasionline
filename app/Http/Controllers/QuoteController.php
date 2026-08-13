@@ -124,13 +124,22 @@ class QuoteController extends Controller
             $lng = (float) $validated['client_lng'];
             $haversine = "(6371 * acos(cos(radians({$lat})) * cos(radians(latitude)) * cos(radians(longitude) - radians({$lng})) + sin(radians({$lat})) * sin(radians(latitude))))";
 
-            $nearbyCraftsmen = User::where('role', 'specialist')
+            $nearbyCraftsmenQuery = User::where('role', 'specialist')
                 ->where('is_active', true)
                 ->whereNotNull('latitude')
                 ->whereNotNull('longitude')
                 ->whereNotNull('service_radius_km')
-                ->whereRaw("{$haversine} <= service_radius_km")
-                ->get();
+                ->whereRaw("{$haversine} <= service_radius_km");
+
+            // Dacă cererea are un serviciu specific, notifică doar meseriași din categoria potrivită
+            if (!empty($validated['service_id'])) {
+                $categoryId = Service::find($validated['service_id'])?->category_id;
+                if ($categoryId) {
+                    $nearbyCraftsmenQuery->where('category_id', $categoryId);
+                }
+            }
+
+            $nearbyCraftsmen = $nearbyCraftsmenQuery->get();
 
             foreach ($nearbyCraftsmen as $craftsman) {
                 $craftsman->notify(new NewQuoteRequestNotification($quoteRequest));

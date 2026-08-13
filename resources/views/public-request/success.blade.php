@@ -42,6 +42,27 @@
                 </div>
             </div>
 
+            {{-- Status live --}}
+            @if($jobRequest->notified_craftsmen > 0)
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-blue-900">
+                            {{ $interestedCount }} / {{ \App\Models\PublicJobRequest::MAX_INTERESTED }} meseriași interesați
+                        </span>
+                        @if($jobRequest->status !== 'open')
+                            <span class="text-xs font-bold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Completă</span>
+                        @endif
+                    </div>
+                    <div class="w-full bg-blue-100 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full transition-all"
+                             style="width: {{ min(100, ($interestedCount / \App\Models\PublicJobRequest::MAX_INTERESTED) * 100) }}%"></div>
+                    </div>
+                    <p class="text-xs text-blue-700 mt-2">
+                        Reîncarcă pagina asta oricând (link-ul e salvat, poți reveni la el) ca să vezi actualizări.
+                    </p>
+                </div>
+            @endif
+
             <div class="space-y-3">
                 @if($jobRequest->notified_craftsmen === 0)
                     <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 text-sm text-yellow-800">

@@ -74,6 +74,14 @@ class PublicJobRequestController extends Controller
             'message' => 'nullable|string|max:1000',
         ]);
 
+        $alreadyResponded = PublicJobRequestResponse::where('public_job_request_id', $publicJobRequest->id)
+            ->where('craftsman_id', $craftsman->id)
+            ->exists();
+
+        if ($validated['action'] === 'interested' && $publicJobRequest->status !== 'open' && !$alreadyResponded) {
+            return back()->with('error', 'Această cerere are deja destui meseriași interesați și nu mai primește răspunsuri noi.');
+        }
+
         PublicJobRequestResponse::updateOrCreate(
             [
                 'public_job_request_id' => $publicJobRequest->id,
@@ -107,6 +115,24 @@ class PublicJobRequestController extends Controller
                 );
             } catch (\Exception $e) {
                 \Log::warning("Client notification email failed for public job request #{$publicJobRequest->id}: " . $e->getMessage());
+            }
+
+            // Dacă am atins numărul maxim de meseriași interesați, închide cererea automat
+            if ($publicJobRequest->status === 'open' && $publicJobRequest->isFull()) {
+                $publicJobRequest->update(['status' => 'in_progress']);
+
+                try {
+                    \Illuminate\Support\Facades\Mail::send(
+                        'emails.public-request-matched',
+                        ['jobRequest' => $publicJobRequest],
+                        function ($mail) use ($publicJobRequest) {
+                            $mail->to($publicJobRequest->email)
+                                 ->subject('Ai primit ' . PublicJobRequest::MAX_INTERESTED . ' oferte pentru cererea ta!');
+                        }
+                    );
+                } catch (\Exception $e) {
+                    \Log::warning("Request-matched email failed for public job request #{$publicJobRequest->id}: " . $e->getMessage());
+                }
             }
 
             return back()->with('success', 'Clientul a fost notificat cu datele tale de contact!');

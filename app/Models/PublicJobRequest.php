@@ -7,6 +7,12 @@ use Illuminate\Support\Str;
 
 class PublicJobRequest extends Model
 {
+    /**
+     * Numărul maxim de meseriași interesați acceptați înainte ca cererea
+     * să se închidă automat (clientul are deja destule oferte).
+     */
+    public const MAX_INTERESTED = 3;
+
     protected $fillable = [
         'category_id',
         'location_id',
@@ -59,6 +65,14 @@ class PublicJobRequest extends Model
     public function interestedCraftsmen()
     {
         return $this->responses()->where('action', 'interested');
+    }
+
+    /**
+     * A ajuns cererea la numărul maxim de meseriași interesați?
+     */
+    public function isFull(): bool
+    {
+        return $this->interestedCraftsmen()->count() >= self::MAX_INTERESTED;
     }
 
     public function getUrgencyLabelAttribute(): string
