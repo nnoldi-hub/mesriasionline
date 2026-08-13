@@ -6,6 +6,22 @@
     <title>@yield('title', 'Dashboard') - {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
+    <style>
+        #dashboard-sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.25s ease;
+        }
+        #dashboard-sidebar.is-open {
+            transform: translateX(0);
+        }
+        @media (min-width: 768px) {
+            #dashboard-sidebar {
+                position: static;
+                transform: none !important;
+                transition: none;
+            }
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen overflow-hidden">
@@ -15,7 +31,7 @@
 
         <!-- Sidebar -->
         <aside id="dashboard-sidebar"
-            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out -translate-x-full md:static md:translate-x-0">
+            class="w-64 bg-gray-900 text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-40">
             <div class="p-6 shrink-0 flex items-center justify-between">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('images/logo-white.png') }}" alt="Omul Potrivit PRO" class="h-10" onerror="this.src='{{ asset('images/logo.png') }}';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
@@ -110,13 +126,11 @@
             var closeBtn = document.getElementById('sidebar-close-btn');
 
             function openSidebar() {
-                sidebar.classList.remove('-translate-x-full');
-                sidebar.classList.add('translate-x-0');
+                sidebar.classList.add('is-open');
                 backdrop.style.display = 'block';
             }
             function closeSidebar() {
-                sidebar.classList.add('-translate-x-full');
-                sidebar.classList.remove('translate-x-0');
+                sidebar.classList.remove('is-open');
                 backdrop.style.display = 'none';
             }
 
