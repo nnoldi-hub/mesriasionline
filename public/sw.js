@@ -3,7 +3,7 @@
  * Handles push notifications, offline caching, and PWA functionality
  */
 
-const CACHE_NAME = 'omulpotrivit-v2';
+const CACHE_NAME = 'omulpotrivit-v3';
 const OFFLINE_URL = '/offline.html';
 
 // Assets to cache for offline use
