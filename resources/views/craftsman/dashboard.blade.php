@@ -17,28 +17,6 @@
     </div>
 @endif
 
-{{-- Plan upgrade banner --}}
-@if(!auth()->user()->isPro())
-    <div class="mb-6 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-md">
-        <div class="text-white">
-            <p class="font-bold text-lg leading-tight">
-                @if(auth()->user()->isStarter())
-                    ⭐ Fă upgrade la Pro și obține oferte nelimitate!
-                @else
-                    🚀 Îți mai rămân <strong>{{ max(0, 3 - (auth()->user()->activeSubscription()?->quotes_used_this_month ?? 0)) }}</strong> oferte gratuite luna aceasta.
-                @endif
-            </p>
-            <p class="text-emerald-100 text-sm mt-0.5">
-                Planul Pro îți oferă vizibilitate maximă și clienți mai mulți.
-            </p>
-        </div>
-        <a href="{{ route('plans.index') }}"
-           class="flex-shrink-0 bg-white text-emerald-700 font-semibold text-sm px-5 py-2.5 rounded-lg hover:bg-emerald-50 transition-colors whitespace-nowrap">
-            Vezi planurile →
-        </a>
-    </div>
-@endif
-
 @if(!auth()->user()->is_active)
     <div class="mb-6 bg-accent-50 border border-accent-200 rounded-lg p-4">
         <div class="flex">

@@ -8,7 +8,7 @@
 <section class="bg-gradient-to-br from-primary-700 to-primary-900 text-white py-20 px-4">
     <div class="max-w-4xl mx-auto text-center">
         <span class="inline-block bg-primary-500 bg-opacity-40 text-primary-100 text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
-            Gratuit în primele 30 de zile
+            100% Gratuit, fără abonament
         </span>
         <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-5">
             Primești clienți reali<br>din București.
