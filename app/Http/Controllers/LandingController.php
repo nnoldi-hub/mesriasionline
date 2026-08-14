@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\User;
+use App\Services\SeoService;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
@@ -13,7 +14,7 @@ class LandingController extends Controller
      * Landing page per categorie (toate orașele).
      * e.g. /meseriasi/electrician
      */
-    public function category(string $categorySlug)
+    public function category(string $categorySlug, SeoService $seo)
     {
         $category = Category::where('slug', $categorySlug)
             ->where('is_active', true)
@@ -54,6 +55,11 @@ class LandingController extends Controller
             'canonical'   => route('landing.category', $categorySlug),
         ];
 
+        $seo->setTitle($meta['title'], false)
+            ->setDescription($meta['description'])
+            ->setKeywords($meta['keywords'])
+            ->setCanonical($meta['canonical']);
+
         return view('landing.category', compact('category', 'craftsmen', 'topLocations', 'faqItems', 'serviceTemplates', 'meta'));
     }
 
@@ -61,7 +67,7 @@ class LandingController extends Controller
      * Landing page per categorie + oraș.
      * e.g. /meseriasi/electrician/bucuresti
      */
-    public function categoryCity(string $categorySlug, string $locationSlug)
+    public function categoryCity(string $categorySlug, string $locationSlug, SeoService $seo)
     {
         $category = Category::where('slug', $categorySlug)
             ->where('is_active', true)
@@ -94,6 +100,12 @@ class LandingController extends Controller
             'canonical'   => route('landing.category-city', [$categorySlug, $locationSlug]),
         ];
 
+        $seo->setTitle($meta['title'], false)
+            ->setDescription($meta['description'])
+            ->setKeywords($meta['keywords'])
+            ->setCanonical($meta['canonical'])
+            ->setNoindex($craftsmen->isEmpty());
+
         // Structured data JSON-LD
         $structuredData = $this->buildLocalBusinessStructuredData($category, $location, $craftsmen);
 
@@ -104,13 +116,33 @@ class LandingController extends Controller
 
     /**
      * Sitemap XML pentru landing pages.
+     *
+     * Paginile per categorie sunt incluse mereu (sunt puține și au mereu conținut util,
+     * chiar și fără meseriași — încurajează înscrierea). Paginile categorie+oraș sunt
+     * incluse doar dacă există cel puțin un meseriaș activ acolo, ca să nu umplem
+     * sitemap-ul cu sute de pagini goale/aproape identice (risc de conținut subțire).
      */
     public function sitemap()
     {
         $categories = Category::where('is_active', true)->get();
-        $locations  = Location::where('is_active', true)->get();
 
-        return response()->view('landing.sitemap', compact('categories', 'locations'))
+        $categoriesById = $categories->keyBy('id');
+        $locationsById  = Location::where('is_active', true)->get()->keyBy('id');
+
+        $combos = User::where('role', 'specialist')
+            ->where('is_active', true)
+            ->whereNotNull('category_id')
+            ->whereNotNull('location_id')
+            ->select('category_id', 'location_id')
+            ->distinct()
+            ->get()
+            ->filter(fn($pair) => $categoriesById->has($pair->category_id) && $locationsById->has($pair->location_id))
+            ->map(fn($pair) => (object) [
+                'category' => $categoriesById[$pair->category_id],
+                'location' => $locationsById[$pair->location_id],
+            ]);
+
+        return response()->view('landing.sitemap', compact('categories', 'combos'))
             ->header('Content-Type', 'application/xml');
     }
 

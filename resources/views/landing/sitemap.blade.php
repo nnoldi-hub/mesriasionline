@@ -10,13 +10,13 @@
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
         </url>
-        @foreach($locations as $location)
-            <url>
-                <loc>{{ route('landing.category-city', [$category->slug, $location->slug]) }}</loc>
-                <lastmod>{{ now()->toDateString() }}</lastmod>
-                <changefreq>weekly</changefreq>
-                <priority>0.7</priority>
-            </url>
-        @endforeach
+    @endforeach
+    @foreach($combos as $combo)
+        <url>
+            <loc>{{ route('landing.category-city', [$combo->category->slug, $combo->location->slug]) }}</loc>
+            <lastmod>{{ now()->toDateString() }}</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.7</priority>
+        </url>
     @endforeach
 </urlset>

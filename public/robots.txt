@@ -1,2 +1,5 @@
 User-agent: *
 Disallow:
+
+Sitemap: https://meseriasionline.ro/sitemap.xml
+Sitemap: https://meseriasionline.ro/sitemap-meserii.xml

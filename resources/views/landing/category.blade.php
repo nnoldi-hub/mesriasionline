@@ -1,13 +1,6 @@
 @extends('layouts.app')
 
 @section('title', $meta['title'])
-@section('meta_description', $meta['description'])
-@section('meta_keywords', $meta['keywords'])
-
-@push('head')
-<link rel="canonical" href="{{ $meta['canonical'] }}">
-<meta name="robots" content="index, follow">
-@endpush
 
 @section('content')
 

@@ -103,7 +103,7 @@ class Category extends Model
 
     public function getUrlAttribute()
     {
-        return route('categories.show', $this->slug);
+        return route('landing.category', $this->slug);
     }
 
     public function getMetaTitleFullAttribute()

@@ -106,7 +106,7 @@ class Location extends Model
 
     public function getUrlAttribute()
     {
-        return route('locations.show', $this->slug);
+        return route('home', ['location_id' => $this->id]);
     }
 
     public function getMetaTitleFullAttribute()

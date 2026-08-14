@@ -307,6 +307,23 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </section>
 
+@if(($popularCombos ?? collect())->isNotEmpty())
+<!-- Căutări populare (link-uri interne către paginile meserie + oraș) -->
+<section class="py-10" style="background-color: #ECF0F1;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-lg font-bold mb-4" style="color:#2C3E50;">Căutări populare</h2>
+        <div class="flex flex-wrap gap-2">
+            @foreach($popularCombos as $combo)
+                <a href="{{ route('landing.category-city', [$combo->category->slug, $combo->location->slug]) }}"
+                   class="inline-block bg-white border border-gray-200 rounded-full px-4 py-2 text-sm text-gray-700 hover:border-primary-400 hover:text-primary-600 transition">
+                    {{ $combo->category->name }} {{ $combo->location->city }}
+                </a>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
 <!-- Craftsmen Listing -->
 <section class="py-16" style="background-color: #ECF0F1;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

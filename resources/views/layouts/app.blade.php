@@ -45,7 +45,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
     
     {{-- Additional head content --}}
-    @yield('head')
+    @stack('head')
     
     {{-- Google Maps API --}}
     @if(config('services.google.maps_api_key'))

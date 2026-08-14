@@ -20,6 +20,7 @@ class SeoService
     protected ?string $publishedTime = null;
     protected ?string $modifiedTime = null;
     protected array $breadcrumbs = [];
+    protected bool $noindex = false;
 
     protected string $siteName = 'Omul Potrivit';
     protected string $defaultDescription = 'Omul Potrivit - Reparații, întreținere, siguranță — totul pentru casa ta. Meseriașul potrivit, direct la tine.';
@@ -114,6 +115,15 @@ class SeoService
     public function setTwitterCard(string $card): self
     {
         $this->twitterCard = $card;
+        return $this;
+    }
+
+    /**
+     * Marchează pagina ca "noindex" (ex: pagini goale, fără conținut real încă).
+     */
+    public function setNoindex(bool $noindex = true): self
+    {
+        $this->noindex = $noindex;
         return $this;
     }
 
@@ -233,7 +243,9 @@ class SeoService
         }
 
         // Robots
-        $html[] = '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">';
+        $html[] = $this->noindex
+            ? '<meta name="robots" content="noindex, follow">'
+            : '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">';
 
         return implode("\n    ", $html);
     }
@@ -433,6 +445,7 @@ class SeoService
         $this->publishedTime = null;
         $this->modifiedTime = null;
         $this->breadcrumbs = [];
+        $this->noindex = false;
 
         return $this;
     }

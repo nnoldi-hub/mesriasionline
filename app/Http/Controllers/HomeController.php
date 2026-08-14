@@ -211,6 +211,28 @@ class HomeController extends Controller
             return Video::where('is_active', true)->orderBy('sort_order')->orderBy('id')->get();
         });
 
+        // Cele mai populare combinații meserie+oraș (link-uri interne către paginile
+        // /meseriasi/{meserie}/{oras}, calculate din numărul real de meseriași activi).
+        $popularCombos = Cache::remember('popular_category_location_combos', 1800, function () {
+            $categoriesById = Category::where('is_active', true)->get()->keyBy('id');
+            $locationsById  = Location::where('is_active', true)->get()->keyBy('id');
+
+            return User::where('role', 'specialist')
+                ->where('is_active', true)
+                ->whereNotNull('category_id')
+                ->whereNotNull('location_id')
+                ->selectRaw('category_id, location_id, count(*) as craftsmen_count')
+                ->groupBy('category_id', 'location_id')
+                ->orderByDesc('craftsmen_count')
+                ->limit(10)
+                ->get()
+                ->filter(fn ($row) => $categoriesById->has($row->category_id) && $locationsById->has($row->location_id))
+                ->map(fn ($row) => (object) [
+                    'category' => $categoriesById[$row->category_id],
+                    'location' => $locationsById[$row->location_id],
+                ]);
+        });
+
         return view('home', compact(
             'categories',
             'locations',
@@ -221,7 +243,8 @@ class HomeController extends Controller
             'userLat',
             'userLng',
             'searchRadius',
-            'videos'
+            'videos',
+            'popularCombos'
         ));
     }
 
