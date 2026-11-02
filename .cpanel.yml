@@ -3,5 +3,6 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home2/ooxlvzey/meseriasionline.ro/
     - /bin/cp -R * $DEPLOYPATH
+    - /usr/local/bin/php $DEPLOYPATH/artisan migrate --force
     - /usr/local/bin/php $DEPLOYPATH/artisan optimize:clear
     - /usr/local/bin/php $DEPLOYPATH/artisan optimize
