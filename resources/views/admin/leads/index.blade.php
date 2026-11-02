@@ -9,6 +9,10 @@
 
 @section('header-actions')
 <div class="flex items-center gap-3">
+    <a href="{{ route('admin.leads.today') }}"
+       class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition">
+        📞 De sunat azi
+    </a>
     <a href="{{ route('admin.leads.guide') }}"
        class="inline-flex items-center gap-2 px-4 py-2 border border-primary-300 text-primary-700 rounded-lg hover:bg-primary-50 text-sm font-medium transition">
         💡 Idei de recrutare

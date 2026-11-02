@@ -22,6 +22,7 @@ class CraftsmanLead extends Model
         'work_photo',
         'status',
         'admin_notes',
+        'stale_reminder_sent_at',
         'invite_token',
         'invite_sent_at',
         'user_id',
@@ -31,12 +32,25 @@ class CraftsmanLead extends Model
         'utm_campaign',
         'referred_by_user_id',
         'referral_reward_given',
+        // Lista de apeluri
+        'source',
+        'source_url',
+        'call_outcome',
+        'call_attempts',
+        'last_contacted_at',
+        'next_action_at',
+        'next_action_note',
+        'refusal_reason',
     ];
 
     protected $casts = [
         'invite_sent_at'        => 'datetime',
         'account_created_at'    => 'datetime',
         'referral_reward_given' => 'boolean',
+        'stale_reminder_sent_at' => 'datetime',
+        'last_contacted_at'     => 'datetime',
+        'next_action_at'        => 'datetime',
+        'call_attempts'         => 'integer',
     ];
 
     // ─── Etichete lizibile ────────────────────────────────────────────────────
@@ -92,6 +106,22 @@ class CraftsmanLead extends Model
     public function referredBy()
     {
         return $this->belongsTo(User::class, 'referred_by_user_id');
+    }
+
+    public function calls()
+    {
+        return $this->hasMany(CraftsmanLeadCall::class)->latest();
+    }
+
+    public function latestCall()
+    {
+        return $this->hasOne(CraftsmanLeadCall::class)->latestOfMany();
+    }
+
+    /** Programat pentru o zi trecută și încă nerezolvat. */
+    public function isOverdue(): bool
+    {
+        return $this->next_action_at && $this->next_action_at->lt(now()->startOfDay());
     }
 
     // ─── Utilitare ────────────────────────────────────────────────────────────
