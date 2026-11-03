@@ -14,6 +14,11 @@ return [
     |
     */
 
+    // Google Sheet cu lead-uri de recrutare meseriași (sincronizare sheet → aplicație)
+    'recruitment_sheet' => [
+        'url' => env('RECRUITMENT_SHEET_URL'),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],

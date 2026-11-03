@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\CraftsmanLead;
 use App\Models\CraftsmanLeadCall;
+use App\Services\RecruitmentLeadImporter;
 use App\Support\CallOutcome;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -90,6 +91,33 @@ class LeadCallController extends Controller
         ]);
 
         return back()->with('success', 'Adăugat în lista de azi.');
+    }
+
+    /** Preia din Google Sheet numerele care nu sunt încă în aplicație. */
+    public function syncSheet(RecruitmentLeadImporter $importer)
+    {
+        $url = config('services.recruitment_sheet.url');
+        if (! $url) {
+            return back()->with('error', 'Sheet-ul nu e configurat. Adaugă RECRUITMENT_SHEET_URL în .env pe server.');
+        }
+
+        try {
+            $result = $importer->importFromGoogleSheet($url);
+        } catch (\Throwable $e) {
+            report($e);
+            return back()->with('error', 'Sincronizare eșuată: ' . $e->getMessage());
+        }
+
+        $msg = $result['imported']
+            ? "Sincronizat: {$result['imported']} lead-uri noi adăugate în listă."
+            : 'Sincronizat: nu sunt numere noi în sheet.';
+
+        if ($result['invalid']) {
+            $msg .= " {$result['invalid']} rânduri sărite (telefon sau meserie invalidă): "
+                . implode('; ', array_slice($result['warnings'], 0, 3));
+        }
+
+        return back()->with($result['invalid'] && ! $result['imported'] ? 'error' : 'success', $msg);
     }
 
     /** Înregistrează rezultatul unui apel și programează următorul pas. */

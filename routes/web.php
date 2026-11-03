@@ -311,6 +311,7 @@ Route::middleware(['auth', App\Http\Middleware\AdminMiddleware::class])->prefix(
         Route::get('/ghid',                   [CraftsmanLeadController::class, 'guide'])->name('guide');
         Route::get('/azi',                    [\App\Http\Controllers\Admin\LeadCallController::class, 'today'])->name('today');
         Route::post('/rapid',                 [\App\Http\Controllers\Admin\LeadCallController::class, 'quickStore'])->name('quick');
+        Route::post('/sync-sheet',            [\App\Http\Controllers\Admin\LeadCallController::class, 'syncSheet'])->name('sync-sheet');
         Route::post('/{lead}/apel',           [\App\Http\Controllers\Admin\LeadCallController::class, 'log'])->name('log');
         Route::get('/{lead}',                 [CraftsmanLeadController::class, 'show'])->name('show');
         Route::patch('/{lead}',               [CraftsmanLeadController::class, 'update'])->name('update');

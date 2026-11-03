@@ -20,6 +20,19 @@
 
 @section('header-actions')
 <div class="flex items-center gap-3">
+    @if(config('services.recruitment_sheet.url'))
+        <form method="POST" action="{{ route('admin.leads.sync-sheet') }}">
+            @csrf
+            <button type="submit"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm font-medium transition">
+                🔄 Sincronizează din Google Sheet
+            </button>
+        </form>
+        <a href="{{ config('services.recruitment_sheet.url') }}" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 text-sm transition">
+            Deschide sheet-ul
+        </a>
+    @endif
     <a href="{{ route('admin.leads.guide') }}"
        class="inline-flex items-center gap-2 px-4 py-2 border border-primary-300 text-primary-700 rounded-lg hover:bg-primary-50 text-sm font-medium transition">
         💡 Ghid
