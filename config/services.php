@@ -14,6 +14,12 @@ return [
     |
     */
 
+    // Plăți online (Stripe) și limite de plan. Oprite implicit: perioada de lansare e gratuită.
+    // Pornește-le cu PAYMENTS_ENABLED=true în .env DOAR după ce ai o firmă care poate factura.
+    'payments' => [
+        'enabled' => (bool) env('PAYMENTS_ENABLED', false),
+    ],
+
     // Google Sheet cu lead-uri de recrutare meseriași (sincronizare sheet → aplicație)
     'recruitment_sheet' => [
         'url' => env('RECRUITMENT_SHEET_URL'),

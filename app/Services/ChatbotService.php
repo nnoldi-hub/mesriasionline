@@ -137,6 +137,9 @@ class ChatbotService
     private function buildSystemPrompt(): string
     {
         $categories = $this->getTopCategories();
+        $pricing = config('services.payments.enabled')
+            ? 'Platforma are planuri (Free, Starter, Pro) — detalii la /planuri'
+            : 'În perioada de lansare totul e GRATUIT pentru meseriași și clienți: fără abonament, fără comision, fără limită de oferte. Nu menționa prețuri sau planuri plătite.';
 
         return <<<PROMPT
 Ești asistentul oficial al platformei MeseriasiOnline.ro (cunoscut și ca "Omul Potrivit").
@@ -150,7 +153,7 @@ Un asistent AI integrat în platforma MeseriasiOnline.ro, un marketplace române
 - **Cum funcționează**: Clienții postează cereri → Meseriașii trimit oferte → Clientul alege
 - **Cont meseriaș**: Gratuit, se poate înscrie la /register
 - **Cont client**: Gratuit, se poate înscrie la /register  
-- **Comisioane**: Platforma are planuri (Gratuit, Standard, Premium) — detalii la /plans
+- **Costuri**: {$pricing}
 - **Verificare meseriași**: Profiluri verificate cu recenzii reale
 - **Acoperire**: Toată România
 

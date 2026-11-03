@@ -16,6 +16,17 @@
             </p>
         </div>
 
+        @php $paymentsEnabled = config('services.payments.enabled'); @endphp
+
+        @unless($paymentsEnabled)
+            <div class="mb-8 p-5 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 text-center">
+                <p class="text-lg font-bold text-green-800 dark:text-green-300">🎉 Perioada de lansare: totul e gratuit</p>
+                <p class="text-sm text-green-700 dark:text-green-300 mt-1">
+                    Oferte nelimitate, fără abonament și fără comision. Dacă vom introduce vreodată un abonament, te anunțăm din timp și decizi atunci.
+                </p>
+            </div>
+        @endunless
+
         {{-- Flash messages --}}
         @if(session('success'))
             <div class="mb-8 p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 text-center font-medium">
@@ -60,6 +71,9 @@
                         <div class="mb-6">
                             @if($plan->price_monthly == 0)
                                 <span class="text-4xl font-extrabold text-gray-900 dark:text-white">Gratuit</span>
+                            @elseif(! $paymentsEnabled)
+                                <span class="text-4xl font-extrabold text-gray-900 dark:text-white">Gratuit</span>
+                                <span class="block text-sm text-gray-400 mt-1">în perioada de lansare</span>
                             @else
                                 <span class="text-4xl font-extrabold text-gray-900 dark:text-white">{{ number_format($plan->price_monthly, 0) }} RON</span>
                                 <span class="text-gray-400 text-sm">/lună</span>
@@ -103,6 +117,10 @@
                                         Treci la Free
                                     </button>
                                 </form>
+                            @elseif(! $paymentsEnabled)
+                                <div class="w-full text-center py-3 rounded-xl bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-sm font-semibold">
+                                    ✓ Inclus gratuit acum
+                                </div>
                             @else
                                 <a href="{{ route('payment.checkout', $plan->slug) }}"
                                     class="block w-full py-3 px-6 rounded-xl font-semibold text-sm text-center transition-all

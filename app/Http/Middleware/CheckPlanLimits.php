@@ -12,7 +12,8 @@ class CheckPlanLimits
     {
         $user = $request->user();
 
-        if (!$user) {
+        // Perioada de lansare: fără limite de oferte, nimeni nu e trimis să plătească.
+        if (!$user || !config('services.payments.enabled')) {
             return $next($request);
         }
 

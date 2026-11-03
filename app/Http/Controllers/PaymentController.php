@@ -22,6 +22,10 @@ class PaymentController extends Controller
      */
     public function checkout(string $slug)
     {
+        if ($blocked = $this->blockIfPaymentsDisabled()) {
+            return $blocked;
+        }
+
         $plan = Plan::where('slug', $slug)->where('is_active', true)->firstOrFail();
 
         if ($plan->isFree()) {
@@ -39,6 +43,10 @@ class PaymentController extends Controller
      */
     public function redirectToStripe(Request $request, string $slug)
     {
+        if ($blocked = $this->blockIfPaymentsDisabled()) {
+            return $blocked;
+        }
+
         $plan = Plan::where('slug', $slug)->where('is_active', true)->firstOrFail();
 
         if ($plan->isFree()) {
@@ -79,6 +87,20 @@ class PaymentController extends Controller
         }
 
         return view('plans.success', compact('plan'));
+    }
+
+    /**
+     * Cât timp plățile sunt oprite (PAYMENTS_ENABLED=false), nu se creează
+     * nicio sesiune Stripe, indiferent de unde vine cererea.
+     */
+    private function blockIfPaymentsDisabled()
+    {
+        if (config('services.payments.enabled')) {
+            return null;
+        }
+
+        return redirect()->route('plans.index')
+            ->with('success', 'În perioada de lansare toate funcțiile sunt gratuite. Nu e nevoie de nicio plată.');
     }
 
     /**
