@@ -86,7 +86,8 @@ final class CallOutcome
         }
 
         if ($chosen) {
-            return Carbon::parse($chosen);
+            // Data aleasă în formular e ora României; o salvăm în fusul aplicației.
+            return Carbon::parse($chosen, self::TZ)->setTimezone(config('app.timezone', 'UTC'));
         }
 
         $days = self::OUTCOMES[$outcome]['next_days'] ?? null;
@@ -99,7 +100,48 @@ final class CallOutcome
         }
 
         // „Acceptă” → rămâne în lista de azi până îi creezi contul
-        return $days === 0 ? now() : now()->addDays($days)->setTime(10, 0);
+        if ($days === 0) {
+            return now();
+        }
+
+        return self::callingSlot(now(self::TZ)->addDays($days))
+            ->setTimezone(config('app.timezone', 'UTC'));
+    }
+
+    /** Fusul orar în care suni (aplicația rulează pe UTC). */
+    public const TZ = 'Europe/Bucharest';
+
+    /**
+     * Programul tău de apeluri, ora României: seara 18:00 în zilele lucrătoare,
+     * sâmbăta 10:00, duminica liberă (se mută pe luni seara).
+     */
+    public static function callingSlot(Carbon $day): Carbon
+    {
+        $day = $day->setTimezone(self::TZ);
+
+        if ((int) $day->format('N') === 7) { // duminică
+            $day = $day->addDays(1);
+        }
+
+        return (int) $day->format('N') === 6
+            ? $day->setTime(10, 0)
+            : $day->setTime(18, 0);
+    }
+
+    /** Când propui să revii la telefon, potrivit cu ziua și ora (României) la care trimiți mesajul. */
+    public static function callbackAsk(): string
+    {
+        $now = now(self::TZ);
+        $day = (int) $now->format('N');
+        $evening = (int) $now->format('G') >= 17;
+
+        return match (true) {
+            $day === 7               => 'Vă pot suna mâine seară, după ora 18?',
+            $day === 6               => 'Vă pot suna luni seara, după ora 18?',
+            $day === 5 && $evening   => 'Vă pot suna mâine dimineață, între 10 și 12?',
+            $evening                 => 'Vă pot suna mâine seară, după ora 18?',
+            default                  => 'Vă pot suna diseară, după ora 18?',
+        };
     }
 
     /** 0740 123 456 / +40740123456 / 0040... → 0740123456 */
@@ -145,7 +187,7 @@ final class CallOutcome
         if ($fromPublicForm) {
             return "{$greeting} Sunt {$sender} de la meseriasionline.ro. Am încercat să vă sun, "
                 . "v-ați înscris la noi ca {$tradeLower} și vreau să vă fac profilul, gratuit. "
-                . 'Vă pot suna 2 minute când vă e comod?';
+                . self::callbackAsk();
         }
 
         $where = match ($source) {
@@ -159,7 +201,7 @@ final class CallOutcome
         return "{$greeting} Sunt {$sender} de la meseriasionline.ro. Am încercat să vă sun, {$where}. "
             . "Caut 10 {$plural} serioși în {$city} cărora să le trimit cereri de la clienți. "
             . 'Pentru primii 10 e gratuit, iar profilul vi-l fac eu. '
-            . 'Vă pot suna 2 minute când vă e comod?';
+            . self::callbackAsk();
     }
 
     /** Mesajul de după o discuție reală la telefon: aici are sens linkul. */

@@ -189,7 +189,7 @@
                 </div>
                 <div class="text-xs text-gray-500">
                     {{ CallOutcome::label($lead->call_outcome) }} · {{ $lead->call_attempts }} încercări
-                    @if($lead->next_action_at) · programat {{ $lead->next_action_at->format('d.m H:i') }}@endif
+                    @if($lead->next_action_at) · programat {{ $lead->next_action_at->copy()->setTimezone(CallOutcome::TZ)->format('d.m H:i') }}@endif
                 </div>
                 @if($lead->next_action_note)
                     <div class="text-xs text-gray-700 mt-1">➜ {{ $lead->next_action_note }}</div>

@@ -17,8 +17,8 @@ use Illuminate\Validation\Rule;
  */
 class LeadCallController extends Controller
 {
-    /** Ținta zilnică de apeluri. */
-    private const DAILY_GOAL = 20;
+    /** Ținta pe sesiune de apeluri (o seară sau o sâmbătă dimineața). */
+    private const DAILY_GOAL = 10;
 
     public function today()
     {
@@ -29,7 +29,7 @@ class LeadCallController extends Controller
         // 1. Restanțe și programate pentru azi (cele mai vechi primele)
         $due = (clone $open)
             ->whereNotNull('next_action_at')
-            ->where('next_action_at', '<=', now()->endOfDay())
+            ->where('next_action_at', '<=', now(CallOutcome::TZ)->endOfDay()->setTimezone(config('app.timezone')))
             ->orderBy('next_action_at')
             ->get();
 
@@ -183,7 +183,7 @@ class LeadCallController extends Controller
         $msg = match ($finalOutcome) {
             'nu_raspunde' => "{$lead->name} scos din listă după {$attempts} apeluri fără răspuns.",
             'refuzat', 'numar_gresit' => "{$lead->name} marcat ca respins.",
-            default => 'Salvat. Următorul pas: ' . $next->format('d.m H:i'),
+            default => 'Salvat. Următorul pas: ' . $next->copy()->setTimezone(CallOutcome::TZ)->format('d.m H:i'),
         };
 
         return back()->with('success', $msg);

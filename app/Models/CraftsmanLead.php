@@ -121,7 +121,8 @@ class CraftsmanLead extends Model
     /** Programat pentru o zi trecută și încă nerezolvat. */
     public function isOverdue(): bool
     {
-        return $this->next_action_at && $this->next_action_at->lt(now()->startOfDay());
+        return $this->next_action_at
+            && $this->next_action_at->lt(now(\App\Support\CallOutcome::TZ)->startOfDay());
     }
 
     // ─── Utilitare ────────────────────────────────────────────────────────────
