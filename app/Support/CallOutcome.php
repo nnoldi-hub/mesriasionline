@@ -116,6 +116,60 @@ final class CallOutcome
         return str_starts_with($digits, '0') ? $digits : '0' . $digits;
     }
 
+    /** Pluralul meseriilor, pentru „caut 10 zugravi”. */
+    private const TRADE_PLURALS = [
+        'electrician' => 'electricieni',
+        'instalator'  => 'instalatori',
+        'tamplar'     => 'tâmplari',
+        'zugrav'      => 'zugravi',
+        'mecanic'     => 'mecanici',
+    ];
+
+    /**
+     * Primul mesaj WhatsApp, trimis DOAR după un apel fără răspuns.
+     * Scurt, personal, fără link: scopul e să obții un apel, nu să explici tot.
+     */
+    public static function whatsappMissedCall(
+        string $sender,
+        string $leadName,
+        string $trade,
+        string $tradeLabel,
+        ?string $source,
+        string $city,
+        bool $fromPublicForm = false
+    ): string {
+        $greeting = ($leadName && $leadName !== 'Necunoscut') ? "Bună ziua, {$leadName}!" : 'Bună ziua!';
+        $tradeLower = mb_strtolower($tradeLabel);
+        $plural = self::TRADE_PLURALS[$trade] ?? 'meseriași';
+
+        if ($fromPublicForm) {
+            return "{$greeting} Sunt {$sender} de la meseriasionline.ro. Am încercat să vă sun, "
+                . "v-ați înscris la noi ca {$tradeLower} și vreau să vă fac profilul, gratuit. "
+                . 'Vă pot suna 2 minute când vă e comod?';
+        }
+
+        $where = match ($source) {
+            'olx', 'publi24' => "am văzut anunțul dvs. de {$tradeLower} pe " . self::SOURCES[$source],
+            'facebook'       => "am văzut pe Facebook că lucrați ca {$tradeLower}",
+            'google_maps'    => "am găsit pe Google că lucrați ca {$tradeLower}",
+            'recomandare'    => "mi-ați fost recomandat ca {$tradeLower} de încredere",
+            default          => "am înțeles că lucrați ca {$tradeLower}",
+        };
+
+        return "{$greeting} Sunt {$sender} de la meseriasionline.ro. Am încercat să vă sun, {$where}. "
+            . "Caut 10 {$plural} serioși în {$city} cărora să le trimit cereri de la clienți. "
+            . 'Pentru primii 10 e gratuit, iar profilul vi-l fac eu. '
+            . 'Vă pot suna 2 minute când vă e comod?';
+    }
+
+    /** Mesajul de după o discuție reală la telefon: aici are sens linkul. */
+    public static function whatsappAfterCall(string $sender, string $formUrl): string
+    {
+        return "Bună ziua, sunt {$sender} de la meseriasionline.ro, am vorbit la telefon. "
+            . 'Îmi puteți trimite aici 3–5 poze cu lucrări făcute de dvs. și vă fac eu profilul, gratuit. '
+            . "Detalii: {$formUrl}";
+    }
+
     public static function whatsappUrl(string $phone, string $text): string
     {
         $intl = '40' . ltrim(self::normalizePhone($phone), '0');

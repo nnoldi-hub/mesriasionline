@@ -12,9 +12,24 @@
 
 @php
     $me = auth()->user()?->name ?? 'echipa';
-    $waText = fn ($lead) => "Bună ziua, sunt {$me} de la meseriasionline.ro, am vorbit adineauri la telefon. "
-        . "Îmi puteți trimite aici 3–5 poze cu lucrări făcute de dvs. și vă fac eu profilul, gratuit. "
-        . "Detalii: " . route('recruitment.form');
+    // După o discuție reală: mesajul cu link
+    $waAfterCall = fn ($lead) => CallOutcome::whatsappUrl(
+        $lead->phone,
+        CallOutcome::whatsappAfterCall($me, route('recruitment.form'))
+    );
+    // După un apel fără răspuns: mesaj scurt, personal, fără link
+    $waMissedCall = fn ($lead) => CallOutcome::whatsappUrl(
+        $lead->phone,
+        CallOutcome::whatsappMissedCall(
+            $me,
+            $lead->name,
+            $lead->trade,
+            $lead->trade_label,
+            $lead->source,
+            $lead->city,
+            ! $lead->source && ! in_array($lead->utm_source, ['admin', 'import'], true)
+        )
+    );
     $pct = $stats['goal'] ? min(100, (int) round($stats['calls'] / $stats['goal'] * 100)) : 0;
 @endphp
 
@@ -184,8 +199,19 @@
                 @endif
                 <div class="flex flex-wrap gap-2 mt-3">
                     <a href="tel:{{ $lead->phone }}" class="px-3 py-1.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700">📞 {{ $lead->phone }}</a>
-                    <a href="{{ CallOutcome::whatsappUrl($lead->phone, $waText($lead)) }}" target="_blank" rel="noopener"
-                       class="px-3 py-1.5 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600">WhatsApp</a>
+                    @if(! $lead->call_outcome)
+                        {{-- Regula: întâi suni. WhatsApp apare abia după „Nu a răspuns”. --}}
+                        <span class="px-3 py-1.5 bg-gray-100 text-gray-400 rounded-lg text-sm cursor-not-allowed"
+                              title="Sună întâi. Dacă nu răspunde, bifează „Nu a răspuns” și apare mesajul de WhatsApp.">
+                            WhatsApp după primul apel
+                        </span>
+                    @elseif($lead->call_outcome === 'fara_raspuns')
+                        <a href="{{ $waMissedCall($lead) }}" target="_blank" rel="noopener"
+                           class="px-3 py-1.5 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600">WhatsApp (n-a răspuns)</a>
+                    @else
+                        <a href="{{ $waAfterCall($lead) }}" target="_blank" rel="noopener"
+                           class="px-3 py-1.5 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600">WhatsApp (cu link)</a>
+                    @endif
                     @if($lead->source_url)
                         <a href="{{ $lead->source_url }}" target="_blank" rel="noopener"
                            class="px-3 py-1.5 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-50">Anunț</a>
@@ -232,7 +258,18 @@
                     </div>
                 </div>
 
-                <textarea name="note" rows="2" placeholder="Ce s-a discutat? Ce obiecție a ridicat?"
+                {{-- Apare imediat ce bifezi „Nu a răspuns”, înainte să salvezi --}}
+                <div x-show="outcome === 'fara_raspuns'" x-cloak
+                     class="flex flex-wrap items-center gap-2 mb-3 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                    <span class="text-xs text-green-800">N-a răspuns? Trimite-i un mesaj scurt, apoi salvează.</span>
+                    <a href="{{ $waMissedCall($lead) }}" target="_blank" rel="noopener"
+                       @click="if (! $refs.note.value.includes('Trimis WhatsApp')) { $refs.note.value = ($refs.note.value ? $refs.note.value + ' ' : '') + 'Trimis WhatsApp.' }"
+                       class="px-3 py-1.5 bg-green-500 text-white rounded-lg text-xs font-medium hover:bg-green-600">
+                        Trimite WhatsApp
+                    </a>
+                </div>
+
+                <textarea name="note" rows="2" x-ref="note" placeholder="Ce s-a discutat? Ce obiecție a ridicat?"
                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"></textarea>
                 <button type="submit" class="mt-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 text-sm font-medium transition">
                     Salvează apelul
